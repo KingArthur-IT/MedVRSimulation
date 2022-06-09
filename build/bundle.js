@@ -59266,6 +59266,7 @@
 	let controllerGrip1, controllerGrip2;
 	let pickHelper;
 	let PPE_DATA;
+	let roomNum = 1;
 
 	let IntroObjects = { 
 		"IntroContainerName": "introGroup",
@@ -59321,14 +59322,14 @@
 	let objectsParams = {
 		modelPath: './assets/models/',
 		room: {
-			fileName: 'VR_Room_Test_01.fbx',
+			fileName: 'rooms/Room.fbx',
 			objName: 'Room',
 			position: new Vector3(-3.2, -1.5, 0.33),
 			rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  new Vector3(0.065, 0.065, 0.065),
 		},	
 		body: {
-			fileName: 'physician',
+			fileName: 'body/physician',
 			objName: 'Body',
 			position: new Vector3(-2.4, -1.5, -1.3),
 			glowPosition: new Vector3(-2.65, -1.7, -4.29),
@@ -59342,73 +59343,93 @@
 		interactiveObjectList: [
 			{
 				id: 4,
-				fileName: 'gown',
+				fileName: 'gown/table_gown',
 				objName: 'Robe',
-				position: new Vector3(-5.0, -1.5, -1.9),
-				glowPosition: new Vector3(-5.21, -1.64, -4.86),
-				droppedPosition: new Vector3(0.65, 1.73, -0.8),
-				rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				position: 			new Vector3(-4.0, -1.11, -0.1),
+				glowPosition: 		new Vector3(-5.21, -1.64, -4.86),
+				droppedPosition: 	new Vector3(0.65, 1.73, -0.8),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				droppedRotation: new Vector3(-1.35, 0, 1.74),
-				scale: 	  new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  new Vector3(0.07, 0.067, 0.01),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Box',
-				collisionPosition: new Vector3(-1.88, 0.43, -5.43),
-				collisionSize: new Vector3(1.2, 2.3, 0.6)
+				collisionPosition: 	new Vector3(-2.36, 0.31, -3.0),
+				collisionSize: 		new Vector3(0.6, 0.2, 0.5)
 			},
 			{
 				id: 5,
-				fileName: 'mask',
+				fileName: 'mask/mask',
 				objName: 'Mask',
-				position: new Vector3(-0.9, -3.1, -1.6),
-				glowPosition: new Vector3(-1.63, -3.35, -0.81),
-				rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				scale: 	  new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  new Vector3(0.08, 0.07, 0.08),
+				position: 			new Vector3(-5.52, -3.45, 0.95),
+				glowPosition: 		new Vector3(-1.63, -3.35, -0.81),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+				glowScale: 	  		new Vector3(0.08, 0.07, 0.08),
 				collisionGeometry: 'Sphree',
-				collisionPosition: new Vector3(2.2, 0.14, -5.16),
-				collisionSize: new Vector3(0.3, 16, 16)
+				collisionPosition: 	new Vector3(-2.4, -0.19, -2.6),
+				collisionSize: 		new Vector3(0.25, 16, 16)
 			},
 			{
 				id: 6,
-				fileName: 'eye protection',
+				fileName: 'eye-protection/faceshield',
 				objName: 'Glasses',
-				position: new Vector3(-0.34, -3.27, -1.6),
-				glowPosition: new Vector3(-0.58, -3.38, -4.41),
-				rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				scale: 	  new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  new Vector3(0.07, 0.067, 0.01),
+				position: 			new Vector3(-4.65, -3.25, 1.07),
+				glowPosition: 		new Vector3(-0.58, -3.38, -4.41),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Sphree',
-				collisionPosition: new Vector3(2.8, 0.14, -5.16),
-				collisionSize: new Vector3(0.3, 16, 16)
+				collisionPosition: 	new Vector3(-1.52, 0.12, -2.4),
+				collisionSize: 		new Vector3(0.3, 16, 16)
 			},
 			{
 				id: 7,
-				fileName: 'gloves',
+				fileName: 'gloves/box',
 				objName: 'Gloves',
-				position: new Vector3(-3.6, -0.28, -2.13),
-				glowPosition: new Vector3(-3.59, -0.4, -5.16),
-				droppedPosition: new Vector3(-4.3, 1.1, -0.43),
-				rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				droppedRotation: new Vector3(-1.1, 0, 0),
-				scale: 	  new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  new Vector3(0.065, 0.07, 0.01),
+				position: 			new Vector3(-2.33, -1.0, -0.07),
+				glowPosition: 		new Vector3(-3.59, -0.4, -5.16),
+				droppedPosition: 	new Vector3(-4.3, 1.1, -0.43),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				droppedRotation: 	new Vector3(-1.1, 0, 0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+				glowScale: 	  		new Vector3(0.065, 0.07, 0.01),
 				collisionGeometry: 'Box',
-				collisionPosition: new Vector3(-0.47, 1.5, -5.74),
-				collisionSize: new Vector3(1.25, 0.55, 0.2)
+				collisionPosition: 	new Vector3(-1.43, 0.4, -2.9),
+				collisionSize: 		new Vector3(0.65, 0.3, 0.2)
+			},
+		],
+		closesObjectList: [
+			{
+				id: 4,
+				fileName: 'gown/gown',
+				objName: 'BodyRobe',
+				position: 			new Vector3(-4.0, -1.11, -0.1),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+			},
+			{
+				id: 5,
+				fileName: 'mask/mask',
+				objName: 'BodyMask',
+				position: 			new Vector3(-5.52, -3.45, 0.95),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+			},
+			{
+				id: 6,
+				fileName: 'eye-protection/faceshield',
+				objName: 'BodyGlasses',
+				position: 			new Vector3(-4.65, -3.25, 1.07),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
 			{
 				id: 7,
-				fileName: 'gloves',
-				objName: 'Gloves2',
-				position: new Vector3(-3.6, -0.28, -2.13),
-				glowPosition: new Vector3(-3.59, -0.4, -5.16),
-				droppedPosition: new Vector3(-4.35, 1.32, -0.62),
-				rotation: new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				scale: 	  new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  new Vector3(0.065, 0.07, 0.01),
-				collisionGeometry: 'Box',
-				collisionPosition: new Vector3(-0.47, 1.5, -5.74),
-				collisionSize: new Vector3(1.25, 0.55, 0.2)
+				fileName: 'gloves/gloves',
+				objName: 'BodyGloves',
+				position: 			new Vector3(-2.33, -1.0, -0.07),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
 		],
 		decals: [
@@ -59470,13 +59491,11 @@
 		Mask: false,
 		Glasses: false,
 		Gloves: false,
-		Gloves2: false,
 		BodyGlow: false,
 		RobeGlow: false,
 		MaskGlow: false,
 		GlassesGlow: false,
 		GlovesGlow: false,
-		Gloves2Glow: false
 	};
 
 	class App {
@@ -59605,6 +59624,34 @@
 							element.collisionSize
 				);
 			}
+			//clothes
+			for (var i in objectsParams.closesObjectList) {
+				const element = objectsParams.closesObjectList[i];
+				
+				let Obj = new Object3D();
+				Obj.visible = false;
+				
+				let fbxLoader = new FBXLoader();
+				fbxLoader.setPath(objectsParams.modelPath);
+				fbxLoader.load(
+					element.fileName + '.fbx',
+					(object) => {
+						object.name = element.objName;
+						Obj.add(object);
+					},
+					// (xhr) => {
+					// 	if ( (xhr.loaded / xhr.total) === 1)
+					// 		loadedObjects[objName] = true;
+					// }
+				);
+				Obj.position.copy(objectsParams.body.position);
+				Obj.scale.copy(element.scale);
+				Obj.name = element.objName;
+
+				scene.add(Obj);
+			}
+			//patient Room
+			addSecondRoom();
 
 			//window with btns
 			createQuizzWindow();
@@ -59746,8 +59793,10 @@
 					}
 					if (stepSimType === 'put-on'){
 						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider'){
-							scene.getObjectByName(putOnObjects.correctObjectName).position.copy(objectsParams.body.position);
-							scene.getObjectByName(putOnObjects.correctObjectName + "Glow").visible = false;
+							console.log(putOnObjects.correctObjectName);
+							scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
+							//scene.getObjectByName(putOnObjects.correctObjectName).position.copy(objectsParams.body.position);
+							//scene.getObjectByName(putOnObjects.correctObjectName + "Glow").visible = false;
 							simulationStep++;
 							showCurrentSimulationStep();
 						} else
@@ -60006,51 +60055,6 @@
 		scene.add( collider );
 
 		return Obj;
-	}
-
-	function addPolutionDecals(){
-		//create decal
-		new MeshPhongMaterial({
-			color: new Color(0xffffff),
-			flatShading: false,
-			shininess: 30,
-			transparent: true,
-			depthTest: true,
-			depthWrite: false,
-			polygonOffset: true,
-			polygonOffsetFactor: - 4,
-			wireframe: false
-		});
-
-		const loader = new TextureLoader();
-		const decalTexture = loader.load('./assets/img/polution.png', function (texture) {
-			texture.minFilter = NearestFilter;
-		});
-
-		const decalTextureMaterial = new MeshPhongMaterial({
-			map: decalTexture,
-			flatShading: false,
-			shininess: 30,
-			transparent: true,
-			depthTest: true,
-			depthWrite: false,
-			polygonOffset: true,
-			polygonOffsetFactor: - 4,
-			wireframe: false
-		});
-		
-		objectsParams.decals.forEach(item => {
-			const decalGeometry = new DecalGeometry(
-				scene.getObjectByName(item.objName), 
-				item.position, 				
-				item.orientation, 	
-				item.scale	
-			);
-			const decalMesh = new Mesh(decalGeometry, decalTextureMaterial);
-			decalMesh.name = item.decalName;
-			//decalMesh.visible = false;
-			scene.add(decalMesh);
-		});
 	}
 
 	function doGlowObjectsInvisible(){
@@ -60808,6 +60812,52 @@
 		scene.add(popupGroup);
 	}
 
+	function addSecondRoom(){
+		let Obj = new Object3D();
+		Obj.visible = false;
+		
+		let fbxLoader = new FBXLoader();
+		fbxLoader.setPath(objectsParams.modelPath);
+		fbxLoader.load(
+			'patientRoom/bed.fbx',
+			(object) => {
+				object.name = 'Bed';
+				Obj.add(object);
+			},
+			// (xhr) => {
+			// 	if ( (xhr.loaded / xhr.total) === 1)
+			// 		loadedObjects[objName] = true;
+			// }
+		);
+		Obj.position.copy(new Vector3(-0.5, -1.5, -1.3));
+		Obj.scale.copy(objectsParams.body.scale);
+		Obj.name = 'Bed';
+
+		scene.add(Obj);
+
+		Obj = new Object3D();
+		Obj.visible = false;
+		
+		fbxLoader = new FBXLoader();
+		fbxLoader.setPath(objectsParams.modelPath);
+		fbxLoader.load(
+			'patientRoom/patient.fbx',
+			(object) => {
+				object.name = 'Patient';
+				Obj.add(object);
+			},
+			// (xhr) => {
+			// 	if ( (xhr.loaded / xhr.total) === 1)
+			// 		loadedObjects[objName] = true;
+			// }
+		);
+		Obj.position.copy(new Vector3(-0.5, -1.5, -1.3));
+		Obj.scale.copy(objectsParams.body.scale);
+		Obj.name = 'Patient';
+
+		scene.add(Obj);
+	}
+
 	function showCurrentSimulationStep(){
 		scene.getObjectByName(IntroObjects.IntroContainerName).visible = false;
 		scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
@@ -60903,7 +60953,7 @@
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
 			PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
-				scene.getObjectByName(element + "Glow").visible = true;
+				//scene.getObjectByName(element + "Glow").visible = true;
 			});
 			putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
 			putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
@@ -60920,16 +60970,17 @@
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'take-off'){
 			const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-			const objProperties = objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-			scene.getObjectByName(objName).position.copy(objProperties.droppedPosition);
-			scene.getObjectByName(objName).rotation.setFromVector3(objProperties.droppedRotation);
+			// const objProperties = objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
+			// scene.getObjectByName(objName).position.copy(objProperties.droppedPosition);
+			// scene.getObjectByName(objName).rotation.setFromVector3(objProperties.droppedRotation);
+			scene.getObjectByName('Body' + objName).visible = false;
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'throw-away'){
-			const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-			objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-			scene.getObjectByName(objName).visible = false;
+			// const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
+			// objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
+			// scene.getObjectByName(objName).visible = false;
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
@@ -60945,20 +60996,29 @@
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'change-room'){
-			console.log('Room changed');
+			if (roomNum === 1){
+				scene.getObjectByName('Bed').visible = true;
+				scene.getObjectByName('Patient').visible = true;
+				roomNum = 2;
+			} else {
+				scene.getObjectByName('Bed').visible = false;
+				scene.getObjectByName('Patient').visible = false;
+				roomNum = 1;
+			}
+			
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'create-polution-decals'){
-			addPolutionDecals();
+			//addPolutionDecals();
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'polution-decals'){
-			objectsParams.decals.forEach(i => {
-				scene.getObjectByName(i.decalName).visible = 
-					PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
-			});
+			// objectsParams.decals.forEach(i => {
+			// 	scene.getObjectByName(i.decalName).visible = 
+			// 		PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
+			// })
 			simulationStep++;
 			showCurrentSimulationStep();
 		}

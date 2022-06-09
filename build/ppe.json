@@ -6464,9 +6464,9 @@
 			{
 				"id": 50,
 				"type": "put-on",
-				"correctOnjectName": "Gloves2",
+				"correctOnjectName": "Gloves",
 				"interactiveObjectsName": [],
-				"glowObjectsName": ["Gloves2"]
+				"glowObjectsName": ["Gloves"]
 			},
 			{
 				"id": 51,
@@ -6511,8 +6511,8 @@
 			},
 			{
 				"id": 56,
-				"type": "throw-away",
-				"objectName": "Gloves2"
+				"type": "take-off",
+				"objectName": "Gloves"
 			},
 			{
 				"id": 57,
@@ -6600,7 +6600,7 @@
 			},
 			{
 				"id": 67,
-				"type": "throw-away",
+				"type": "take-off",
 				"objectName": "Glasses"
 			},
 			{
@@ -6642,7 +6642,7 @@
 			},
 			{
 				"id": 72,
-				"type": "throw-away",
+				"type": "take-off",
 				"objectName": "Mask"
 			},
 			{
