@@ -1679,14 +1679,14 @@ function addSecondRoom(){
 		// 		loadedObjects[objName] = true;
 		// }
 	)
-	Obj.position.copy(new THREE.Vector3(-0.5, -1.5, -1.3));
+	Obj.position.copy(new THREE.Vector3(0.5, -1.5, -1.3));
 	Obj.scale.copy(objectsParams.body.scale);
 	Obj.name = 'Bed';
 
 	scene.add(Obj);
 
-	Obj = new THREE.Object3D();
-	Obj.visible = false;
+	let Obj2 = new THREE.Object3D();
+	Obj2.visible = false;
 	
 	fbxLoader = new FBXLoader();
 	fbxLoader.setPath(objectsParams.modelPath);
@@ -1694,18 +1694,41 @@ function addSecondRoom(){
 		'patientRoom/patient.fbx',
 		(object) => {
 			object.name = 'Patient';
-			Obj.add(object);
+			Obj2.add(object);
 		},
 		// (xhr) => {
 		// 	if ( (xhr.loaded / xhr.total) === 1)
 		// 		loadedObjects[objName] = true;
 		// }
 	)
-	Obj.position.copy(new THREE.Vector3(-0.5, -1.5, -1.3));
-	Obj.scale.copy(objectsParams.body.scale);
-	Obj.name = 'Patient';
+	Obj2.position.copy(new THREE.Vector3(0.5, -1.5, -1.3));
+	Obj2.scale.copy(objectsParams.body.scale);
+	Obj2.name = 'Patient';
 
-	scene.add(Obj);
+	scene.add(Obj2);
+
+	let Obj3 = new THREE.Object3D();
+	Obj3.visible = false;
+	
+	fbxLoader = new FBXLoader();
+	fbxLoader.setPath(objectsParams.modelPath);
+	fbxLoader.load(
+		'patientRoom/powerboard_wall_equipment.fbx',
+		(object) => {
+			object.name = 'WallEquipment';
+			Obj3.add(object);
+		},
+		// (xhr) => {
+		// 	if ( (xhr.loaded / xhr.total) === 1)
+		// 		loadedObjects[objName] = true;
+		// }
+	)
+	Obj3.position.copy(new THREE.Vector3(-1.72, -1.45, -8.0));
+	Obj3.rotation.setFromVector3(new THREE.Vector3(0.0, - Math.PI / 2, 0.0))
+	Obj3.scale.copy(objectsParams.body.scale);
+	Obj3.name = 'WallEquipment';
+
+	scene.add(Obj3);
 }
 
 function showCurrentSimulationStep(){
@@ -1849,10 +1872,12 @@ function showCurrentSimulationStep(){
 		if (roomNum === 1){
 			scene.getObjectByName('Bed').visible = true;
 			scene.getObjectByName('Patient').visible = true;
+			scene.getObjectByName('WallEquipment').visible = true;
 			roomNum = 2;
 		} else {
 			scene.getObjectByName('Bed').visible = false;
 			scene.getObjectByName('Patient').visible = false;
+			scene.getObjectByName('WallEquipment').visible = false;
 			roomNum = 1;
 		}
 		
