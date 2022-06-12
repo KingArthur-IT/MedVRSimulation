@@ -52307,7 +52307,8 @@
 				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Box',
 				collisionPosition: 	new Vector3(-2.36, 0.31, -3.0),
-				collisionSize: 		new Vector3(0.6, 0.2, 0.5)
+				collisionSize: 		new Vector3(0.6, 0.2, 0.5),
+				popupPosition: 		new Vector3(-2.4, 0.6, -3.15)
 			},
 			{
 				id: 5,
@@ -52320,7 +52321,8 @@
 				glowScale: 	  		new Vector3(0.08, 0.07, 0.08),
 				collisionGeometry: 'Sphree',
 				collisionPosition: 	new Vector3(-2.4, -0.19, -2.6),
-				collisionSize: 		new Vector3(0.25, 16, 16)
+				collisionSize: 		new Vector3(0.25, 16, 16),
+				popupPosition: 		new Vector3(-2.1, 0.3, -2.3)
 			},
 			{
 				id: 6,
@@ -52333,7 +52335,8 @@
 				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Sphree',
 				collisionPosition: 	new Vector3(-1.52, 0.12, -2.4),
-				collisionSize: 		new Vector3(0.3, 16, 16)
+				collisionSize: 		new Vector3(0.3, 16, 16),
+				popupPosition: 		new Vector3(-1.45, 0.4, -2.5)
 			},
 			{
 				id: 7,
@@ -52348,7 +52351,8 @@
 				glowScale: 	  		new Vector3(0.065, 0.07, 0.01),
 				collisionGeometry: 'Box',
 				collisionPosition: 	new Vector3(-1.43, 0.4, -2.9),
-				collisionSize: 		new Vector3(0.65, 0.3, 0.2)
+				collisionSize: 		new Vector3(0.65, 0.3, 0.2),
+				popupPosition: 		new Vector3(-1.5, 0.6, -3.15)
 			},
 		],
 		clothesObjectList: [
@@ -60437,6 +60441,51 @@
 		scene.add(popupGroup);
 	}
 
+	function createInfoPopup(scene, name, position){
+		const params = {
+			fontFamily: "./assets/Roboto-msdf.json",
+		  	fontTexture: "./assets/Roboto-msdf.png",
+			darkColor: new Color(0x777777),
+			width: 0.6,
+			textFontSize: 0.1,
+		}; 
+		
+		let popupGroup = new Group();
+		popupGroup.name = 'Popup' + name;
+
+		const container = new ThreeMeshUI.Block({
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.darkColor,
+			backgroundOpacity: 0.6,
+			borderRadius: 0.05,
+		});
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 0.2,
+			width: params.width,
+			alignContent: "center",
+			justifyContent: "start",
+			padding: 0.05,
+			borderRadius: 0.05,
+			backgroundColor: params.darkColor,
+			backgroundOpacity: 0.6,
+		});  
+		container.add(contentBlock);
+		const text = new ThreeMeshUI.Text({
+			content: "Put on",
+			fontColor: new Color(0xffffff),
+		  	fontSize: params.textFontSize,
+		});
+		contentBlock.add(text);
+
+		popupGroup.add(container);
+		popupGroup.position.copy(position);
+		popupGroup.visible = false;
+		
+		scene.add(popupGroup);
+	}
+
 	let camera, scene, renderer;
 
 	let controller1, controller2;
@@ -60541,6 +60590,10 @@
 			createInfoSmall(scene);
 			createInfoMediumText(scene);
 			createInfoMediumTextImg(scene);
+
+			objectsParams.interactiveObjectList.forEach((item) => {
+				createInfoPopup(scene, item.objName, item.popupPosition);
+			});
 
 			window.addEventListener( 'resize', onWindowResize );
 
@@ -60853,6 +60906,12 @@
 		});
 	}
 
+	function changeInfoPopupsVisibility(val){
+		objectsParams.interactiveObjectList.forEach((item) => {
+			scene.getObjectByName('Popup' + item.objName).visible = val;
+		});
+	}
+
 	function showCurrentSimulationStep(){
 		scene.getObjectByName(IntroObjects.IntroContainerName).visible = false;
 		scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
@@ -60862,6 +60921,7 @@
 		scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 		doGlowObjectsInvisible(); 
+		changeInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
 
 		stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
@@ -60947,6 +61007,7 @@
 			QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
+			changeInfoPopupsVisibility(true);
 			PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
 				//scene.getObjectByName(element + "Glow").visible = true;
 			});

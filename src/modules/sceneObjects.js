@@ -35,7 +35,8 @@ const objectsParams = {
 			glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 			collisionGeometry: 'Box',
 			collisionPosition: 	new Vector3(-2.36, 0.31, -3.0),
-			collisionSize: 		new Vector3(0.6, 0.2, 0.5)
+			collisionSize: 		new Vector3(0.6, 0.2, 0.5),
+			popupPosition: 		new Vector3(-2.4, 0.6, -3.15)
 		},
 		{
 			id: 5,
@@ -48,7 +49,8 @@ const objectsParams = {
 			glowScale: 	  		new Vector3(0.08, 0.07, 0.08),
 			collisionGeometry: 'Sphree',
 			collisionPosition: 	new Vector3(-2.4, -0.19, -2.6),
-			collisionSize: 		new Vector3(0.25, 16, 16)
+			collisionSize: 		new Vector3(0.25, 16, 16),
+			popupPosition: 		new Vector3(-2.1, 0.3, -2.3)
 		},
 		{
 			id: 6,
@@ -61,7 +63,8 @@ const objectsParams = {
 			glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 			collisionGeometry: 'Sphree',
 			collisionPosition: 	new Vector3(-1.52, 0.12, -2.4),
-			collisionSize: 		new Vector3(0.3, 16, 16)
+			collisionSize: 		new Vector3(0.3, 16, 16),
+			popupPosition: 		new Vector3(-1.45, 0.4, -2.5)
 		},
 		{
 			id: 7,
@@ -76,7 +79,8 @@ const objectsParams = {
 			glowScale: 	  		new Vector3(0.065, 0.07, 0.01),
 			collisionGeometry: 'Box',
 			collisionPosition: 	new Vector3(-1.43, 0.4, -2.9),
-			collisionSize: 		new Vector3(0.65, 0.3, 0.2)
+			collisionSize: 		new Vector3(0.65, 0.3, 0.2),
+			popupPosition: 		new Vector3(-1.5, 0.6, -3.15)
 		},
 	],
 	clothesObjectList: [

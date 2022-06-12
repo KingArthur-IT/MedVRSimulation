@@ -785,10 +785,55 @@ function createQuizzWindow(scene){
 	scene.add(popupGroup);
 }
 
+function createInfoPopup(scene, name, position){
+	const params = {
+		fontFamily: "./assets/Roboto-msdf.json",
+	  	fontTexture: "./assets/Roboto-msdf.png",
+		darkColor: new THREE.Color(0x777777),
+		width: 0.6,
+		textFontSize: 0.1,
+	}; 
+	
+	let popupGroup = new THREE.Group();
+	popupGroup.name = 'Popup' + name;
+
+	const container = new ThreeMeshUI.Block({
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.darkColor,
+		backgroundOpacity: 0.6,
+		borderRadius: 0.05,
+	});
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 0.2,
+		width: params.width,
+		alignContent: "center",
+		justifyContent: "start",
+		padding: 0.05,
+		borderRadius: 0.05,
+		backgroundColor: params.darkColor,
+		backgroundOpacity: 0.6,
+	});  
+	container.add(contentBlock);
+	const text = new ThreeMeshUI.Text({
+		content: "Put on",
+		fontColor: new THREE.Color(0xffffff),
+	  	fontSize: params.textFontSize,
+	});
+	contentBlock.add(text);
+
+	popupGroup.add(container)
+	popupGroup.position.copy(position);
+	popupGroup.visible = false;
+	
+	scene.add(popupGroup);
+}
+
 export {
     hoverObjectsList,
     IntroObjects, QuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
     infoObjectsSmall, successObjects,
     createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
-    createCorrectIncorrectPopup, createQuizzWindow
+    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup
 }

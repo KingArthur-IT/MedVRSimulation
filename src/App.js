@@ -11,7 +11,7 @@ import { hoverObjectsList,
 	IntroObjects, QuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
     infoObjectsSmall, successObjects,
     createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
-    createCorrectIncorrectPopup, createQuizzWindow } from './modules/windowsUI.js'
+    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup } from './modules/windowsUI.js'
 
 let camera, scene, renderer;
 
@@ -117,6 +117,10 @@ class App {
 		createInfoSmall(scene);
 		createInfoMediumText(scene);
 		createInfoMediumTextImg(scene);
+
+		objectsParams.interactiveObjectList.forEach((item) => {
+			createInfoPopup(scene, item.objName, item.popupPosition)
+		})
 
 		window.addEventListener( 'resize', onWindowResize );
 
@@ -474,6 +478,12 @@ function removeDecalsFromScene(){
 	})
 }
 
+function changeInfoPopupsVisibility(val){
+	objectsParams.interactiveObjectList.forEach((item) => {
+		scene.getObjectByName('Popup' + item.objName).visible = val;
+	})
+}
+
 function showCurrentSimulationStep(){
 	scene.getObjectByName(IntroObjects.IntroContainerName).visible = false;
 	scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
@@ -483,6 +493,7 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 	scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 	doGlowObjectsInvisible(); 
+	changeInfoPopupsVisibility(false);
 	document.getElementById('video').pause();
 
 	stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
@@ -568,6 +579,7 @@ function showCurrentSimulationStep(){
 		QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
+		changeInfoPopupsVisibility(true);
 		PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
 			//scene.getObjectByName(element + "Glow").visible = true;
 		})
