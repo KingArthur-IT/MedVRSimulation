@@ -21,6 +21,8 @@ let pickHelper;
 let PPE_DATA;
 let roomNum = 1;
 
+let selectedQuizzBtns = [];
+
 let putOnObjects = {
 	correctObjectName : '',
 	interactiveObject : []
@@ -193,7 +195,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 
 		//find intersects
         const intersections = this.raycaster.intersectObjects(scene.children, true);
-		console.log(intersections)
+		//console.log(intersections)
 		const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
 		const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
 		intersections.forEach(intersect => {
@@ -230,12 +232,18 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 					}
 					if (intersect.object.name == "MeshUI-Frame" && isQuizzVisible)
 						if (intersect.object.parent.children[1]?.name.includes('quizz-btn')){
+							const btnName = intersect.object.parent.children[1].name;
+							const wasBtnClicked = (selectedQuizzBtns.some((i) => {return i === btnName}));
+							if (wasBtnClicked) return;
 							scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
-							if (intersect.object.parent.children[1].name === QuizzObjects.correctQuizzBtnName){
+							if (btnName === QuizzObjects.correctQuizzBtnName){
 								simulationStep++;
+								selectedQuizzBtns = [];
 								showCurrentSimulationStep();
 							}
 							else {
+								console.log(selectedQuizzBtns)
+								selectedQuizzBtns.push(btnName);
 								correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 								scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
 								setTimeout(() => {
@@ -319,10 +327,11 @@ class ControllerPickHelper extends THREE.EventDispatcher {
       this.reset();
 
 	  hoverObjectsList.forEach(el => {
-		  if (el.state === 'selected'){
-			scene.getObjectByName(el.name).parent.setState('normal');
-			el.state = "normal";
-		  }
+		const wasSelected = selectedQuizzBtns.some((i) => { return i === el.name});
+		if (el.state === 'selected' && !wasSelected){
+		scene.getObjectByName(el.name).parent.setState('normal');
+		el.state = "normal";
+		}
 	  });
 
       for (const {controller, line} of this.controllers) {
