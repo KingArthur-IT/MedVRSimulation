@@ -60407,6 +60407,178 @@
 		scene.add(popupGroup);
 	}
 
+	function createConfidenceWindow(scene){
+		const params = {
+			fontFamily: "./assets/Roboto-msdf.json",
+		  	fontTexture: "./assets/Roboto-msdf.png",
+			darkColor: new Color(0x3e3e3e),
+			lightColor: new Color(0xe2e2e2),
+			width: 3.0,
+			titleFontSize: 0.125,
+			textFontSize: 0.1,
+		}; 
+		const selectedAttributes = {
+			backgroundColor: new Color( 0x777777 ),
+			fontColor: new Color( 0x222222 )
+		};
+		const normalAttributes = {
+			backgroundColor: params.darkColor,
+			fontColor: params.lightColor
+		};
+		
+		let popupGroup = new Group();
+		popupGroup.name = 'ConfidenceWindow';
+
+		const container = new ThreeMeshUI.Block({
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});
+		const titleBlock = new ThreeMeshUI.Block({
+			height: 0.28,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.darkColor,
+		});  
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 0.3,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});  
+		container.add(titleBlock, contentBlock);
+		const titleTextObj = new ThreeMeshUI.Text({
+			content: "Info",
+			fontColor: params.lightColor,
+		  	fontSize: params.titleFontSize,
+		});
+		titleBlock.add(titleTextObj);
+		const textObj = new ThreeMeshUI.Text({
+			content: "How confidence is your answer?",
+			fontColor: params.darkColor,
+		  	fontSize: params.titleFontSize,
+		});
+		contentBlock.add(textObj);
+
+		const imagesContainer = new ThreeMeshUI.Block({
+			height: 0.6,
+			width: 3.0,
+			justifyContent: "start",
+			padding: 0.0,
+			contentDirection: 'row',
+			backgroundColor: params.lightColor
+		});
+		const image1 = new ThreeMeshUI.Block({
+			height: 0.6,
+			width: 0.6,
+			margin: 0.5
+		});
+		const image2 = new ThreeMeshUI.Block({
+			height: 0.6,
+			width: 0.6,
+			margin: 0.25
+		});
+		imagesContainer.add(image1, image2);
+		container.add(imagesContainer);
+
+		let loader = new TextureLoader();  
+		loader.load('./assets/img/dislike.png', function (texture) {
+			//texture.minFilter = THREE.LinearFilter;
+			image1.set({ backgroundTexture: texture });
+		});
+
+		loader = new TextureLoader();  
+		loader.load('./assets/img/like.png', function (texture) {
+			//texture.minFilter = THREE.LinearFilter;
+			image2.set({ backgroundTexture: texture });
+		});
+
+		//btns
+		const btnContainer = new ThreeMeshUI.Block({
+			height: 0.4,
+			width: params.width,
+			justifyContent: 'start',
+			alignContent: 'center',
+			contentDirection: 'row',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});
+
+		const btnBlockLow = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.75,
+			alignContent: "center",
+			justifyContent: "center",
+			backgroundColor: params.darkColor,
+			margin: 0.5
+		}); 
+		const btnTextLow = new ThreeMeshUI.Text({
+			content: "Low",
+			fontColor: params.lightColor,
+		  	fontSize: params.textFontSize,
+		}); 
+		btnTextLow.name = "LowConfidenceBtn"; 
+		btnBlockLow.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		btnBlockLow.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
+		btnBlockLow.add(btnTextLow);
+		btnContainer.add(btnBlockLow);
+		hoverObjectsList.push({
+			name: "LowConfidenceBtn",
+			state: 'normal'
+		});
+
+		const btnBlockHigh = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.75,
+			alignContent: "center",
+			justifyContent: "center",
+			backgroundColor: params.darkColor,
+		}); 
+		const btnTextHigh = new ThreeMeshUI.Text({
+			content: "High",
+			fontColor: params.lightColor,
+		  	fontSize: params.textFontSize,
+		}); 
+		btnTextHigh.name = "HighConfidenceBtn"; 
+		btnBlockHigh.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		btnBlockHigh.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
+		btnBlockHigh.add(btnTextHigh);
+		btnContainer.add(btnBlockHigh);
+		hoverObjectsList.push({
+			name: "HighConfidenceBtn",
+			state: 'normal'
+		});
+
+		container.add(btnContainer);
+
+		popupGroup.add(container);
+		popupGroup.position.set(0.0, 2.0, -4.5);
+		popupGroup.visible = false;
+		
+		scene.add(popupGroup);
+	}
+
 	let camera, scene, renderer;
 
 	let controller1, controller2;
@@ -60421,6 +60593,8 @@
 		correctObjectName : '',
 		interactiveObject : []
 	};
+
+	let quizzSelectedBtnName = '';
 
 	let simulationStep = -1;
 	let stepSimType = "";
@@ -60507,6 +60681,7 @@
 			createInfoSmall(scene);
 			createInfoMediumText(scene);
 			createInfoMediumTextImg(scene);
+			createConfidenceWindow(scene);
 
 			objectsParams.interactiveObjectList.forEach((item) => {
 				createInfoPopup(scene, item.objName, item.popupPosition);
@@ -60591,6 +60766,7 @@
 	        const intersections = this.raycaster.intersectObjects(scene.children, true);
 			//console.log(intersections)
 			const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
+			const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
 			const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
 			intersections.forEach(intersect => {
 				if (intersect != undefined && intersect.object.type == 'Mesh') { 
@@ -60630,16 +60806,27 @@
 								const wasBtnClicked = (selectedQuizzBtns.some((i) => {return i === btnName}));
 								if (wasBtnClicked) return;
 								scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
-								if (btnName === QuizzObjects.correctQuizzBtnName){
+								quizzSelectedBtnName = btnName;
+								scene.getObjectByName('ConfidenceWindow').visible = true;
+								stepSimType = 'confidence';
+							}
+					}
+					if (stepSimType === 'confidence'){
+						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
+							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
+								//const btnName = intersect.object.parent.children[1].name;
+								scene.getObjectByName('ConfidenceWindow').visible = false;
+								if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 									simulationStep++;
 									selectedQuizzBtns = [];
+									quizzSelectedBtnName = '';
 									showCurrentSimulationStep();
 								}
 								else {
-									console.log(selectedQuizzBtns);
-									selectedQuizzBtns.push(btnName);
+									selectedQuizzBtns.push(quizzSelectedBtnName);
 									correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 									scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
+									quizzSelectedBtnName = '';
 									setTimeout(() => {
 										scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 										showCurrentSimulationStep();
@@ -60721,8 +60908,12 @@
 		  hoverObjectsList.forEach(el => {
 			const wasSelected = selectedQuizzBtns.some((i) => { return i === el.name});
 			if (el.state === 'selected' && !wasSelected){
-			scene.getObjectByName(el.name).parent.setState('normal');
-			el.state = "normal";
+				scene.getObjectByName(el.name).parent.setState('normal');
+				el.state = "normal";
+			}
+			if (wasSelected){
+				scene.getObjectByName(el.name).parent.setState('selected');
+				el.state = "selected";
 			}
 		  });
 

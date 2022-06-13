@@ -11,7 +11,7 @@ import { hoverObjectsList,
 	IntroObjects, QuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
     infoObjectsSmall, successObjects,
     createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
-    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup } from './modules/windowsUI.js'
+    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow } from './modules/windowsUI.js'
 
 let camera, scene, renderer;
 
@@ -27,6 +27,8 @@ let putOnObjects = {
 	correctObjectName : '',
 	interactiveObject : []
 }
+
+let quizzSelectedBtnName = '';
 
 let simulationStep = -1;
 let stepSimType = "";
@@ -113,6 +115,7 @@ class App {
 		createInfoSmall(scene);
 		createInfoMediumText(scene);
 		createInfoMediumTextImg(scene);
+		createConfidenceWindow(scene);
 
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition)
@@ -197,6 +200,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
         const intersections = this.raycaster.intersectObjects(scene.children, true);
 		//console.log(intersections)
 		const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
+		const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
 		const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
 		intersections.forEach(intersect => {
 			if (intersect != undefined && intersect.object.type == 'Mesh') { 
@@ -236,16 +240,27 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 							const wasBtnClicked = (selectedQuizzBtns.some((i) => {return i === btnName}));
 							if (wasBtnClicked) return;
 							scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
-							if (btnName === QuizzObjects.correctQuizzBtnName){
+							quizzSelectedBtnName = btnName;
+							scene.getObjectByName('ConfidenceWindow').visible = true;
+							stepSimType = 'confidence';
+						}
+				}
+				if (stepSimType === 'confidence'){
+					if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
+						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
+							//const btnName = intersect.object.parent.children[1].name;
+							scene.getObjectByName('ConfidenceWindow').visible = false;
+							if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 								simulationStep++;
 								selectedQuizzBtns = [];
+								quizzSelectedBtnName = '';
 								showCurrentSimulationStep();
 							}
 							else {
-								console.log(selectedQuizzBtns)
-								selectedQuizzBtns.push(btnName);
+								selectedQuizzBtns.push(quizzSelectedBtnName);
 								correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 								scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
+								quizzSelectedBtnName = '';
 								setTimeout(() => {
 									scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 									showCurrentSimulationStep();
@@ -327,8 +342,12 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 	  hoverObjectsList.forEach(el => {
 		const wasSelected = selectedQuizzBtns.some((i) => { return i === el.name});
 		if (el.state === 'selected' && !wasSelected){
-		scene.getObjectByName(el.name).parent.setState('normal');
-		el.state = "normal";
+			scene.getObjectByName(el.name).parent.setState('normal');
+			el.state = "normal";
+		}
+		if (wasSelected){
+			scene.getObjectByName(el.name).parent.setState('selected');
+			el.state = "selected";
 		}
 	  });
 
