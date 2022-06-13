@@ -75,9 +75,7 @@ class App {
 		addInteractiveObject(	scene, camera,
 					objectsParams.body.fileName, 
 					objectsParams.body.position,
-					objectsParams.body.glowPosition,
 					objectsParams.body.scale,
-					objectsParams.body.glowScale,
 					objectsParams.body.objName,
 					objectsParams.body.collisionGeometry,
 					objectsParams.body.collisionPosition,
@@ -89,9 +87,7 @@ class App {
 			addInteractiveObject(	scene, camera,
 						element.fileName, 
 						element.position,
-						element.glowPosition,
 						element.scale,
-						element.glowScale,
 						element.objName,
 						element.collisionGeometry,
 						element.collisionPosition,
@@ -261,8 +257,6 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 					if (intersect.object.name === putOnObjects.correctObjectName + 'Collider'){
 						console.log(putOnObjects.correctObjectName)
 						scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
-						//scene.getObjectByName(putOnObjects.correctObjectName).position.copy(objectsParams.body.position);
-						//scene.getObjectByName(putOnObjects.correctObjectName + "Glow").visible = false;
 						simulationStep++;
 						showCurrentSimulationStep();
 					} else
@@ -464,14 +458,6 @@ function addPolutionDecals(){
 	})
 }
 
-function doGlowObjectsInvisible(){
-	scene.getObjectByName("BodyGlow").visible = false;
-	objectsParams.interactiveObjectList.forEach(element => {
-		let name = element.objName + 'Glow';
-		scene.getObjectByName(name).visible = false;
-	})
-}
-
 function removeDecalsFromScene(){
 	objectsParams.decals.forEach(item => {
 		scene.remove(scene.getObjectByName(item.decalName));
@@ -492,7 +478,6 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
 	scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 	scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
-	doGlowObjectsInvisible(); 
 	changeInfoPopupsVisibility(false);
 	document.getElementById('video').pause();
 
@@ -564,9 +549,9 @@ function showCurrentSimulationStep(){
 		infoObjectsSmall.contentTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].content});
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'quizz'){
-		PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
-			scene.getObjectByName(element + 'Glow').visible = true;
-		}); 
+		// PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
+		// 	scene.getObjectByName(element + 'Glow').visible = true;
+		// }); 
 		//title
 		QuizzObjects.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
 		//btns
@@ -580,9 +565,9 @@ function showCurrentSimulationStep(){
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
 		changeInfoPopupsVisibility(true);
-		PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
-			//scene.getObjectByName(element + "Glow").visible = true;
-		})
+		// PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
+		// 	//scene.getObjectByName(element + "Glow").visible = true;
+		// })
 		putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
 		putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 	}
@@ -598,17 +583,7 @@ function showCurrentSimulationStep(){
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'take-off'){
 		const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-		// const objProperties = objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-		// scene.getObjectByName(objName).position.copy(objProperties.droppedPosition);
-		// scene.getObjectByName(objName).rotation.setFromVector3(objProperties.droppedRotation);
 		scene.getObjectByName('Body' + objName).visible = false;
-		simulationStep++;
-		showCurrentSimulationStep();
-	}
-	if (PPE_DATA.vrSim.sim[simulationStep].type === 'throw-away'){
-		// const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-		// objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-		// scene.getObjectByName(objName).visible = false;
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
@@ -652,12 +627,6 @@ function showCurrentSimulationStep(){
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
-	/*
-	scene.getObjectByName(element).children[0].children.forEach(element => {
-				if (element.material && element.material.emissive)
-					element.material.emissive.b = 0.1;
-			});
-	*/
 }
 
 export default App;

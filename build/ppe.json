@@ -6418,34 +6418,6 @@
 				"id": 44,
 				"type": "quizz",
 				"title": "Healthcare provider",
-				"btnText1": "Set gown and gloves on the floor by the door",
-				"btnText2": "Drop gown and gloves in garbage",
-				"btnText3": "Disinfect front of face shield",
-				"btnText4": "Leave the room",
-				"highlightedObjectNames": ["Body"],
-				"correctObjectName": "Body",
-				"correctAnswer": "quizz-btn-2"
-			},
-			{
-				"id": 45,
-				"type": "throw-away",
-				"objectName": "Robe"
-			},
-			{
-				"id": 46,
-				"type": "throw-away",
-				"objectName": "Gloves"
-			},
-			{
-				"id": 47,
-				"type": "info-sm",
-				"title": "Info",
-				"content": "Correct\nDrop gown and gloves in garbage."
-			},
-			{
-				"id": 48,
-				"type": "quizz",
-				"title": "Healthcare provider",
 				"btnText1": "Perform hand hygiene",
 				"btnText2": "Disinfect front of face shield",
 				"btnText3": "Don new pair of clean gloves",
@@ -6455,27 +6427,27 @@
 				"correctAnswer": "quizz-btn-1"
 			},
 			{
-				"id": 49,
+				"id": 45,
 				"type": "info-md-text-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
 			},
 			{
-				"id": 50,
+				"id": 46,
 				"type": "put-on",
 				"correctOnjectName": "Gloves",
 				"interactiveObjectsName": [],
 				"glowObjectsName": ["Gloves"]
 			},
 			{
-				"id": 51,
+				"id": 47,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nDon new pair of clean gloves"
 			},
 			{
-				"id": 52,
+				"id": 48,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Disinfect front of face shield",
@@ -6487,18 +6459,18 @@
 				"correctAnswer": "quizz-btn-1"
 			},
 			{
-				"id": 53,
+				"id": 49,
 				"type": "polution-decals",
 				"visibleDecals": ["decal-mask"]
 			},
 			{
-				"id": 54,
+				"id": 50,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nDisinfect front of face shield with purple wipe (while still on HCW face) being careful not to touch the inside og the shield."
 			},
 			{
-				"id": 55,
+				"id": 51,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Leave the room",
@@ -6510,18 +6482,18 @@
 				"correctAnswer": "quizz-btn-2"
 			},
 			{
-				"id": 56,
+				"id": 52,
 				"type": "take-off",
 				"objectName": "Gloves"
 			},
 			{
-				"id": 57,
+				"id": 53,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nDoff gloves and place in garbage."
 			},
 			{
-				"id": 58,
+				"id": 54,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Remove N95 mask",
@@ -6533,14 +6505,14 @@
 				"correctAnswer": "quizz-btn-3"
 			},
 			{
-				"id": 59,
+				"id": 55,
 				"type": "info-md-text-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
 			},
 			{
-				"id": 60,
+				"id": 56,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Remove N95 mask",
@@ -6552,23 +6524,23 @@
 				"correctAnswer": "quizz-btn-2"
 			},
 			{
-				"id": 61,
+				"id": 57,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nLeave the room and prepare to continue the doffing process."
 			},
 			{
-				"id": 62,
+				"id": 58,
 				"type": "change-room"
 			},
 			{
-				"id": 63,
+				"id": 59,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "You are outside the room and prepared to continue the doffing process"
 			},
 			{
-				"id": 64,
+				"id": 60,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Don new pair of clean gloves",
@@ -6580,14 +6552,14 @@
 				"correctAnswer": "quizz-btn-2"
 			},
 			{
-				"id": 65,
+				"id": 61,
 				"type": "info-md-text-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
 			},
 			{
-				"id": 66,
+				"id": 62,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Remove N95 mask",
@@ -6599,18 +6571,18 @@
 				"correctAnswer": "quizz-btn-4"
 			},
 			{
-				"id": 67,
+				"id": 63,
 				"type": "take-off",
 				"objectName": "Glasses"
 			},
 			{
-				"id": 68,
+				"id": 64,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nRemove face shield - reach back, grab the strap and pull it over towards the front. Place on bedside table or designated surface for re-use."
 			},
 			{
-				"id": 69,
+				"id": 65,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Perform hand hygiene",
@@ -6622,14 +6594,14 @@
 				"correctAnswer": "quizz-btn-1"
 			},
 			{
-				"id": 70,
+				"id": 66,
 				"type": "info-md-text-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
 			},
 			{
-				"id": 71,
+				"id": 67,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Don new pair of clean gloves",
@@ -6641,23 +6613,23 @@
 				"correctAnswer": "quizz-btn-3"
 			},
 			{
-				"id": 72,
+				"id": 68,
 				"type": "take-off",
 				"objectName": "Mask"
 			},
 			{
-				"id": 73,
+				"id": 69,
 				"type": "polution-decals",
 				"visibleDecals": []
 			},
 			{
-				"id": 74,
+				"id": 70,
 				"type": "info-sm",
 				"title": "Info",
 				"content": "Correct\nRemove N95 mask, making sure to only touch straps of mask, and drop in garbage."
 			},
 			{
-				"id": 75,
+				"id": 71,
 				"type": "quizz",
 				"title": "Healthcare provider",
 				"btnText1": "Perform hand hygiene",
@@ -6669,14 +6641,14 @@
 				"correctAnswer": "quizz-btn-1"
 			},
 			{
-				"id": 76,
+				"id": 72,
 				"type": "info-md-text-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
 			},
 			{
-				"id": 77,
+				"id": 73,
 				"type": "sim-end",
 				"title": "info",
 				"content": "Congratulations, you have completed the VR PPE Demo. Click OK to restart."

@@ -3,7 +3,7 @@ import { objectsParams } from './sceneObjects.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { loadedObjects } from './preloader.js'
 
-function addInteractiveObject(scene, camera, fileName, position, glowPosition, scale, glowScale, objName, 
+function addInteractiveObject(scene, camera, fileName, position, scale, objName, 
 	collisionGeometry, collisionPosition, collisionSize
 	)
 {
@@ -33,66 +33,6 @@ function addInteractiveObject(scene, camera, fileName, position, glowPosition, s
 	Obj.name = objName;
 
 	scene.add(Obj);
-
-	//glow obj
-	var glowMaterial = new THREE.ShaderMaterial( 
-		{
-			uniforms: 
-			{ 
-				"base":   { type: "f", value: 0.0 },
-				"p":   { type: "f", value: 0.0 },
-				glowColor: { type: "c", value: new THREE.Color(0x0000FF) },
-				viewVector: { type: "v3", value: camera.position }
-			},
-			vertexShader:   `uniform vec3 viewVector;
-							uniform float base;
-							uniform float p;
-							varying float intensity;
-							void main() 
-							{
-								vec3 vNormal = normalize( normalMatrix * normal );
-								vec3 vNormel = normalize( normalMatrix * viewVector );
-								intensity = pow( base - dot(vNormal, vNormel), p );
-								
-								gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-							}`,
-			fragmentShader: `uniform vec3 glowColor;
-							varying float intensity;
-							void main() 
-							{
-								vec3 glow = glowColor * intensity;
-								gl_FragColor = vec4( glow, 1.0 );
-							}`,
-			side: THREE.BackSide,
-			blending: THREE.AdditiveBlending,
-			transparent: true
-	});
-
-	let ObjGlow = new THREE.Object3D();
-	ObjGlow.visible = false;
-	fbxLoader = new FBXLoader();
-	fbxLoader.setPath(objectsParams.modelPath);
-	fbxLoader.load(
-		fileName + '.fbx',
-		(object) => {
-			object.traverse( function ( child ) {
-				if ( child.isMesh ) {
-					child.material = glowMaterial
-				}
-			})
-			ObjGlow.add(object);
-		},
-		(xhr) => {
-			if ( (xhr.loaded / xhr.total) === 1)
-				loadedObjects[objName + 'Glow'] = true;
-		}
-	)
-	
-	ObjGlow.position.copy(glowPosition);
-	ObjGlow.scale.copy(glowScale);
-	ObjGlow.name = objName + 'Glow';
-
-	scene.add(ObjGlow);
 
 	//collider
 	let geometry;

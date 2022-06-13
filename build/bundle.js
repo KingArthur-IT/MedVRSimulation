@@ -52208,11 +52208,6 @@
 		Mask: false,
 		Glasses: false,
 		Gloves: false,
-		BodyGlow: false,
-		RobeGlow: false,
-		MaskGlow: false,
-		GlassesGlow: false,
-		GlovesGlow: false,
 	    BodyRobe: false,
 	    BodyMask: false,
 	    BodyGlasses: false,
@@ -52285,10 +52280,8 @@
 			fileName:           'body/physician',
 			objName:            'Body',
 			position:           new Vector3(-2.4, -1.5, -1.3),
-			glowPosition:       new Vector3(-2.65, -1.7, -4.29),
 			rotation:           new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 			scale: 	            new Vector3(0.065, 0.065, 0.065),
-			glowScale: 	        new Vector3(0.07, 0.07, 0.01),
 			collisionGeometry: 'Box',
 			collisionPosition:  new Vector3(0.72, 0.34, -5.0),
 			collisionSize:      new Vector3(1.1, 3.6, 1.0),
@@ -52299,12 +52292,8 @@
 				fileName:           'gown/table_gown',
 				objName:            'Robe',
 				position: 			new Vector3(-4.0, -1.11, -0.1),
-				glowPosition: 		new Vector3(-5.21, -1.64, -4.86),
-				droppedPosition: 	new Vector3(0.65, 1.73, -0.8),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				droppedRotation:    new Vector3(-1.35, 0, 1.74),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Box',
 				collisionPosition: 	new Vector3(-2.36, 0.31, -3.0),
 				collisionSize: 		new Vector3(0.6, 0.2, 0.5),
@@ -52315,10 +52304,8 @@
 				fileName:           'mask/mask',
 				objName:            'Mask',
 				position: 			new Vector3(-5.52, -3.45, 0.95),
-				glowPosition: 		new Vector3(-1.63, -3.35, -0.81),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  		new Vector3(0.08, 0.07, 0.08),
 				collisionGeometry: 'Sphree',
 				collisionPosition: 	new Vector3(-2.4, -0.19, -2.6),
 				collisionSize: 		new Vector3(0.25, 16, 16),
@@ -52329,10 +52316,8 @@
 				fileName:           'eye-protection/faceshield',
 				objName:            'Glasses',
 				position: 			new Vector3(-4.65, -3.25, 1.07),
-				glowPosition: 		new Vector3(-0.58, -3.38, -4.41),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  		new Vector3(0.07, 0.067, 0.01),
 				collisionGeometry: 'Sphree',
 				collisionPosition: 	new Vector3(-1.52, 0.12, -2.4),
 				collisionSize: 		new Vector3(0.3, 16, 16),
@@ -52343,12 +52328,8 @@
 				fileName:           'gloves/box',
 				objName:            'Gloves',
 				position: 			new Vector3(-2.33, -1.0, -0.07),
-				glowPosition: 		new Vector3(-3.59, -0.4, -5.16),
-				droppedPosition: 	new Vector3(-4.3, 1.1, -0.43),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
-				droppedRotation: 	new Vector3(-1.1, 0, 0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
-				glowScale: 	  		new Vector3(0.065, 0.07, 0.01),
 				collisionGeometry: 'Box',
 				collisionPosition: 	new Vector3(-1.43, 0.4, -2.9),
 				collisionSize: 		new Vector3(0.65, 0.3, 0.2),
@@ -59528,7 +59509,7 @@
 
 	}
 
-	function addInteractiveObject(scene, camera, fileName, position, glowPosition, scale, glowScale, objName, 
+	function addInteractiveObject(scene, camera, fileName, position, scale, objName, 
 		collisionGeometry, collisionPosition, collisionSize
 		)
 	{
@@ -59558,66 +59539,6 @@
 		Obj.name = objName;
 
 		scene.add(Obj);
-
-		//glow obj
-		var glowMaterial = new ShaderMaterial( 
-			{
-				uniforms: 
-				{ 
-					"base":   { type: "f", value: 0.0 },
-					"p":   { type: "f", value: 0.0 },
-					glowColor: { type: "c", value: new Color(0x0000FF) },
-					viewVector: { type: "v3", value: camera.position }
-				},
-				vertexShader:   `uniform vec3 viewVector;
-							uniform float base;
-							uniform float p;
-							varying float intensity;
-							void main() 
-							{
-								vec3 vNormal = normalize( normalMatrix * normal );
-								vec3 vNormel = normalize( normalMatrix * viewVector );
-								intensity = pow( base - dot(vNormal, vNormel), p );
-								
-								gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-							}`,
-				fragmentShader: `uniform vec3 glowColor;
-							varying float intensity;
-							void main() 
-							{
-								vec3 glow = glowColor * intensity;
-								gl_FragColor = vec4( glow, 1.0 );
-							}`,
-				side: BackSide,
-				blending: AdditiveBlending,
-				transparent: true
-		});
-
-		let ObjGlow = new Object3D();
-		ObjGlow.visible = false;
-		fbxLoader = new FBXLoader();
-		fbxLoader.setPath(objectsParams.modelPath);
-		fbxLoader.load(
-			fileName + '.fbx',
-			(object) => {
-				object.traverse( function ( child ) {
-					if ( child.isMesh ) {
-						child.material = glowMaterial;
-					}
-				});
-				ObjGlow.add(object);
-			},
-			(xhr) => {
-				if ( (xhr.loaded / xhr.total) === 1)
-					loadedObjects[objName + 'Glow'] = true;
-			}
-		);
-		
-		ObjGlow.position.copy(glowPosition);
-		ObjGlow.scale.copy(glowScale);
-		ObjGlow.name = objName + 'Glow';
-
-		scene.add(ObjGlow);
 
 		//collider
 		let geometry;
@@ -60548,9 +60469,7 @@
 			addInteractiveObject(	scene, camera,
 						objectsParams.body.fileName, 
 						objectsParams.body.position,
-						objectsParams.body.glowPosition,
 						objectsParams.body.scale,
-						objectsParams.body.glowScale,
 						objectsParams.body.objName,
 						objectsParams.body.collisionGeometry,
 						objectsParams.body.collisionPosition,
@@ -60562,9 +60481,7 @@
 				addInteractiveObject(	scene, camera,
 							element.fileName, 
 							element.position,
-							element.glowPosition,
 							element.scale,
-							element.glowScale,
 							element.objName,
 							element.collisionGeometry,
 							element.collisionPosition,
@@ -60734,8 +60651,6 @@
 						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider'){
 							console.log(putOnObjects.correctObjectName);
 							scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
-							//scene.getObjectByName(putOnObjects.correctObjectName).position.copy(objectsParams.body.position);
-							//scene.getObjectByName(putOnObjects.correctObjectName + "Glow").visible = false;
 							simulationStep++;
 							showCurrentSimulationStep();
 						} else
@@ -60892,14 +60807,6 @@
 		renderer.render( scene, camera );
 	}
 
-	function doGlowObjectsInvisible(){
-		scene.getObjectByName("BodyGlow").visible = false;
-		objectsParams.interactiveObjectList.forEach(element => {
-			let name = element.objName + 'Glow';
-			scene.getObjectByName(name).visible = false;
-		});
-	}
-
 	function removeDecalsFromScene(){
 		objectsParams.decals.forEach(item => {
 			scene.remove(scene.getObjectByName(item.decalName));
@@ -60920,7 +60827,6 @@
 		scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
 		scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
-		doGlowObjectsInvisible(); 
 		changeInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
 
@@ -60992,9 +60898,9 @@
 			infoObjectsSmall.contentTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].content});
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'quizz'){
-			PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
-				scene.getObjectByName(element + 'Glow').visible = true;
-			}); 
+			// PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
+			// 	scene.getObjectByName(element + 'Glow').visible = true;
+			// }); 
 			//title
 			QuizzObjects.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
 			//btns
@@ -61008,9 +60914,9 @@
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
 			changeInfoPopupsVisibility(true);
-			PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
-				//scene.getObjectByName(element + "Glow").visible = true;
-			});
+			// PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
+			// 	//scene.getObjectByName(element + "Glow").visible = true;
+			// })
 			putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
 			putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 		}
@@ -61026,17 +60932,7 @@
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'take-off'){
 			const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-			// const objProperties = objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-			// scene.getObjectByName(objName).position.copy(objProperties.droppedPosition);
-			// scene.getObjectByName(objName).rotation.setFromVector3(objProperties.droppedRotation);
 			scene.getObjectByName('Body' + objName).visible = false;
-			simulationStep++;
-			showCurrentSimulationStep();
-		}
-		if (PPE_DATA.vrSim.sim[simulationStep].type === 'throw-away'){
-			// const objName = PPE_DATA.vrSim.sim[simulationStep].objectName;
-			// objectsParams.interactiveObjectList.filter(i => i.objName == objName)[0];
-			// scene.getObjectByName(objName).visible = false;
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
@@ -61080,12 +60976,6 @@
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
-		/*
-		scene.getObjectByName(element).children[0].children.forEach(element => {
-					if (element.material && element.material.emissive)
-						element.material.emissive.b = 0.1;
-				});
-		*/
 	}
 
 	const app = new App();
