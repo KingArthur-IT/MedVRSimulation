@@ -12,12 +12,13 @@ const objectsParams = {
 	body: {
 		fileName:           'body/physician',
 		objName:            'Body',
-		position:           new Vector3(-2.4, -1.5, -1.3),
+		position:           new Vector3(-2.4, -1.5, -0.8),
 		rotation:           new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 		scale: 	            new Vector3(0.065, 0.065, 0.065),
 		collisionGeometry: 'Box',
 		collisionPosition:  new Vector3(0.72, 0.34, -5.0),
 		collisionSize:      new Vector3(1.1, 3.6, 1.0),
+		popupPosition:           new Vector3(0.68, 2.3, -4.0),
 	},	
 	interactiveObjectList: [
 		{

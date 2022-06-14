@@ -135,7 +135,7 @@ function createSuccessPopup(scene){
 	contentBlock.add(btnBlock);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.6, -4.5);
+	popupGroup.position.set(0.0, 2.6, -3.5);
 	popupGroup.visible = false;
 
 	scene.add(popupGroup); 
@@ -288,7 +288,7 @@ function createIntroPopup(scene){
 	btnsContainer.add(prevBtnBlock, nextBtnBlock);
 	container.add(btnsContainer);
 
-	popupGroup.position.set(0.0, 2.16, -4.5);
+	popupGroup.position.set(0.0, 2.16, -3.5);
 	popupGroup.add(container);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
@@ -398,7 +398,7 @@ function createInfoSmall(scene){
 	container.add(btnContainer);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.6, -4.5);
+	popupGroup.position.set(0.0, 2.6, -3.5);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
@@ -508,7 +508,7 @@ function createInfoMediumText(scene){
 	container.add(btnContainer);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.0, -4.5);
+	popupGroup.position.set(0.0, 2.0, -3.5);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
@@ -627,7 +627,7 @@ function createInfoMediumTextImg(scene){
 	container.add(btnContainer);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.0, -4.5);
+	popupGroup.position.set(0.0, 2.0, -3.5);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
@@ -686,7 +686,7 @@ function createCorrectIncorrectPopup(scene){
 	contentBlock.add(correctIncorrectObjects.contentTextObj);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.6, -4.5);
+	popupGroup.position.set(0.0, 2.6, -3.5);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
@@ -780,12 +780,12 @@ function createQuizzWindow(scene){
 	})
 
 	popupGroup.add(container);
-	popupGroup.position.set(0.0, 2.16, -4.5);
+	popupGroup.position.set(0.0, 2.16, -3.5);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
 }
 
-function createInfoPopup(scene, name, position){
+function createInfoPopup(scene, name, position, tooltipText){
 	const params = {
 		fontFamily: "./assets/Roboto-msdf.json",
 	  	fontTexture: "./assets/Roboto-msdf.png",
@@ -817,7 +817,7 @@ function createInfoPopup(scene, name, position){
 	});  
 	container.add(contentBlock);
 	const text = new ThreeMeshUI.Text({
-		content: "Put on",
+		content: tooltipText,
 		fontColor: new THREE.Color(0xffffff),
 	  	fontSize: params.textFontSize,
 	});
@@ -868,7 +868,7 @@ function createConfidenceWindow(scene){
 		backgroundColor: params.darkColor,
 	});  
 	const contentBlock = new ThreeMeshUI.Block({
-		height: 0.3,
+		height: 0.4,
 		width: params.width,
 		alignContent: "left",
 		justifyContent: "start",
@@ -996,7 +996,7 @@ function createConfidenceWindow(scene){
 	container.add(btnContainer);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.0, -4.5);
+	popupGroup.position.set(0.0, 2.0, -3.5);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);

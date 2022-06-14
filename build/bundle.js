@@ -52279,12 +52279,13 @@
 		body: {
 			fileName:           'body/physician',
 			objName:            'Body',
-			position:           new Vector3(-2.4, -1.5, -1.3),
+			position:           new Vector3(-2.4, -1.5, -0.8),
 			rotation:           new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 			scale: 	            new Vector3(0.065, 0.065, 0.065),
 			collisionGeometry: 'Box',
 			collisionPosition:  new Vector3(0.72, 0.34, -5.0),
 			collisionSize:      new Vector3(1.1, 3.6, 1.0),
+			popupPosition:           new Vector3(0.68, 2.3, -4.0),
 		},	
 		interactiveObjectList: [
 			{
@@ -59712,7 +59713,7 @@
 		contentBlock.add(btnBlock);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.6, -4.5);
+		popupGroup.position.set(0.0, 2.6, -3.5);
 		popupGroup.visible = false;
 
 		scene.add(popupGroup); 
@@ -59865,7 +59866,7 @@
 		btnsContainer.add(prevBtnBlock, nextBtnBlock);
 		container.add(btnsContainer);
 
-		popupGroup.position.set(0.0, 2.16, -4.5);
+		popupGroup.position.set(0.0, 2.16, -3.5);
 		popupGroup.add(container);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
@@ -59975,7 +59976,7 @@
 		container.add(btnContainer);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.6, -4.5);
+		popupGroup.position.set(0.0, 2.6, -3.5);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60085,7 +60086,7 @@
 		container.add(btnContainer);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.0, -4.5);
+		popupGroup.position.set(0.0, 2.0, -3.5);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60204,7 +60205,7 @@
 		container.add(btnContainer);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.0, -4.5);
+		popupGroup.position.set(0.0, 2.0, -3.5);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60263,7 +60264,7 @@
 		contentBlock.add(correctIncorrectObjects.contentTextObj);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.6, -4.5);
+		popupGroup.position.set(0.0, 2.6, -3.5);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60357,12 +60358,12 @@
 		});
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.16, -4.5);
+		popupGroup.position.set(0.0, 2.16, -3.5);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
 	}
 
-	function createInfoPopup(scene, name, position){
+	function createInfoPopup(scene, name, position, tooltipText){
 		const params = {
 			fontFamily: "./assets/Roboto-msdf.json",
 		  	fontTexture: "./assets/Roboto-msdf.png",
@@ -60394,7 +60395,7 @@
 		});  
 		container.add(contentBlock);
 		const text = new ThreeMeshUI.Text({
-			content: "Put on",
+			content: tooltipText,
 			fontColor: new Color(0xffffff),
 		  	fontSize: params.textFontSize,
 		});
@@ -60445,7 +60446,7 @@
 			backgroundColor: params.darkColor,
 		});  
 		const contentBlock = new ThreeMeshUI.Block({
-			height: 0.3,
+			height: 0.4,
 			width: params.width,
 			alignContent: "left",
 			justifyContent: "start",
@@ -60573,7 +60574,7 @@
 		container.add(btnContainer);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.0, -4.5);
+		popupGroup.position.set(0.0, 2.0, -3.5);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60685,8 +60686,9 @@
 			createConfidenceWindow(scene);
 
 			objectsParams.interactiveObjectList.forEach((item) => {
-				createInfoPopup(scene, item.objName, item.popupPosition);
+				createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
 			});
+			createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, 'Interact');
 
 			window.addEventListener( 'resize', onWindowResize );
 
@@ -60836,26 +60838,25 @@
 							}
 					}
 					if (stepSimType === 'put-on'){
-						//selectedPutOnObjects
 						const isInteractiveObjClicked = putOnObjects.interactiveObject.some((item) => {
 							return intersect.object.name === item  + 'Collider'
 						});
 						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider' || isInteractiveObjClicked){
-							stepSimType = 'confidecePutOn';
+							stepSimType = 'confidencePutOn';
 							selectedPutOnObjects = intersect.object.name;
 							scene.getObjectByName('ConfidenceWindow').visible = true;
 						}
 					}
-					if (stepSimType === 'confidecePutOn'){
+					if (stepSimType === 'confidencePutOn'){
 						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 								scene.getObjectByName('ConfidenceWindow').visible = false;
 								if (selectedPutOnObjects === putOnObjects.correctObjectName + 'Collider'){
-									//console.log(putOnObjects.correctObjectName)
 									scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
+									if (putOnObjects.correctObjectName !== 'Gloves')
+										scene.getObjectByName(putOnObjects.correctObjectName).visible = false;
 									simulationStep++;
 									showCurrentSimulationStep();
-									selectedPutOnObjects = '';
 								} else
 									putOnObjects.interactiveObject.forEach((element) => {
 										if (selectedPutOnObjects === element  + 'Collider'){
@@ -60864,9 +60865,10 @@
 											setTimeout(() => {
 												scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 											}, 2000);
-											selectedPutOnObjects = '';
+											stepSimType = 'put-on';
 										}
 									});
+								selectedPutOnObjects = '';
 							}
 					}
 					if (stepSimType === 'sim-end'){
@@ -60875,7 +60877,8 @@
 								simulationStep = 0;
 								showCurrentSimulationStep();
 								objectsParams.interactiveObjectList.forEach((obj) => {
-									scene.getObjectByName(obj.objName).position.copy(obj.position);
+									scene.getObjectByName(obj.objName).visible = true;
+									scene.getObjectByName('Body' + obj.objName).visible = false;
 								});
 							}
 						
@@ -61022,10 +61025,11 @@
 		});
 	}
 
-	function changeInfoPopupsVisibility(val){
+	function changeAllInfoPopupsVisibility(val){
 		objectsParams.interactiveObjectList.forEach((item) => {
 			scene.getObjectByName('Popup' + item.objName).visible = val;
 		});
+		scene.getObjectByName('PopupBody').visible = val;
 	}
 
 	function showCurrentSimulationStep(){
@@ -61036,7 +61040,7 @@
 		scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
 		scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
-		changeInfoPopupsVisibility(false);
+		changeAllInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
 
 		stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
@@ -61107,9 +61111,9 @@
 			infoObjectsSmall.contentTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].content});
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'quizz'){
-			// PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
-			// 	scene.getObjectByName(element + 'Glow').visible = true;
-			// }); 
+			PPE_DATA.vrSim.sim[simulationStep].highlightedObjectNames.forEach(element => {
+				scene.getObjectByName('Popup' + element).visible = true;
+			}); 
 			//title
 			QuizzObjects.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
 			//btns
@@ -61122,10 +61126,9 @@
 			QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
-			changeInfoPopupsVisibility(true);
-			// PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
-			// 	//scene.getObjectByName(element + "Glow").visible = true;
-			// })
+			PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
+				scene.getObjectByName('Popup' + element).visible = true;
+			});
 			putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
 			putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 		}
