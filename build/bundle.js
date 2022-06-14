@@ -60588,6 +60588,7 @@
 	let roomNum = 1;
 
 	let selectedQuizzBtns = [];
+	let selectedPutOnObjects = '';
 
 	let putOnObjects = {
 		correctObjectName : '',
@@ -60808,10 +60809,10 @@
 								scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
 								quizzSelectedBtnName = btnName;
 								scene.getObjectByName('ConfidenceWindow').visible = true;
-								stepSimType = 'confidence';
+								stepSimType = 'confidenceQuizz';
 							}
 					}
-					if (stepSimType === 'confidence'){
+					if (stepSimType === 'confidenceQuizz'){
 						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 								//const btnName = intersect.object.parent.children[1].name;
@@ -60835,21 +60836,38 @@
 							}
 					}
 					if (stepSimType === 'put-on'){
-						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider'){
-							console.log(putOnObjects.correctObjectName);
-							scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
-							simulationStep++;
-							showCurrentSimulationStep();
-						} else
-							putOnObjects.interactiveObject.forEach((element) => {
-								if (intersect.object.name === element  + 'Collider'){
-									correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
-									scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
-									setTimeout(() => {
-										scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
-									}, 2000);
-								}
-							});
+						//selectedPutOnObjects
+						const isInteractiveObjClicked = putOnObjects.interactiveObject.some((item) => {
+							return intersect.object.name === item  + 'Collider'
+						});
+						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider' || isInteractiveObjClicked){
+							stepSimType = 'confidecePutOn';
+							selectedPutOnObjects = intersect.object.name;
+							scene.getObjectByName('ConfidenceWindow').visible = true;
+						}
+					}
+					if (stepSimType === 'confidecePutOn'){
+						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
+							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
+								scene.getObjectByName('ConfidenceWindow').visible = false;
+								if (selectedPutOnObjects === putOnObjects.correctObjectName + 'Collider'){
+									//console.log(putOnObjects.correctObjectName)
+									scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
+									simulationStep++;
+									showCurrentSimulationStep();
+									selectedPutOnObjects = '';
+								} else
+									putOnObjects.interactiveObject.forEach((element) => {
+										if (selectedPutOnObjects === element  + 'Collider'){
+											correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
+											scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
+											setTimeout(() => {
+												scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
+											}, 2000);
+											selectedPutOnObjects = '';
+										}
+									});
+							}
 					}
 					if (stepSimType === 'sim-end'){
 						if (intersect.object.name == "MeshUI-Frame")
