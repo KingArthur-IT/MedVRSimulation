@@ -49,9 +49,9 @@ function addInteractiveObject(scene, camera, fileName, position, scale, objName,
 	return Obj;
 }
 
-function addObjectToScene(scene, fileName, objectName, position, scale, rotation){
+function addObjectToScene(scene, fileName, objectName, position, scale, rotation, isVisible = false){
     let Obj = new THREE.Object3D();
-    Obj.visible = false;
+    Obj.visible = isVisible;
     let fbxLoader = new FBXLoader();
     fbxLoader.setPath(objectsParams.modelPath);
     fbxLoader.load(

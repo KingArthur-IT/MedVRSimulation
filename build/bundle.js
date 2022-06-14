@@ -52214,7 +52214,10 @@
 	    BodyGloves: false,
 	    Bed: false,
 	    Patient: false,
-	    WallEquipment: false
+	    WallEquipment: false,
+	    Table: false,
+	    EmptyTrash: false,
+	    FullTrash: false
 	};
 
 	let isSceneLoaded = false;
@@ -52270,7 +52273,7 @@
 	const objectsParams = {
 		modelPath: './assets/models/',
 		room: {
-			fileName:           'rooms/Room.fbx',
+			fileName:           'rooms/ER_room_01.fbx',
 			objName:            'Room',
 			position:           new Vector3(-3.2, -1.5, 0.33),
 			rotation:           new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
@@ -52336,6 +52339,18 @@
 				collisionSize: 		new Vector3(0.65, 0.3, 0.2),
 				popupPosition: 		new Vector3(-1.5, 0.6, -3.15)
 			},
+			{
+				id: 8,
+				fileName:           'rooms/glovebox_counter',
+				objName:            'GlovesPatientRoom',
+				position: 			new Vector3(-3.2, -1.5, -0.07),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+				collisionGeometry: 'Box',
+				collisionPosition: 	new Vector3(-5.89, 0.25, -0.47),
+				collisionSize: 		new Vector3(0.35, 0.3, 0.6),
+				popupPosition: 		new Vector3(-6.0, 0.6, -0.47)
+			},
 		],
 		clothesObjectList: [
 			{
@@ -52371,12 +52386,30 @@
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
 		],
+		firstRoomObjectList:[
+			{
+				id: 1,
+				fileName: 			'rooms/ER_table',
+				objName:			'Table',
+				position: 			new Vector3(-3.1, -1.5, 0.35),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+			},
+			{
+				id: 2,
+				fileName: 			'rooms/ER_trash_room1',
+				objName:			'EmptyTrash',
+				position: 			new Vector3(-2.7, -1.5, 0.28),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+			},
+		],
 		secondRoomObjectList:[
 			{
 				id: 1,
 				fileName:           'patientRoom/bed',
 				objName:            'Bed',
-				position: 			new Vector3(0.5, -1.5, -1.3),
+				position: 			new Vector3(-3.0, -1.5, -1.48),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
@@ -52384,15 +52417,23 @@
 				id: 2,
 				fileName:           'patientRoom/patient',
 				objName:            'Patient',
-				position: 			new Vector3(0.5, -1.5, -1.3),
+				position: 			new Vector3(-3.0, -1.5, -1.48),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
 			{
 				id: 3,
-				fileName:           'patientRoom/powerboard_wall_equipment',
+				fileName:           'patientRoom/ER_wall_equipment',
 				objName:            'WallEquipment',
-				position: 			new Vector3(-1.72, -1.45, -8.0),
+				position: 			new Vector3(-3.0, -1.45, 0.3),
+				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
+				scale: 	  			new Vector3(0.065, 0.065, 0.065),
+			},
+			{
+				id: 4,
+				fileName:           'patientRoom/ER_trash_room2',
+				objName:            'FullTrash',
+				position: 			new Vector3(-3.3, -1.45, 0.33),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
 			},
@@ -59556,9 +59597,9 @@
 		return Obj;
 	}
 
-	function addObjectToScene(scene, fileName, objectName, position, scale, rotation){
+	function addObjectToScene(scene, fileName, objectName, position, scale, rotation, isVisible = false){
 	    let Obj = new Object3D();
-	    Obj.visible = false;
+	    Obj.visible = isVisible;
 	    let fbxLoader = new FBXLoader();
 	    fbxLoader.setPath(objectsParams.modelPath);
 	    fbxLoader.load(
@@ -60669,6 +60710,11 @@
 				const element = objectsParams.clothesObjectList[i];
 				addObjectToScene(scene, element.fileName + '.fbx', element.objName, objectsParams.body.position, element.scale, element.rotation);
 			}
+			//1st Room
+			for (var i in objectsParams.firstRoomObjectList){
+				const element = objectsParams.firstRoomObjectList[i];
+				addObjectToScene(scene, element.fileName + '.fbx', element.objName, element.position, element.scale, element.rotation);
+			}
 			//patient Room
 			for (var i in objectsParams.secondRoomObjectList){
 				const element = objectsParams.secondRoomObjectList[i];
@@ -60684,10 +60730,11 @@
 			createInfoMediumText(scene);
 			createInfoMediumTextImg(scene);
 			createConfidenceWindow(scene);
-
+			//tooltips
 			objectsParams.interactiveObjectList.forEach((item) => {
 				createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
 			});
+			scene.getObjectByName('PopupGlovesPatientRoom').rotation.y = Math.PI * 0.5;
 			createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, 'Interact');
 
 			window.addEventListener( 'resize', onWindowResize );
@@ -60852,8 +60899,10 @@
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 								scene.getObjectByName('ConfidenceWindow').visible = false;
 								if (selectedPutOnObjects === putOnObjects.correctObjectName + 'Collider'){
-									scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
-									if (putOnObjects.correctObjectName !== 'Gloves')
+									if ( putOnObjects.correctObjectName !== 'GlovesPatientRoom')
+										scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
+									else scene.getObjectByName('BodyGloves').visible = true;
+									if (putOnObjects.correctObjectName !== 'Gloves' && putOnObjects.correctObjectName !== 'GlovesPatientRoom')
 										scene.getObjectByName(putOnObjects.correctObjectName).visible = false;
 									simulationStep++;
 									showCurrentSimulationStep();
@@ -61152,23 +61201,48 @@
 			scene.getObjectByName(objectsParams.room.objName).visible = true;
 			scene.getObjectByName(objectsParams.body.objName).visible = true;
 			objectsParams.interactiveObjectList.forEach((e) => {
-				scene.getObjectByName(e.objName).visible = true;
-				scene.getObjectByName(e.objName).position.copy(e.position);
-				scene.getObjectByName(e.objName).rotation.setFromVector3(e.rotation);
+				if (e.objName !== 'GlovesPatientRoom')
+					scene.getObjectByName(e.objName).visible = true;
+				// scene.getObjectByName(e.objName).position.copy(e.position);
+				// scene.getObjectByName(e.objName).rotation.setFromVector3(e.rotation);
+			});
+			objectsParams.firstRoomObjectList.forEach((el) => {
+				scene.getObjectByName(el.objName).visible = true;
 			});
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'change-room'){
 			if (roomNum === 1){
-				scene.getObjectByName('Bed').visible = true;
-				scene.getObjectByName('Patient').visible = true;
-				scene.getObjectByName('WallEquipment').visible = true;
+				//1st Room
+				for (var i in objectsParams.firstRoomObjectList){
+					const element = objectsParams.firstRoomObjectList[i];
+					scene.getObjectByName(element.objName).visible = false;
+				}
+				//patient Room
+				for (var i in objectsParams.secondRoomObjectList){
+					const element = objectsParams.secondRoomObjectList[i];
+					scene.getObjectByName(element.objName).visible = true;
+				}
+				//interactive objects
+				objectsParams.interactiveObjectList.forEach((i) => {
+					scene.getObjectByName(i.objName).visible = false;
+				});
+				scene.getObjectByName('GlovesPatientRoom').visible = true;
+
 				roomNum = 2;
 			} else {
-				scene.getObjectByName('Bed').visible = false;
-				scene.getObjectByName('Patient').visible = false;
-				scene.getObjectByName('WallEquipment').visible = false;
+				//1st Room
+				for (var i in objectsParams.firstRoomObjectList){
+					const element = objectsParams.firstRoomObjectList[i];
+					scene.getObjectByName(element.objName).visible = true;
+				}
+				//patient Room
+				for (var i in objectsParams.secondRoomObjectList){
+					const element = objectsParams.secondRoomObjectList[i];
+					scene.getObjectByName(element.objName).visible = false;
+				}
+				scene.getObjectByName('GlovesPatientRoom').visible = false;
 				roomNum = 1;
 			}
 			

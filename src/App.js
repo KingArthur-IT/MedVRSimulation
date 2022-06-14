@@ -102,6 +102,11 @@ class App {
 			const element = objectsParams.clothesObjectList[i];
 			addObjectToScene(scene, element.fileName + '.fbx', element.objName, objectsParams.body.position, element.scale, element.rotation);
 		}
+		//1st Room
+		for (var i in objectsParams.firstRoomObjectList){
+			const element = objectsParams.firstRoomObjectList[i];
+			addObjectToScene(scene, element.fileName + '.fbx', element.objName, element.position, element.scale, element.rotation)
+		}
 		//patient Room
 		for (var i in objectsParams.secondRoomObjectList){
 			const element = objectsParams.secondRoomObjectList[i];
@@ -117,10 +122,11 @@ class App {
 		createInfoMediumText(scene);
 		createInfoMediumTextImg(scene);
 		createConfidenceWindow(scene);
-
+		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
 		})
+		scene.getObjectByName('PopupGlovesPatientRoom').rotation.y = Math.PI * 0.5;
 		createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, 'Interact');
 
 		window.addEventListener( 'resize', onWindowResize );
@@ -285,8 +291,10 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 							scene.getObjectByName('ConfidenceWindow').visible = false;
 							if (selectedPutOnObjects === putOnObjects.correctObjectName + 'Collider'){
-								scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
-								if (putOnObjects.correctObjectName !== 'Gloves')
+								if ( putOnObjects.correctObjectName !== 'GlovesPatientRoom')
+									scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
+								else scene.getObjectByName('BodyGloves').visible = true;
+								if (putOnObjects.correctObjectName !== 'Gloves' && putOnObjects.correctObjectName !== 'GlovesPatientRoom')
 									scene.getObjectByName(putOnObjects.correctObjectName).visible = false;
 								simulationStep++;
 								showCurrentSimulationStep();
@@ -630,23 +638,48 @@ function showCurrentSimulationStep(){
 		scene.getObjectByName(objectsParams.room.objName).visible = true;
 		scene.getObjectByName(objectsParams.body.objName).visible = true;
 		objectsParams.interactiveObjectList.forEach((e) => {
-			scene.getObjectByName(e.objName).visible = true;
-			scene.getObjectByName(e.objName).position.copy(e.position);
-			scene.getObjectByName(e.objName).rotation.setFromVector3(e.rotation);
+			if (e.objName !== 'GlovesPatientRoom')
+				scene.getObjectByName(e.objName).visible = true;
+			// scene.getObjectByName(e.objName).position.copy(e.position);
+			// scene.getObjectByName(e.objName).rotation.setFromVector3(e.rotation);
 		});
+		objectsParams.firstRoomObjectList.forEach((el) => {
+			scene.getObjectByName(el.objName).visible = true;
+		})
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'change-room'){
 		if (roomNum === 1){
-			scene.getObjectByName('Bed').visible = true;
-			scene.getObjectByName('Patient').visible = true;
-			scene.getObjectByName('WallEquipment').visible = true;
+			//1st Room
+			for (var i in objectsParams.firstRoomObjectList){
+				const element = objectsParams.firstRoomObjectList[i];
+				scene.getObjectByName(element.objName).visible = false;
+			}
+			//patient Room
+			for (var i in objectsParams.secondRoomObjectList){
+				const element = objectsParams.secondRoomObjectList[i];
+				scene.getObjectByName(element.objName).visible = true;
+			}
+			//interactive objects
+			objectsParams.interactiveObjectList.forEach((i) => {
+				scene.getObjectByName(i.objName).visible = false;
+			})
+			scene.getObjectByName('GlovesPatientRoom').visible = true;
+
 			roomNum = 2;
 		} else {
-			scene.getObjectByName('Bed').visible = false;
-			scene.getObjectByName('Patient').visible = false;
-			scene.getObjectByName('WallEquipment').visible = false;
+			//1st Room
+			for (var i in objectsParams.firstRoomObjectList){
+				const element = objectsParams.firstRoomObjectList[i];
+				scene.getObjectByName(element.objName).visible = true;
+			}
+			//patient Room
+			for (var i in objectsParams.secondRoomObjectList){
+				const element = objectsParams.secondRoomObjectList[i];
+				scene.getObjectByName(element.objName).visible = false;
+			}
+			scene.getObjectByName('GlovesPatientRoom').visible = false;
 			roomNum = 1;
 		}
 		

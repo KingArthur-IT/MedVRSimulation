@@ -21,7 +21,10 @@ let loadedObjects = {
     BodyGloves: false,
     Bed: false,
     Patient: false,
-    WallEquipment: false
+    WallEquipment: false,
+    Table: false,
+    EmptyTrash: false,
+    FullTrash: false
 }
 
 let isSceneLoaded = false;
