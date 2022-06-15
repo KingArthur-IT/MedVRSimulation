@@ -17,6 +17,12 @@ let QuizzObjects = {
 	"correctHighlightedObjName": null,
 	"correctQuizzBtnName": null
 };
+let TFQuizzObjects = { 
+	"QuizzContainerName": "tf-quizz-window",
+	"questionTextObj": null,
+	"btnTextObj": [null, null],
+	"correctQuizzBtnName": null
+};
 let correctIncorrectObjects = {
 	"containerName": "correctGroup",
 	"titleTextObj": null,
@@ -785,6 +791,117 @@ function createQuizzWindow(scene){
 	scene.add(popupGroup);
 }
 
+function createTrueFalseQuizzWindow(scene){
+	const params = {
+		fontFamily: "./assets/Roboto-msdf.json",
+	  	fontTexture: "./assets/Roboto-msdf.png",
+		darkColor: new THREE.Color(0x3e3e3e),
+		lightColor: new THREE.Color(0xe2e2e2),
+		width: 3.0,
+		titleFontSize: 0.125,
+		textFontSize: 0.1,
+	}
+	const selectedAttributes = {
+		backgroundColor: new THREE.Color( 0x777777 ),
+		fontColor: new THREE.Color( 0x222222 )
+	};
+	const normalAttributes = {
+		backgroundColor: params.darkColor,
+		fontColor: params.lightColor
+	};
+
+	let popupGroup = new THREE.Group();
+	popupGroup.name = TFQuizzObjects.QuizzContainerName;
+
+	const container = new ThreeMeshUI.Block({
+		//height: 3.0,
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});
+	const titleBlock = new ThreeMeshUI.Block({
+		height: 0.28,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.darkColor,
+	});  
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 1.75,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});  
+	container.add(titleBlock, contentBlock);
+	const title = new ThreeMeshUI.Text({
+		content: "Assessment",
+		fontColor: params.lightColor,
+	  	fontSize: params.titleFontSize,
+	});
+	titleBlock.add(title);
+
+	const questionBlock = new ThreeMeshUI.Block({
+		height: 0.4,
+		width: 2.7,
+		alignContent: "left",
+		justifyContent: "center",
+		backgroundColor: params.lightColor,
+		borderRadius: 0.03,
+		margin: 0.05
+	}); 
+	TFQuizzObjects.questionTextObj = new ThreeMeshUI.Text({
+		content: "Question ?",
+		fontColor: params.darkColor,
+	  	fontSize: params.titleFontSize,
+	});
+	questionBlock.add(TFQuizzObjects.questionTextObj)
+
+	contentBlock.add(questionBlock);
+
+	['1','2'].forEach((i) => {
+		const btnBlock = new ThreeMeshUI.Block({
+			height: 0.4,
+			width: 2.7,
+			alignContent: "center",
+			justifyContent: "center",
+			backgroundColor: params.darkColor,
+			borderRadius: 0.03,
+			margin: 0.05
+		}); 
+		TFQuizzObjects.btnTextObj[i-1] = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.lightColor,
+			fontSize: params.textFontSize,
+		}); 
+		TFQuizzObjects.btnTextObj[i-1].name = `tf-quizz-btn-${i}`; 
+		btnBlock.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		btnBlock.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
+		btnBlock.add(TFQuizzObjects.btnTextObj[i-1]);
+		hoverObjectsList.push({
+			name: `tf-quizz-btn-${i}`,
+			state: 'normal'
+		})
+		contentBlock.add(btnBlock);
+	})
+
+	popupGroup.add(container);
+	popupGroup.position.set(0.0, 2.16, -3.5);
+	popupGroup.visible = false;
+	scene.add(popupGroup);
+}
+
 function createInfoPopup(scene, name, position, tooltipText){
 	const params = {
 		fontFamily: "./assets/Roboto-msdf.json",
@@ -1004,8 +1121,9 @@ function createConfidenceWindow(scene){
 
 export {
     hoverObjectsList,
-    IntroObjects, QuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
+    IntroObjects, QuizzObjects, TFQuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
     infoObjectsSmall, successObjects,
     createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
-    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow
+    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow,
+	createTrueFalseQuizzWindow
 }

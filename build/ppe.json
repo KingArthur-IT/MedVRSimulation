@@ -569,6 +569,46 @@
 			},
 			{
 				"id": 73,
+				"type": "tf-quizz",
+				"question": "The following items are important elements of PPE: Gown, Gloves, Eye Protection, N 96 Respiration Mask",
+				"btnText1": "True",
+				"btnText2": "False",
+				"correctAnswer": "tf-quizz-btn-1"
+			},
+			{
+				"id": 74,
+				"type": "tf-quizz",
+				"question": "PPE is to be removed at the appropriate disposal site in the patients care area, prior to exiting the patients care area",
+				"btnText1": "True",
+				"btnText2": "False",
+				"correctAnswer": "tf-quizz-btn-1"
+			},
+			{
+				"id": 75,
+				"type": "tf-quizz",
+				"question": "Proper hand hygiene protocol is just as important to follow when removing or doffing PPE, as when donning PPE",
+				"btnText1": "True",
+				"btnText2": "False",
+				"correctAnswer": "tf-quizz-btn-1"
+			},
+			{
+				"id": 76,
+				"type": "tf-quizz",
+				"question": "A properly donned gown should cover the torso completely and be securely fastened",
+				"btnText1": "True",
+				"btnText2": "False",
+				"correctAnswer": "tf-quizz-btn-1"
+			},
+			{
+				"id": 77,
+				"type": "tf-quizz",
+				"question": "When putting on the N 95 Mask, be sure to crimp the nose piece and perforn a fit and leak test",
+				"btnText1": "True",
+				"btnText2": "False",
+				"correctAnswer": "tf-quizz-btn-1"
+			},
+			{
+				"id": 78,
 				"type": "sim-end",
 				"title": "info",
 				"content": "Congratulations, you have completed the VR PPE Demo. Click OK to restart."

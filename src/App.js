@@ -8,10 +8,11 @@ import { addPreloaderObjects, loaderObjects, setIsSceneLoadedValue, getIsSceneLo
 import { objectsParams } from './modules/sceneObjects.js'
 import { addInteractiveObject, addObjectToScene } from './modules/addObjects.js'
 import { hoverObjectsList,
-	IntroObjects, QuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
-    infoObjectsSmall, successObjects,
-    createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
-    createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow } from './modules/windowsUI.js'
+		IntroObjects, QuizzObjects, TFQuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
+		infoObjectsSmall, successObjects,
+		createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
+		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
+	} from './modules/windowsUI.js'
 
 let camera, scene, renderer;
 
@@ -122,6 +123,7 @@ class App {
 		createInfoMediumText(scene);
 		createInfoMediumTextImg(scene);
 		createConfidenceWindow(scene);
+		createTrueFalseQuizzWindow(scene);
 		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
@@ -208,6 +210,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
         const intersections = this.raycaster.intersectObjects(scene.children, true);
 		//console.log(intersections)
 		const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
+		const isTFQuizzVisible = scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible;
 		const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
 		const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
 		intersections.forEach(intersect => {
@@ -253,6 +256,16 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 							stepSimType = 'confidenceQuizz';
 						}
 				}
+				if (stepSimType === 'tf-quizz'){
+					if (intersect.object.name == "MeshUI-Frame" && isTFQuizzVisible)
+						if (intersect.object.parent.children[1]?.name.includes('tf-quizz-btn')){
+							const btnName = intersect.object.parent.children[1].name;
+							scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible = false;
+							quizzSelectedBtnName = btnName;
+							scene.getObjectByName('ConfidenceWindow').visible = true;
+							stepSimType = 'tf-confidenceQuizz';
+						}
+				}
 				if (stepSimType === 'confidenceQuizz'){
 					if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
@@ -270,6 +283,33 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 								scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
 								quizzSelectedBtnName = '';
 								setTimeout(() => {
+									scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
+									showCurrentSimulationStep();
+								}, 2000);
+							}
+						}
+				}
+				if (stepSimType === 'tf-confidenceQuizz'){
+					if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
+						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
+							scene.getObjectByName('ConfidenceWindow').visible = false;
+							if (quizzSelectedBtnName === TFQuizzObjects.correctQuizzBtnName){
+								correctIncorrectObjects.contentTextObj.set({content: 'Correct.'});
+								scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
+								quizzSelectedBtnName = '';
+								selectedQuizzBtns = [];
+								setTimeout(() => {
+									simulationStep++;
+									scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
+									showCurrentSimulationStep();
+								}, 2000);
+							}
+							else {
+								correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.'});
+								scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
+								quizzSelectedBtnName = '';
+								setTimeout(() => {
+									simulationStep++;
 									scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 									showCurrentSimulationStep();
 								}, 2000);
@@ -523,6 +563,7 @@ function changeAllInfoPopupsVisibility(val){
 function showCurrentSimulationStep(){
 	scene.getObjectByName(IntroObjects.IntroContainerName).visible = false;
 	scene.getObjectByName(QuizzObjects.QuizzContainerName).visible = false;
+	scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible = false;
 	scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 	scene.getObjectByName(successObjects.containerName).visible = false;
 	scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
@@ -612,6 +653,17 @@ function showCurrentSimulationStep(){
 		//correct`s
 		QuizzObjects.correctHighlightedObjName = PPE_DATA.vrSim.sim[simulationStep].correctObjectName;
 		QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'tf-quizz'){
+		//question
+		TFQuizzObjects.questionTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].question});
+		//btns
+		TFQuizzObjects.btnTextObj[0].set({content: PPE_DATA.vrSim.sim[simulationStep].btnText1});
+		TFQuizzObjects.btnTextObj[1].set({content: PPE_DATA.vrSim.sim[simulationStep].btnText2});
+		//correct`s
+		TFQuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
+
+		scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible = true;
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'put-on'){
 		PPE_DATA.vrSim.sim[simulationStep].glowObjectsName.forEach(element => {
