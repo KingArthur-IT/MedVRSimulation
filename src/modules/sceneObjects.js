@@ -10,15 +10,21 @@ const objectsParams = {
 		scale: 	            new Vector3(0.065, 0.065, 0.065),
 	},	
 	body: {
-		fileName:           'body/physician',
-		objName:            'Body',
-		position:           new Vector3(-2.4, -1.5, -0.8),
-		rotation:           new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
-		scale: 	            new Vector3(0.065, 0.065, 0.065),
-		collisionGeometry: 'Box',
-		collisionPosition:  new Vector3(0.72, 0.34, -5.0),
-		collisionSize:      new Vector3(1.1, 3.6, 1.0),
-		popupPosition:           new Vector3(0.68, 2.3, -4.0),
+		fileName:           		'body/physician',
+		objName:            		'Body',
+		position:           		new Vector3(-2.4, -1.5, -0.8),
+		rotation:           		new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
+		scale: 	            		new Vector3(0.065, 0.065, 0.065),
+		collisionGeometry: 			'Box',
+		collisionPosition:  		new Vector3(0.72, 0.34, -5.0),
+		collisionSize:      		new Vector3(1.1, 3.6, 1.0),
+		popupPosition:           	new Vector3(0.68, 2.3, -4.0),
+
+		secondRoomPosition: 		new Vector3(-5.0, -1.5, 3.0),
+		secondRoomRotation: 		new Vector3(0.0, 0.75, 0.0),
+		secondRoomСollisionPosition:new Vector3(-5.13, 0.34, -1.75),		
+		secondRoomPopupPosition: 	new Vector3(-5.15, 2.3, -1.75),
+		secondRoomPopupRotation: 	new Vector3(0.0, 0.75, 0.0)
 	},	
 	interactiveObjectList: [
 		{

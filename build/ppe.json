@@ -304,7 +304,7 @@
 				"id": 39,
 				"type": "quizz",
 				"title": "Healthcare provider",
-				"btnText1": "Remove gown & gloves together",
+				"btnText1": "Remove gown & gloves together and drop them in garbage",
 				"btnText2": "Disinfect front of face shield",
 				"btnText3": "Doff gloves and place in garbage",
 				"btnText4": "Leave the room to remove PPE",

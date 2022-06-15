@@ -319,7 +319,9 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 							showCurrentSimulationStep();
 							objectsParams.interactiveObjectList.forEach((obj) => {
 								scene.getObjectByName(obj.objName).visible = true;
-								scene.getObjectByName('Body' + obj.objName).visible = false;
+							})
+							objectsParams.clothesObjectList.forEach((obj) => {
+								scene.getObjectByName(obj.objName).visible = false;
 							})
 						}
 					
@@ -666,7 +668,17 @@ function showCurrentSimulationStep(){
 				scene.getObjectByName(i.objName).visible = false;
 			})
 			scene.getObjectByName('GlovesPatientRoom').visible = true;
-
+			//change Body position
+			scene.getObjectByName('Body').position.copy(objectsParams.body.secondRoomPosition);
+			scene.getObjectByName('Body').rotation.setFromVector3(objectsParams.body.secondRoomRotation);
+			scene.getObjectByName('BodyCollider').position.copy(objectsParams.body.secondRoomСollisionPosition);
+			scene.getObjectByName('PopupBody').position.copy(objectsParams.body.secondRoomPopupPosition);
+			scene.getObjectByName('PopupBody').rotation.setFromVector3(objectsParams.body.secondRoomPopupRotation);
+			//clothes objects
+			objectsParams.clothesObjectList.forEach((i) => {
+				scene.getObjectByName(i.objName).position.copy(objectsParams.body.secondRoomPosition);
+				scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.secondRoomRotation);
+			})
 			roomNum = 2;
 		} else {
 			//1st Room
@@ -680,6 +692,18 @@ function showCurrentSimulationStep(){
 				scene.getObjectByName(element.objName).visible = false;
 			}
 			scene.getObjectByName('GlovesPatientRoom').visible = false;
+			scene.getObjectByName('Gloves').visible = true;
+			//change Body position
+			scene.getObjectByName('Body').position.copy(objectsParams.body.position);
+			scene.getObjectByName('Body').rotation.setFromVector3(objectsParams.body.rotation);
+			scene.getObjectByName('BodyCollider').position.copy(objectsParams.body.collisionPosition);
+			scene.getObjectByName('PopupBody').position.copy(objectsParams.body.popupPosition);
+			scene.getObjectByName('PopupBody').rotation.setFromVector3(new THREE.Vector3(0.0, 0.0, 0.0));
+			//clothes objects
+			objectsParams.clothesObjectList.forEach((i) => {
+				scene.getObjectByName(i.objName).position.copy(objectsParams.body.position);
+				scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.rotation);
+			})
 			roomNum = 1;
 		}
 		
