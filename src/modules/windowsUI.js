@@ -902,7 +902,7 @@ function createTrueFalseQuizzWindow(scene){
 	scene.add(popupGroup);
 }
 
-function createInfoPopup(scene, name, position, tooltipText){
+function createInfoPopup(scene, name, position, tooltipText, xScale = 1.0){
 	const params = {
 		fontFamily: "./assets/Roboto-msdf.json",
 	  	fontTexture: "./assets/Roboto-msdf.png",
@@ -915,7 +915,7 @@ function createInfoPopup(scene, name, position, tooltipText){
 	popupGroup.name = 'Popup' + name;
 
 	const container = new ThreeMeshUI.Block({
-		width: params.width,
+		width: params.width * xScale,
 		fontFamily: params.fontFamily,
 	  	fontTexture: params.fontTexture,
 		backgroundColor: params.darkColor,
@@ -924,7 +924,7 @@ function createInfoPopup(scene, name, position, tooltipText){
 	});
 	const contentBlock = new ThreeMeshUI.Block({
 		height: 0.2,
-		width: params.width,
+		width: params.width * xScale,
 		alignContent: "center",
 		justifyContent: "start",
 		padding: 0.05,

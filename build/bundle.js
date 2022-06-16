@@ -52282,6 +52282,8 @@
 		body: {
 			fileName:           		'body/physician',
 			objName:            		'Body',
+			tooltipText:				'Click the nurse to interact',
+			tooltopXScale:				2.5,
 			position:           		new Vector3(-2.4, -1.5, -0.8),
 			rotation:           		new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 			scale: 	            		new Vector3(0.065, 0.065, 0.065),
@@ -52301,6 +52303,8 @@
 				id: 4,
 				fileName:           'gown/table_gown',
 				objName:            'Robe',
+				tooltipText:		'Isolation gown',
+				tooltopXScale:		1.5,
 				position: 			new Vector3(-4.0, -1.11, -0.1),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -52313,6 +52317,8 @@
 				id: 5,
 				fileName:           'mask/mask',
 				objName:            'Mask',
+				tooltipText:		'N95 Mask',
+				tooltopXScale:		1.0,
 				position: 			new Vector3(-5.52, -3.45, 0.95),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -52325,6 +52331,8 @@
 				id: 6,
 				fileName:           'eye-protection/faceshield',
 				objName:            'Glasses',
+				tooltipText:		'Faceshield',
+				tooltopXScale:		1.0,
 				position: 			new Vector3(-4.65, -3.25, 1.07),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -52337,6 +52345,8 @@
 				id: 7,
 				fileName:           'gloves/box',
 				objName:            'Gloves',
+				tooltipText:		'Gloves Box',
+				tooltopXScale:		1.25,
 				position: 			new Vector3(-2.33, -1.0, -0.07),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -52349,6 +52359,8 @@
 				id: 8,
 				fileName:           'rooms/glovebox_counter',
 				objName:            'GlovesPatientRoom',
+				tooltipText:		'Gloves Box',
+				tooltopXScale:		1.25,
 				position: 			new Vector3(-3.2, -1.5, -0.07),
 				rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 				scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -52448,51 +52460,51 @@
 			{
 				objName:            'gown',
 				decalName:          'decal-gown-1',
-				position:           new Vector3(0.57, 1.285, -4.6),
-				orientation:        new Euler(0, 0, 0),
+				position:           new Vector3(-5.22, 1.373, -1.423),
+				orientation:        new Euler(0.0, 0.0, 0.0),
 				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 			{
 				objName:            'gown',
 				decalName:          'decal-gown-2',
-				position:           new Vector3(0.9, 0.92, -4.6),
-				orientation:        new Euler(0, 0, 0),
+				position:           new Vector3(-4.838, 1.071, -1.603),
+				orientation:        new Euler(0.0, 0.5, 0.0),
 				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 			{
 				objName:            'gown',
 				decalName:          'decal-gown-3',
-				position:           new Vector3(0.57, 0.43, -4.58),
-				orientation:        new Euler(0, 0, 0),
+				position:           new Vector3(-5.12, 0.307, -1.404),
+				orientation:        new Euler(0.0, 0.0, 0.0),
 				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 			{
 				objName:            'gown',
 				decalName:          'decal-gown-4',
-				position:           new Vector3(0.89, -0.23, -4.61),
-				orientation:        new Euler(0, 0, 0),
+				position:           new Vector3(-4.813, -0.231, -1.731),
+				orientation:        new Euler(0.0, 0.5, 0.0),
 				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 			{
 				objName:            'Glove_on_hands',
 				decalName:          'decal-gloves',
-				position:           new Vector3(1.27, 0.36, -4.96),
-				orientation:        new Euler(0, 0, 0),
-				scale:              new Vector3(0.2, 0.2, 0.2)	
+				position:           new Vector3(-4.803, 0.347, -2.164),
+				orientation:        new Euler(0.0, 0.0, 0.0),
+				scale:              new Vector3(1.0, 1.0, 1.0)	
 			},
 			{
 				objName:            'N95_mask',
 				decalName:          'decal-mask',
-				position:           new Vector3(0.735, 1.75, -4.61),
-				orientation:        new Euler(0, 0, 0),
+				position:           new Vector3(-4.944, 1.783, -1.571),
+				orientation:        new Euler(0.0, 0.0, 0.0),
 				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 			{
-				objName:            'eye_protection',
+				objName:            'FaceShield_glass001',
 				decalName:          'decal-eye',
-				position:           new Vector3(0.664, 1.92, -4.635),
-				orientation:        new Euler(0, 0, 0),
-				scale:              new Vector3(0.1, 0.1, 0.1)	
+				position:           new Vector3(-5.057, 1.966, -1.503),
+				orientation:        new Euler(2.0, 2.0, 2.0),
+				scale:              new Vector3(0.2, 0.2, 0.2)	
 			},
 		],	
 	};
@@ -60527,7 +60539,7 @@
 		scene.add(popupGroup);
 	}
 
-	function createInfoPopup(scene, name, position, tooltipText){
+	function createInfoPopup(scene, name, position, tooltipText, xScale = 1.0){
 		const params = {
 			fontFamily: "./assets/Roboto-msdf.json",
 		  	fontTexture: "./assets/Roboto-msdf.png",
@@ -60540,7 +60552,7 @@
 		popupGroup.name = 'Popup' + name;
 
 		const container = new ThreeMeshUI.Block({
-			width: params.width,
+			width: params.width * xScale,
 			fontFamily: params.fontFamily,
 		  	fontTexture: params.fontTexture,
 			backgroundColor: params.darkColor,
@@ -60549,7 +60561,7 @@
 		});
 		const contentBlock = new ThreeMeshUI.Block({
 			height: 0.2,
-			width: params.width,
+			width: params.width * xScale,
 			alignContent: "center",
 			justifyContent: "start",
 			padding: 0.05,
@@ -60856,10 +60868,10 @@
 			createTrueFalseQuizzWindow(scene);
 			//tooltips
 			objectsParams.interactiveObjectList.forEach((item) => {
-				createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
+				createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
 			});
 			scene.getObjectByName('PopupGlovesPatientRoom').rotation.y = Math.PI * 0.5;
-			createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, 'Interact');
+			createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, objectsParams.body.tooltipText, objectsParams.body.tooltopXScale);
 
 			window.addEventListener( 'resize', onWindowResize );
 
@@ -60938,7 +60950,7 @@
 
 			//find intersects
 	        const intersections = this.raycaster.intersectObjects(scene.children, true);
-			//console.log(intersections)
+			console.log(intersections);
 			const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
 			const isTFQuizzVisible = scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible;
 			const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
@@ -61232,6 +61244,38 @@
 		renderer.render( scene, camera );
 	}
 
+	function addPolutionDecals(){
+		const loader = new TextureLoader();
+		const decalTexture = loader.load('./assets/img/COVID_contamination_mark.png', function (texture) {
+			texture.minFilter = NearestFilter;
+		});
+
+		const decalTextureMaterial = new MeshPhongMaterial({
+			map: decalTexture,
+			flatShading: false,
+			shininess: 30,
+			transparent: true,
+			depthTest: true,
+			depthWrite: false,
+			polygonOffset: true,
+			polygonOffsetFactor: - 4,
+			wireframe: false
+		});
+		
+		objectsParams.decals.forEach(item => {
+			const decalGeometry = new DecalGeometry(
+				scene.getObjectByName(item.objName), 
+				item.position, 				
+				item.orientation, 	
+				item.scale	
+			);
+			const decalMesh = new Mesh(decalGeometry, decalTextureMaterial);
+			decalMesh.name = item.decalName;
+			//decalMesh.visible = false;
+			scene.add(decalMesh);
+		});
+	}
+
 	function removeDecalsFromScene(){
 		objectsParams.decals.forEach(item => {
 			scene.remove(scene.getObjectByName(item.decalName));
@@ -61416,6 +61460,17 @@
 					scene.getObjectByName(i.objName).position.copy(objectsParams.body.secondRoomPosition);
 					scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.secondRoomRotation);
 				});
+				//wins
+				const pos = new Vector3(-2.0, 2.16, -2.0);
+				const rotY = 0.2;
+				scene.getObjectByName('quizz-window').position.copy(pos);
+				scene.getObjectByName('quizz-window').rotation.y = rotY;
+				scene.getObjectByName('correctGroup').position.copy(pos);
+				scene.getObjectByName('correctGroup').rotation.y = rotY;
+				scene.getObjectByName('ConfidenceWindow').position.copy(pos);
+				scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
+				scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
+				scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
 				roomNum = 2;
 			} else {
 				//1st Room
@@ -61441,6 +61496,17 @@
 					scene.getObjectByName(i.objName).position.copy(objectsParams.body.position);
 					scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.rotation);
 				});
+				//wins
+				const pos = new Vector3(0.0, 2.16, -3.4);
+				const rotY = 0.0;
+				scene.getObjectByName('quizz-window').position.copy(pos);
+				scene.getObjectByName('quizz-window').rotation.y = rotY;
+				scene.getObjectByName('correctGroup').position.copy(pos);
+				scene.getObjectByName('correctGroup').rotation.y = rotY;
+				scene.getObjectByName('ConfidenceWindow').position.copy(pos);
+				scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
+				scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
+				scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
 				roomNum = 1;
 			}
 			
@@ -61448,15 +61514,15 @@
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'create-polution-decals'){
-			//addPolutionDecals();
+			addPolutionDecals();
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'polution-decals'){
-			// objectsParams.decals.forEach(i => {
-			// 	scene.getObjectByName(i.decalName).visible = 
-			// 		PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
-			// })
+			objectsParams.decals.forEach(i => {
+				scene.getObjectByName(i.decalName).visible = 
+					PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
+			});
 			simulationStep++;
 			showCurrentSimulationStep();
 		}

@@ -126,10 +126,10 @@ class App {
 		createTrueFalseQuizzWindow(scene);
 		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
-			createInfoPopup(scene, item.objName, item.popupPosition, 'Put on');
+			createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
 		})
 		scene.getObjectByName('PopupGlovesPatientRoom').rotation.y = Math.PI * 0.5;
-		createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, 'Interact');
+		createInfoPopup(scene, objectsParams.body.objName, objectsParams.body.popupPosition, objectsParams.body.tooltipText, objectsParams.body.tooltopXScale);
 
 		window.addEventListener( 'resize', onWindowResize );
 
@@ -208,7 +208,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 
 		//find intersects
         const intersections = this.raycaster.intersectObjects(scene.children, true);
-		//console.log(intersections)
+		console.log(intersections)
 		const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
 		const isTFQuizzVisible = scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible;
 		const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
@@ -503,21 +503,8 @@ function render() {
 }
 
 function addPolutionDecals(){
-	//create decal
-	const decalMaterial = new THREE.MeshPhongMaterial({
-		color: new THREE.Color(0xffffff),
-		flatShading: false,
-		shininess: 30,
-		transparent: true,
-		depthTest: true,
-		depthWrite: false,
-		polygonOffset: true,
-		polygonOffsetFactor: - 4,
-		wireframe: false
-	});
-
 	const loader = new THREE.TextureLoader();
-	const decalTexture = loader.load('./assets/img/polution.png', function (texture) {
+	const decalTexture = loader.load('./assets/img/COVID_contamination_mark.png', function (texture) {
 		texture.minFilter = THREE.NearestFilter;
 	});
 
@@ -731,6 +718,17 @@ function showCurrentSimulationStep(){
 				scene.getObjectByName(i.objName).position.copy(objectsParams.body.secondRoomPosition);
 				scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.secondRoomRotation);
 			})
+			//wins
+			const pos = new THREE.Vector3(-2.0, 2.16, -2.0);
+			const rotY = 0.2;
+			scene.getObjectByName('quizz-window').position.copy(pos);
+			scene.getObjectByName('quizz-window').rotation.y = rotY;
+			scene.getObjectByName('correctGroup').position.copy(pos);
+			scene.getObjectByName('correctGroup').rotation.y = rotY;
+			scene.getObjectByName('ConfidenceWindow').position.copy(pos);
+			scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
+			scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
+			scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
 			roomNum = 2;
 		} else {
 			//1st Room
@@ -756,6 +754,17 @@ function showCurrentSimulationStep(){
 				scene.getObjectByName(i.objName).position.copy(objectsParams.body.position);
 				scene.getObjectByName(i.objName).rotation.setFromVector3(objectsParams.body.rotation);
 			})
+			//wins
+			const pos = new THREE.Vector3(0.0, 2.16, -3.4);
+			const rotY = 0.0;
+			scene.getObjectByName('quizz-window').position.copy(pos);
+			scene.getObjectByName('quizz-window').rotation.y = rotY;
+			scene.getObjectByName('correctGroup').position.copy(pos);
+			scene.getObjectByName('correctGroup').rotation.y = rotY;
+			scene.getObjectByName('ConfidenceWindow').position.copy(pos);
+			scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
+			scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
+			scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
 			roomNum = 1;
 		}
 		
@@ -763,15 +772,15 @@ function showCurrentSimulationStep(){
 		showCurrentSimulationStep();
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'create-polution-decals'){
-		//addPolutionDecals();
+		addPolutionDecals();
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'polution-decals'){
-		// objectsParams.decals.forEach(i => {
-		// 	scene.getObjectByName(i.decalName).visible = 
-		// 		PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
-		// })
+		objectsParams.decals.forEach(i => {
+			scene.getObjectByName(i.decalName).visible = 
+				PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
+		})
 		simulationStep++;
 		showCurrentSimulationStep();
 	}

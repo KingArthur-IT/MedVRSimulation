@@ -12,6 +12,8 @@ const objectsParams = {
 	body: {
 		fileName:           		'body/physician',
 		objName:            		'Body',
+		tooltipText:				'Click the nurse to interact',
+		tooltopXScale:				2.5,
 		position:           		new Vector3(-2.4, -1.5, -0.8),
 		rotation:           		new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 		scale: 	            		new Vector3(0.065, 0.065, 0.065),
@@ -31,6 +33,8 @@ const objectsParams = {
 			id: 4,
 			fileName:           'gown/table_gown',
 			objName:            'Robe',
+			tooltipText:		'Isolation gown',
+			tooltopXScale:		1.5,
 			position: 			new Vector3(-4.0, -1.11, -0.1),
 			rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -43,6 +47,8 @@ const objectsParams = {
 			id: 5,
 			fileName:           'mask/mask',
 			objName:            'Mask',
+			tooltipText:		'N95 Mask',
+			tooltopXScale:		1.0,
 			position: 			new Vector3(-5.52, -3.45, 0.95),
 			rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -55,6 +61,8 @@ const objectsParams = {
 			id: 6,
 			fileName:           'eye-protection/faceshield',
 			objName:            'Glasses',
+			tooltipText:		'Faceshield',
+			tooltopXScale:		1.0,
 			position: 			new Vector3(-4.65, -3.25, 1.07),
 			rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -67,6 +75,8 @@ const objectsParams = {
 			id: 7,
 			fileName:           'gloves/box',
 			objName:            'Gloves',
+			tooltipText:		'Gloves Box',
+			tooltopXScale:		1.25,
 			position: 			new Vector3(-2.33, -1.0, -0.07),
 			rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -79,6 +89,8 @@ const objectsParams = {
 			id: 8,
 			fileName:           'rooms/glovebox_counter',
 			objName:            'GlovesPatientRoom',
+			tooltipText:		'Gloves Box',
+			tooltopXScale:		1.25,
 			position: 			new Vector3(-3.2, -1.5, -0.07),
 			rotation: 			new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),
 			scale: 	  			new Vector3(0.065, 0.065, 0.065),
@@ -178,51 +190,51 @@ const objectsParams = {
 		{
 			objName:            'gown',
 			decalName:          'decal-gown-1',
-			position:           new Vector3(0.57, 1.285, -4.6),
-			orientation:        new Euler(0, 0, 0),
+			position:           new Vector3(-5.22, 1.373, -1.423),
+			orientation:        new Euler(0.0, 0.0, 0.0),
 			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 		{
 			objName:            'gown',
 			decalName:          'decal-gown-2',
-			position:           new Vector3(0.9, 0.92, -4.6),
-			orientation:        new Euler(0, 0, 0),
+			position:           new Vector3(-4.838, 1.071, -1.603),
+			orientation:        new Euler(0.0, 0.5, 0.0),
 			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 		{
 			objName:            'gown',
 			decalName:          'decal-gown-3',
-			position:           new Vector3(0.57, 0.43, -4.58),
-			orientation:        new Euler(0, 0, 0),
+			position:           new Vector3(-5.12, 0.307, -1.404),
+			orientation:        new Euler(0.0, 0.0, 0.0),
 			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 		{
 			objName:            'gown',
 			decalName:          'decal-gown-4',
-			position:           new Vector3(0.89, -0.23, -4.61),
-			orientation:        new Euler(0, 0, 0),
+			position:           new Vector3(-4.813, -0.231, -1.731),
+			orientation:        new Euler(0.0, 0.5, 0.0),
 			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 		{
 			objName:            'Glove_on_hands',
 			decalName:          'decal-gloves',
-			position:           new Vector3(1.27, 0.36, -4.96),
-			orientation:        new Euler(0, 0, 0),
-			scale:              new Vector3(0.2, 0.2, 0.2)	
+			position:           new Vector3(-4.803, 0.347, -2.164),
+			orientation:        new Euler(0.0, 0.0, 0.0),
+			scale:              new Vector3(1.0, 1.0, 1.0)	
 		},
 		{
 			objName:            'N95_mask',
 			decalName:          'decal-mask',
-			position:           new Vector3(0.735, 1.75, -4.61),
-			orientation:        new Euler(0, 0, 0),
+			position:           new Vector3(-4.944, 1.783, -1.571),
+			orientation:        new Euler(0.0, 0.0, 0.0),
 			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 		{
-			objName:            'eye_protection',
+			objName:            'FaceShield_glass001',
 			decalName:          'decal-eye',
-			position:           new Vector3(0.664, 1.92, -4.635),
-			orientation:        new Euler(0, 0, 0),
-			scale:              new Vector3(0.1, 0.1, 0.1)	
+			position:           new Vector3(-5.057, 1.966, -1.503),
+			orientation:        new Euler(2.0, 2.0, 2.0),
+			scale:              new Vector3(0.2, 0.2, 0.2)	
 		},
 	],	
 };
