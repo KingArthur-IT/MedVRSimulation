@@ -61463,14 +61463,10 @@
 				//wins
 				const pos = new Vector3(-2.0, 2.16, -2.0);
 				const rotY = 0.2;
-				scene.getObjectByName('quizz-window').position.copy(pos);
-				scene.getObjectByName('quizz-window').rotation.y = rotY;
-				scene.getObjectByName('correctGroup').position.copy(pos);
-				scene.getObjectByName('correctGroup').rotation.y = rotY;
-				scene.getObjectByName('ConfidenceWindow').position.copy(pos);
-				scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
-				scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
-				scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
+				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+					scene.getObjectByName(el).position.copy(pos);
+					scene.getObjectByName(el).rotation.y = rotY;
+				});
 				roomNum = 2;
 			} else {
 				//1st Room
@@ -61499,14 +61495,10 @@
 				//wins
 				const pos = new Vector3(0.0, 2.16, -3.4);
 				const rotY = 0.0;
-				scene.getObjectByName('quizz-window').position.copy(pos);
-				scene.getObjectByName('quizz-window').rotation.y = rotY;
-				scene.getObjectByName('correctGroup').position.copy(pos);
-				scene.getObjectByName('correctGroup').rotation.y = rotY;
-				scene.getObjectByName('ConfidenceWindow').position.copy(pos);
-				scene.getObjectByName('ConfidenceWindow').rotation.y = rotY;
-				scene.getObjectByName('infoGroupMediumTextImg').position.copy(pos);
-				scene.getObjectByName('infoGroupMediumTextImg').rotation.y = rotY;
+				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+					scene.getObjectByName(el).position.copy(pos);
+					scene.getObjectByName(el).rotation.y = rotY;
+				});
 				roomNum = 1;
 			}
 			
