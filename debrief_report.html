@@ -1,0 +1,582 @@
+<html style="--main_base_color:rgba(191,201, 222, 1); --secondary_color:rgba(122,122, 122, 1); --disabled_background_color:rgba(110,104, 104, 1); --header-backgrounds:rgba(86,102, 130, 1); --header-top-background:rgba(86,102, 130, 1); --highlight-bar-color:rgba(61,61, 62, 1); --normal-text-color:rgba(176,176, 176, 1); --disabled-text-color:rgba(255,255, 255, 0.25); --highlight-text-color:rgba(240,240, 240, 1); --pretraining_main_base_color:rgba(77,77, 77, 1); --light-background-color:rgba(64,62, 62, 1); --iconheadercolor:rgba(255,255, 255, 0.5); --headertextcolor:rgba(255,255, 255, 1); --maintextbackgroundcolor:rgba(255,255, 255, 1); --tipheaderbackground:rgba(61,61, 62, 1); --highlight-button-color:rgb(42,168, 224); --light-text-color:rgb(42,168, 224); --up_popup_win_icon_font_size:2em; --up_popup_win_title_font_size:2em; --up_popup_win_text_maxht:490px; --up_scroll_maxht:490px; --up_scroll_font_size:1.5em; --up_scroll_lisize:18px; --mt_fontsize:12pt; --detbutton_fontsize:1.1em; --ansbutton_fontsize:1.1em; --conflabel_fontsize:1.1em; --correcthint_fontsize:1.2em; --helptab_width:90px; --helptab_fontsize:medium; --conficon-size:150%; --chsmall_scroll_font_size:1em; --chsmall_icon_wt:15px; --chsmall_icon_ht:15px; --chsmall_side_wt:150px; --chsmall_side_ht:30px; --chsmall_side_top:200px; --checkvertwin_fontsize:1.5em; --checkverttitle_fontsize:1em; --checkwintitle_fontsize:1em; --checkwintitle_margintop:auto; --checkcon_wt:200px; --checkcon_ht:25px; --checkwintxt_wt:calc(100% - 10px); --checkwintxt_maxht:500px; --checkwintxt_minht:200px; --checkwinclose_fontsize:1.5em; --checkwinscroll_maxht:500px; --chscrollsmall_fontsize:0.85em; --checkwin_font_size:2em; --checkwin_padding:10px; --checkwintext_width:calc(100% - 40px); --checkwintext_fontsize:0.85em; --checkwinicon_fontsize:2em; --checkscroll_td_font_size:1.15em; --checkscroll_large_maxht:500px; --body_cont_pos:absolute; --body_cont_z:1499; --item_font_size:1.2em; --ptbtn_font_size:1.2em; --emr_form_font_size:13pt; --emr_inscroll_ht:500px; --emr_tabscon_ht:33px; --emr_tabs_wt:90px; --emr_tabs_ht:31px; --emr_wintxt_div_font_size:18px; --emr_wintxt_p_font_size:18px; --report_maxht:690px; --trayrolloverhightop:70px;">
+<head>
+<link rel="stylesheet" href="https://etraincasetools.web.app/Simulation/dist/css/style.min.css">
+</head>
+
+<div id="updated-popup-window" class="popup-window" style="left: 159.5px; margin-top: 50px; display: block; width: 840px; height: 580px; opacity: 1;">
+  <div class="updated-popup-window-header">
+    <div id="updated-popup-window-icon" class="icon-stats-bars2"></div>
+    <div id="updated-popup-window-title">Debrief Report</div>
+    <div class="icon-close close-window-icon close-popup-window" id="updated-popup-window-close"></div>
+  </div>
+  <div id="updated-popup-window-text" style="width: 800px; height: 490px; background-image: url('https://etraincasetools.web.app/Simulation/images/sim_gui/et_logo_watermark.png');">
+    <div id="updated-popup-window-scroller" class="updatedscroller">
+      <div id="ReviewContentContainer" onclick="Simulation.Interface.Report.dismissOverlay('ReviewContentContainer');" style="display:none;">
+        <div id="ReportKeyDetailOverlayDiv">&nbsp;</div>
+        <div id="ReviewDetailTextDiv">
+          <br>
+          <div id="iframe_div" style="height:95%">
+            <iframe width="1060px" height="600px" id="reviewframe" src="about:blank" style="top:25px"></iframe>
+          </div>
+        </div>
+      </div>
+      <div style="margin: 10px" id="interaction_overall">
+        <div style="font-size:1.5em" class="microsim_overall" id="simreportheader">Below is a report on your interactions/questions within the simulation. Closing this window will progress you to the next section.</div>
+        <hr>
+        <div class="microsim_overall" style="font-size: 1.25em;" id="reportsimname">&nbsp; <b>Donning and Doffing PPE - Score: 88%&nbsp;</b>
+        </div>
+        <div class="DetailsButton" style="display:inline" id="DonningandDoffingPPE_quiz_details_button" onclick="Simulation.Interface.Report.ToggleQuizDetails('DonningandDoffingPPE')">
+          <span id="reporthidedet">Hide Details</span>
+        </div>
+        <hr>
+        <div id="DonningandDoffingPPE_table_container">
+          <table id="main_table" class="microsim_table">
+            <tbody>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on gloves and enter Mr. Jones' patient room.? </div>
+                  <div class="answerreporttext">Incorrect </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Enter Mr. Jones' patient room.? </div>
+                  <div class="answerreporttext">Incorrect </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Remove anything that might puncture PPE ? </div>
+                  <div class="answerreporttext">Correctly removed anything that might puncture PPE. </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Gather PPE? </div>
+                  <div class="answerreporttext">Correctly gathered PPE for COVID-19 Enhanced Respiratory Precautions (N95 mask, isolation gown, gloves, face shield) </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Inspected all exposed skin for wounds, cuts, and scrapes?</div>
+                  <div class="answerreporttext">Correctly inspected all exposed skin for wounds, cuts, and scrapes &nbsp; </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on isolation gown? </div>
+                  <div class="answerreporttext">Incorrect </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Used hand sanitizer and allow to dry fully (20 seconds) OR wash with soap and water? </div>
+                  <div class="answerreporttext">Correctly used hand sanitizer and allow to dry fully (20 seconds) OR wash with soap and water </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on isolation gown? </div>
+                  <div class="answerreporttext">Correctly put on isolation gown </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on N95 mask? </div>
+                  <div class="answerreporttext">Correctly put on N95 mask </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on face shield&gt; </div>
+                  <div class="answerreporttext">Correctly put on face shield </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Put on gloves? </div>
+                  <div class="answerreporttext">Correctly put on gloves. </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Enter the patient room? </div>
+                  <div class="answerreporttext">Correctly entered the patient room </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Use purple wipes for any gross contamination? </div>
+                  <div class="answerreporttext">Correctly used purple wipes for any gross contamination </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Remove gown &amp; gloves together? </div>
+                  <div class="answerreporttext">Correctly removed gown &amp; gloves together </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Drop gown and gloves in garbage? </div>
+                  <div class="answerreporttext">Correctly dropped gown and gloves in garbage. </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Perform hand hygiene? </div>
+                  <div class="answerreporttext">Correctly performed hand hygiene </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Don new pair of clean gloves? </div>
+                  <div class="answerreporttext">Correctly donned new pair of clean gloves </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Disinfect front of face shield? </div>
+                  <div class="answerreporttext">Correctly disinfected front of face shield </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Doff gloves and place in garbage ? </div>
+                  <div class="answerreporttext">Correctly doffed gloves and placed in garbage </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Perform hand hygiene? </div>
+                  <div class="answerreporttext">Correctly performed hand hygiene </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Leave the room? </div>
+                  <div class="answerreporttext">Correctly left the room </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Perform hand hygiene? </div>
+                  <div class="answerreporttext">Correctly performed hand hygiene </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Remove face shield? </div>
+                  <div class="answerreporttext">Correctly removed face shield. </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Perform hand hygiene? </div>
+                  <div class="answerreporttext">Correctly performed hand hygiene </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Remove N95 mask? </div>
+                  <div class="answerreporttext">Correctly removed N95 mask </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+              <tr>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+                <td>
+                  <div class="questionreporttext">Perform hand hygiene? </div>
+                  <div class="answerreporttext">Correctly performed hand hygiene </div>
+                </td>
+                <td class="DonningandDoffingPPE_interactive_answer" style="display:none"></td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+          <div style="display:inline " class="ConfidenceLevelButton" id="DonningandDoffingPPE_ConfidenceLevel">Confidence Level: <span id="DonningandDoffingPPE_ConfidenceScore">86.54%</span>
+          </div>
+          <hr>
+          <table style="display: block;margin-bottom: 10px" class="microsim_table" id="DonningandDoffingPPE_ConfidenceTable">
+            <tbody>
+              <tr>
+                <th id="confqn">Question</th>
+                <th id="conftime">Time</th>
+                <th id="confuserconf">User Confidence</th>
+                <th id="confresult">Result</th>
+              </tr>
+              <tr>
+                <td>Put on gloves and enter Mr. Jones' patient room.? </td>
+                <td>115.06 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Enter Mr. Jones' patient room.? </td>
+                <td>272.59 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Remove anything that might puncture PPE ? </td>
+                <td>470.64 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Gather PPE? </td>
+                <td>85.36 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Inspected all exposed skin for wounds, cuts, and scrapes?</td>
+                <td>99.25 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Put on isolation gown? </td>
+                <td>64.96 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/incorrect.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Used hand sanitizer and allow to dry fully (20 seconds) OR wash with soap and water? </td>
+                <td>7.68 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Put on isolation gown? </td>
+                <td>166.68 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Put on N95 mask? </td>
+                <td>9.61 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Put on face shield&gt; </td>
+                <td>74.40 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Put on gloves? </td>
+                <td>146.13 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Enter the patient room? </td>
+                <td>119.77 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Use purple wipes for any gross contamination? </td>
+                <td>862.03 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Remove gown &amp; gloves together? </td>
+                <td>14.17 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Drop gown and gloves in garbage? </td>
+                <td>76.55 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Perform hand hygiene? </td>
+                <td>21.01 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Don new pair of clean gloves? </td>
+                <td>60.13 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Disinfect front of face shield? </td>
+                <td>50.28 sec</td>
+                <td>low</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Doff gloves and place in garbage ? </td>
+                <td>24.33 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Perform hand hygiene? </td>
+                <td>12.42 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Leave the room? </td>
+                <td>5.75 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Perform hand hygiene? </td>
+                <td>22.65 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Remove face shield? </td>
+                <td>5.54 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Perform hand hygiene? </td>
+                <td>12.25 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Remove N95 mask? </td>
+                <td>8.02 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr>
+                <td>Perform hand hygiene? </td>
+                <td>5.31 sec</td>
+                <td>high</td>
+                <td class="result_img">
+                  <img src="https://etraincasetools.web.app/Simulation/images/correct.png">
+                </td>
+              </tr>
+              <tr style="border-top: 2px solid black;border-bottom: 2px solid black;">
+                <td id="conftotaltime">Total time taken</td>
+                <td>2812.57 secs</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="" id="DonningandDoffingPPE_confidence_graph">
+            <div style=" width:90%;">
+              <svg class="svggraph" width="500px" height="500px" id="undefined_confidence_graph_svg">
+                <path stroke="lightgray" stroke-width="5" fill="none" d="M 0 250 L 50 287.5 L 50 276.25 L 225 276.25 M 275 276.25 L 450 276.25 L 450 287.5 L 500 250 M 0 250 L 50 212.5 L 50 223.75 L 225 223.75 M 275 223.75 L 450 223.75 L 450 212.5 L 500 250"></path>
+                <path stroke="lightgray" stroke-width="5" fill="none" d="M 250 0 L 287.5 50 L 276.25 50 L 276.25 225 M 276.25 275 L 276.25 450 L 287.5 450 L 250 500 M 250 0 L 212.5 50 L 223.75 50 L 223.75 225 M 223.75 275 L 223.75 450 L 212.5 450 L 250 500"></path>
+                <text id="confdiaglowknow" fill="black" class="confidence_axis_text" y="256.25" x="50">LOW KNOWLEDGE</text>
+                <text id="confdiaghighknow" fill="black" class="confidence_axis_text" y="256.25" x="300">HIGH KNOWLEDGE</text>
+                <text id="cognitivebias_text" fill="black" class="confidenceheadertext" y="75" x="75">COGNITIVE BIAS</text>
+                <foreignObject id="cognitivebias_desc" fill="black" class="confidence_axis_subtext" y="87.5" x="37.5" width="175" height="125">
+                  <p class="confidence_axis_subtext">LACKING FOUNDATIONAL UNDERSTANDING</p>
+                </foreignObject>
+                <foreignObject id="cognitivebias_icon" fill="black" class="confidence_axis_subtext" y="125" x="37.5" width="175" height="125">
+                  <p class="confidence_axis_subtext">
+                    <span class="icon-books_01 confidencegraphicon"></span>
+                    <span class="icon-pc_01 confidencegraphicon"></span>
+                  </p>
+                </foreignObject>
+                <text id="confident_text" fill="black" class="confidenceheadertext" y="75" x="325">CONFIDENT</text>
+                <foreignObject id="confident_desc" fill="black" class="confidence_axis_subtext" y="87.5" x="275" width="175" height="125">
+                  <p class="confidence_axis_subtext">GOOD UNDERSTANDING &amp; KNOWLEDGE APPLICATION</p>
+                </foreignObject>
+                <foreignObject id="confident_icon" fill="black" class="confidence_axis_subtext" y="125" x="275" width="175" height="125">
+                  <p class="confidence_axis_subtext">
+                    <span class="icon-checklist_active confidencegraphicon"></span>
+                  </p>
+                </foreignObject>
+                <text id="unprepared_text" fill="black" class="confidenceheadertext" y="325" x="75">UNPREPARED</text>
+                <foreignObject id="unprepared_desc" fill="black" class="confidence_axis_subtext" y="337.5" x="37.5" width="175" height="125">
+                  <p class="confidence_axis_subtext">LACKING FOUNDATIONAL UNDERSTANDING &amp; KNOWLEDGE APPLICATION</p>
+                </foreignObject>
+                <foreignObject id="unprepared_icon" fill="black" class="confidence_axis_subtext" y="375" x="37.5" width="175" height="125">
+                  <p class="confidence_axis_subtext">
+                    <span class="icon-books_01 confidencegraphicon"></span>
+                    <span class="icon-pc_01 confidencegraphicon"></span>
+                    <span class="icon-table_01 confidencegraphicon"></span>
+                  </p>
+                </foreignObject>
+                <text id="competent_text" fill="black" class="confidenceheadertext" y="325" x="325">COMPETENT</text>
+                <foreignObject id="competent_desc" fill="black" class="confidence_axis_subtext" y="337.5" x="275" width="175" height="125">
+                  <p class="confidence_axis_subtext">LACKING KNOWLEDGE APPLICATION</p>
+                </foreignObject>
+                <foreignObject id="competent_icon" fill="black" class="confidence_axis_subtext" y="375" x="275" width="175" height="125">
+                  <p class="confidence_axis_subtext">
+                    <span class="icon-table_01 confidencegraphicon"></span>
+                  </p>
+                </foreignObject>
+                <text fill="black" id="confdiaglowconf" class="confidence_axis_text" y="256.25" x="50" transform="rotate(-90, 250 250)">LOW CONFIDENCE</text>
+                <text fill="black" id="confdiaghighconf" class="confidence_axis_text" y="256.25" x="300" transform="rotate(-90, 250 250)">HIGH CONFIDENCE</text>
+                <circle cx="388.46153846153845" cy="111.52857142857147" r="2.5" stroke="green" stroke-width="25" fill="none"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

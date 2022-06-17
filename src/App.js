@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import ThreeMeshUI from "three-mesh-ui";
-import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry';
 //modules
 import { addPreloaderObjects, loaderObjects, setIsSceneLoadedValue, getIsSceneLoadedValue, loadedObjects } from './modules/preloader.js'
 import { objectsParams } from './modules/sceneObjects.js'
@@ -13,6 +12,7 @@ import { hoverObjectsList,
 		createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
 		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
 	} from './modules/windowsUI.js'
+import { addPolutionDecals, removeDecalsFromScene } from './modules/decals'
 
 let camera, scene, renderer;
 
@@ -502,44 +502,6 @@ function render() {
 	renderer.render( scene, camera );
 }
 
-function addPolutionDecals(){
-	const loader = new THREE.TextureLoader();
-	const decalTexture = loader.load('./assets/img/COVID_contamination_mark.png', function (texture) {
-		texture.minFilter = THREE.NearestFilter;
-	});
-
-	const decalTextureMaterial = new THREE.MeshPhongMaterial({
-		map: decalTexture,
-		flatShading: false,
-		shininess: 30,
-		transparent: true,
-		depthTest: true,
-		depthWrite: false,
-		polygonOffset: true,
-		polygonOffsetFactor: - 4,
-		wireframe: false
-	});
-	
-	objectsParams.decals.forEach(item => {
-		const decalGeometry = new DecalGeometry(
-			scene.getObjectByName(item.objName), 
-			item.position, 				
-			item.orientation, 	
-			item.scale	
-		);
-		const decalMesh = new THREE.Mesh(decalGeometry, decalTextureMaterial);
-		decalMesh.name = item.decalName;
-		//decalMesh.visible = false;
-		scene.add(decalMesh);
-	})
-}
-
-function removeDecalsFromScene(){
-	objectsParams.decals.forEach(item => {
-		scene.remove(scene.getObjectByName(item.decalName));
-	})
-}
-
 function changeAllInfoPopupsVisibility(val){
 	objectsParams.interactiveObjectList.forEach((item) => {
 		scene.getObjectByName('Popup' + item.objName).visible = val;
@@ -660,7 +622,7 @@ function showCurrentSimulationStep(){
 		putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'sim-end'){
-		removeDecalsFromScene();
+		removeDecalsFromScene(scene);
 		//title
 		successObjects.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
 		//content
@@ -764,7 +726,7 @@ function showCurrentSimulationStep(){
 		showCurrentSimulationStep();
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'create-polution-decals'){
-		addPolutionDecals();
+		addPolutionDecals(scene);
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
@@ -773,6 +735,12 @@ function showCurrentSimulationStep(){
 			scene.getObjectByName(i.decalName).visible = 
 				PPE_DATA.vrSim.sim[simulationStep].visibleDecals.some(el => el == i.decalName);
 		})
+		simulationStep++;
+		showCurrentSimulationStep();
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
+		document.getElementById('reportFrame').style.display = 'block'; 
+		document.getElementById('closeFrame').style.display = 'block';
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
