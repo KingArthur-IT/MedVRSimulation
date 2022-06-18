@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import ThreeMeshUI from "three-mesh-ui";
+import { vr_xapi_initialize_LRS, vr_xapi_sendprofiledata, vr_xapi_SaveAction, vr_xapi_SaveAssessment, vr_xapi_SaveCompletion } from './lrs/xAPIInterface'
 //modules
 import { addPreloaderObjects, loaderObjects, setIsSceneLoadedValue, getIsSceneLoadedValue, loadedObjects } from './modules/preloader.js'
 import { objectsParams } from './modules/sceneObjects.js'
@@ -60,6 +61,13 @@ class App {
 		document.body.appendChild( VRButton.createButton( renderer ) );
 
 		animate();
+
+		const urlParams = (new URL(document.location)).searchParams;
+		const username = urlParams.get('actorFirstName') + ' ' + urlParams.get('actorLastName');
+		const userEmail = urlParams.get('actorEmail');
+		console.log({name: username, mbox: userEmail})
+		vr_xapi_initialize_LRS();
+		vr_xapi_sendprofiledata({}, {name: username, mbox: userEmail});
 
 		await fetch('./build/ppe.json', {
 			method: 'GET',

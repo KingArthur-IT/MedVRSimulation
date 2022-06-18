@@ -23,7 +23,9 @@
     "rollup": "^2.57.0"
   },
   "dependencies": {
+    "jquery": "^3.6.0",
     "three": "^0.132.1",
-    "three-mesh-ui": "^6.0.2"
+    "three-mesh-ui": "^6.0.2",
+    "tincanjs": "^0.50.0"
   }
 }

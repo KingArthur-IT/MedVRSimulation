@@ -51785,6 +51785,56 @@
 
 	if (typeof global !== 'undefined') global.ThreeMeshUI = ThreeMeshUI;
 
+	let xAPI_LRS = {};
+	let lrs_initialized = false;
+	TinCan.Utils.getUUID();
+
+	function vr_xapi_initialize_LRS(){
+		
+		console.log('trying to inititalize LRS');
+		
+	    try{
+	        xAPI_LRS = new TinCan.LRS(
+	            {
+	                endpoint: "https://learninglocker.etrainetc.com/data/xAPI/",
+	                auth: "Basic Y2VmMjE4ZDM5ZThiNmYwODJhY2Y0OTNjNDI5ZjI2YTE0Mjg2YWYyYToyMjQ0YTk2MWE5N2JlZmZlYjgwODJmOGVlMjUzZGQ1N2I1YzZhMWJh",
+	                allowFail: true
+	            }
+	        );
+	        xAPI_LRS.about(
+	            {
+	                callback: function (err, xhr) {
+	                    //console.log("Callback function for About: " + xhr.response + " ( " + xhr.status + " )");
+	                    if (err !== null) {
+	                        if (xhr !== null) {
+	                            //   alert("About Failed: " + xhr.responseText + " (" + xhr.status + ")");
+	                            //  alert("About Error: " + err);
+
+	                            lrs_initialized = false;
+	                            // TODO: do something with error, didn't save statement
+	                            return;
+	                        }
+	                        //alert("About Error: " + err);
+	                        lrs_initialized = false;
+	                        return;
+	                    }
+	                    else {
+	                        lrs_initialized = true;
+	                    }
+
+	                }
+	            });
+	    }
+	    catch (ex)
+	    {
+	        alert("Failed to setup LRS object: " + ex);
+	        //setTimeout(check_connection,5000);
+	        initialized = false;
+
+	    }
+
+	}
+
 	class BoxLineGeometry extends BufferGeometry {
 
 		constructor( width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1 ) {
@@ -60840,6 +60890,13 @@
 			document.body.appendChild( VRButton.createButton( renderer ) );
 
 			animate();
+
+			const urlParams = (new URL(document.location)).searchParams;
+			const username = urlParams.get('actorFirstName') + ' ' + urlParams.get('actorLastName');
+			const userEmail = urlParams.get('actorEmail');
+			console.log({name: username, mbox: userEmail});
+			vr_xapi_initialize_LRS();
+			//vr_xapi_sendprofiledata({}, {name: username, mbox: userEmail});
 
 			await fetch('./build/ppe.json', {
 				method: 'GET',
