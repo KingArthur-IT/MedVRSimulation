@@ -14,6 +14,7 @@ import { hoverObjectsList,
 		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
 	} from './modules/windowsUI.js'
 import { addPolutionDecals, removeDecalsFromScene } from './modules/decals'
+import { createReportFirstWindow, reportUI } from './modules/reportUI.js'
 
 let camera, scene, renderer;
 
@@ -57,7 +58,7 @@ class App {
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.outputEncoding = THREE.sRGBEncoding;
 		renderer.xr.enabled = true;
-		document.body.appendChild( renderer.domElement );
+		document.body.appendChild( renderer.domElement ); 
 		document.body.appendChild( VRButton.createButton( renderer ) );
 
 		animate();
@@ -81,6 +82,8 @@ class App {
 			})
 	}
 	init() {
+		var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
+		console.log(table[0].getElementsByClassName('questionreporttext')[0].textContent)
 		//Room
 		addObjectToScene(scene, objectsParams.room.fileName, objectsParams.room.objName, objectsParams.room.position, objectsParams.room.scale, objectsParams.room.rotation);	
 		//body
@@ -132,6 +135,7 @@ class App {
 		createInfoMediumTextImg(scene);
 		createConfidenceWindow(scene);
 		createTrueFalseQuizzWindow(scene);
+		createReportFirstWindow(scene);
 		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -526,6 +530,7 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
 	scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 	scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
+	scene.getObjectByName('ReportFirstWindow').visible = false;
 	changeAllInfoPopupsVisibility(false);
 	document.getElementById('video').pause();
 
@@ -751,6 +756,21 @@ function showCurrentSimulationStep(){
 		document.getElementById('closeFrame').style.display = 'block';
 		simulationStep++;
 		showCurrentSimulationStep();
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first'){
+		scene.getObjectByName('ReportFirstWindow').visible = true;
+		reportUI.introText.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('simreportheader').textContent});
+		reportUI.correctTitle.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('reportsimname').textContent});
+		
+		var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
+		for(let i = 0; i < 5; i++){
+			reportUI.firstWinTableData[i].firstText.set({content: table[i].getElementsByClassName('questionreporttext')[0].textContent});
+			reportUI.firstWinTableData[i].secondText.set({content: table[i].getElementsByClassName('answerreporttext')[0].textContent});
+			const loader = new THREE.TextureLoader();  
+			loader.load(table[i].querySelector('img').getAttribute('src'), function (texture) {
+				reportUI.firstWinTableData[i].img.set({ backgroundTexture: texture });
+			});
+		}
 	}
 }
 
