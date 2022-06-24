@@ -35,24 +35,11 @@
             margin: 0;
             display: none;
         }
-        #closeFrame{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background: #777777;
-            color: #fff;
-            border: none;
-            z-index: 99999;
-            cursor: pointer;
-            display: none;
-        }
     </style>
 </head>
 <body>
     <video id = "video" src="./assets/video/Donning and Doffing PPE.mp4" preload="auto" playsinline webkit-playsinline loop></video>
     <iframe src="debrief_report.html" id="reportFrame"></iframe>
-    <button id="closeFrame" onclick="document.getElementById('reportFrame').style.display = 'none'; document.getElementById('closeFrame').style.display = 'none';">Close Defrief Report</button>
     <!--Main Script-->
     <script src="./build/jquery.min.js" type="text/javascript" language="javascript"></script>
 	<script src="./build/tincan.min.js" type="text/javascript" language="javascript"></script>

@@ -16,7 +16,10 @@ const reportUI = {
     introText: '',
     correctTitle: '',
     firstWinTableData: [],
-	secondWinTableData: []
+	secondWinTableData: [],
+	confidenceTitle: '',
+	confidenceTableData: [],
+	confidencePerPage: 7
 }
 
 function createReportFirstWindow(scene){
@@ -86,6 +89,48 @@ function createReportFirstTableWindow(scene){
         container.add(setCorrectTableRow('secondWinTableData', i))
     }
     container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
+
+	popupGroup.position.set(0.0, 3.78, -3.5);
+	popupGroup.add(container);
+	popupGroup.visible = false;
+	scene.add(popupGroup);
+}
+
+function createReportConfidenceTableWindow(scene){
+	let popupGroup = new THREE.Group();
+	popupGroup.name = 'ReportConfidenceTableWindow';
+
+	const container = new ThreeMeshUI.Block({
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+		justifyContent: "start",
+	}); 
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 3.3,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});  
+	container.add(contentBlock);
+
+    container.add(setTitle());
+	container.add(setText('confidenceTitle', 0.125));
+
+
+	reportUI.confidenceTableData.push({question: '', time: '', confidence: '', rezult: ''});
+    container.add(setConfidenceTableHeader('confidenceTableData', 0))
+
+    for(let i = 1; i < reportUI.confidencePerPage; i++){
+        reportUI.confidenceTableData.push({question: '', time: '', confidence: '', rezult: ''});
+        container.add(setConfidenceTableRow('confidenceTableData', i))
+    }
+    container.add(setBackNextBtns("prevReportConfidenceTableBtn", "nextReportConfidenceTableBtn"));
 
 	popupGroup.position.set(0.0, 3.78, -3.5);
 	popupGroup.add(container);
@@ -173,6 +218,150 @@ function setCorrectTableRow(field, i){
     return container;
 }
 
+function setConfidenceTableRow(field, i){
+    const container = new ThreeMeshUI.Block({
+		width: params.width,
+		justifyContent: 'start',
+		alignContent: 'left',
+		contentDirection: 'row',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+        padding: 0.1
+	});
+	const questionBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 2.0,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		padding: 0.1
+	});
+	const timeBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 1.0,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		padding: 0.1
+	});
+	const confidenceBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 1.0,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		padding: 0.1
+	});
+    reportUI[field][i].rezult = new ThreeMeshUI.Block({
+		height: 0.2,
+		width: 0.2
+	});
+	container.add(questionBlock, timeBlock, confidenceBlock, reportUI[field][i].rezult);
+
+    reportUI[field][i].question = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    questionBlock.add(reportUI[field][i].question);
+	reportUI[field][i].time = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    timeBlock.add(reportUI[field][i].time);
+	reportUI[field][i].confidence = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    confidenceBlock.add(reportUI[field][i].confidence);
+    
+	reportUI[field][i].rezult.visible = false;
+    return container;
+}
+
+function setConfidenceTableHeader(field, i){
+    const container = new ThreeMeshUI.Block({
+		width: params.width,
+		justifyContent: 'start',
+		alignContent: 'left',
+		contentDirection: 'row',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: new THREE.Color(0xbfc9de),
+        padding: 0.1
+	});
+	const questionBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 2.0,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: new THREE.Color(0xbfc9de),
+		padding: 0.1,
+	});
+	const timeBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 0.8,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: new THREE.Color(0xbfc9de),
+		padding: 0.1
+	});
+	const confidenceBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 1.2,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: new THREE.Color(0xbfc9de),
+		padding: 0.1
+	});
+	const rezultBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 0.8,
+		alignContent: 'left',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: new THREE.Color(0xbfc9de),
+		padding: 0.1
+	});
+	container.add(questionBlock, timeBlock, confidenceBlock, rezultBlock);
+
+    reportUI[field][i].question = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    questionBlock.add(reportUI[field][i].question);
+	reportUI[field][i].time = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    timeBlock.add(reportUI[field][i].time);
+	reportUI[field][i].confidence = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    confidenceBlock.add(reportUI[field][i].confidence);
+	reportUI[field][i].rezult = new ThreeMeshUI.Text({
+		content: "",
+		fontColor: params.darkColor,
+	  	fontSize: params.textFontSize,
+	});
+    rezultBlock.add(reportUI[field][i].rezult);
+    
+    return container;
+}
+
 function setBackNextBtns(prevBtnName, nextBtnName, isOnlyNext = false){
     const selectedAttributes = {
 		backgroundColor: new THREE.Color( 0x777777 ),
@@ -257,4 +446,4 @@ function setBackNextBtns(prevBtnName, nextBtnName, isOnlyNext = false){
 	return btnsContainer;
 }
 
-export { createReportFirstWindow, reportUI, createReportFirstTableWindow }
+export { createReportFirstWindow, reportUI, createReportFirstTableWindow, createReportConfidenceTableWindow }

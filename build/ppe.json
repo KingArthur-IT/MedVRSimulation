@@ -591,6 +591,36 @@
 			},
 			{
 				"id": 77,
+				"type": "report-confidence-table",
+				"from": 1,
+				"to": 8
+			},
+			{
+				"id": 78,
+				"type": "report-confidence-table",
+				"from": 7,
+				"to": 14
+			},
+			{
+				"id": 79,
+				"type": "report-confidence-table",
+				"from": 13,
+				"to": 20
+			},
+			{
+				"id": 80,
+				"type": "report-confidence-table",
+				"from": 19,
+				"to": 26
+			},
+			{
+				"id": 81,
+				"type": "report-confidence-table",
+				"from": 25,
+				"to": 29
+			},
+			{
+				"id": 82,
 				"type": "tf-quizz",
 				"question": "The following items are important elements of PPE: Gown, Gloves, Eye Protection, N 96 Respiration Mask",
 				"btnText1": "True",
@@ -598,7 +628,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 78,
+				"id": 83,
 				"type": "tf-quizz",
 				"question": "PPE is to be removed at the appropriate disposal site in the patients care area, prior to exiting the patients care area",
 				"btnText1": "True",
@@ -606,7 +636,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 79,
+				"id": 84,
 				"type": "tf-quizz",
 				"question": "Proper hand hygiene protocol is just as important to follow when removing or doffing PPE, as when donning PPE",
 				"btnText1": "True",
@@ -614,7 +644,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 80,
+				"id": 85,
 				"type": "tf-quizz",
 				"question": "A properly donned gown should cover the torso completely and be securely fastened",
 				"btnText1": "True",
@@ -622,7 +652,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 81,
+				"id": 86,
 				"type": "tf-quizz",
 				"question": "When putting on the N 95 Mask, be sure to crimp the nose piece and perforn a fit and leak test",
 				"btnText1": "True",
@@ -630,7 +660,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 82,
+				"id": 87,
 				"type": "sim-end",
 				"title": "info",
 				"content": "Congratulations, you have completed the VR PPE Demo. Click OK to restart."

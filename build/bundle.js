@@ -60923,7 +60923,10 @@
 	    introText: '',
 	    correctTitle: '',
 	    firstWinTableData: [],
-		secondWinTableData: []
+		secondWinTableData: [],
+		confidenceTitle: '',
+		confidenceTableData: [],
+		confidencePerPage: 7
 	};
 
 	function createReportFirstWindow(scene){
@@ -60993,6 +60996,48 @@
 	        container.add(setCorrectTableRow('secondWinTableData', i));
 	    }
 	    container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
+
+		popupGroup.position.set(0.0, 3.78, -3.5);
+		popupGroup.add(container);
+		popupGroup.visible = false;
+		scene.add(popupGroup);
+	}
+
+	function createReportConfidenceTableWindow(scene){
+		let popupGroup = new Group();
+		popupGroup.name = 'ReportConfidenceTableWindow';
+
+		const container = new ThreeMeshUI.Block({
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+			justifyContent: "start",
+		}); 
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 3.3,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});  
+		container.add(contentBlock);
+
+	    container.add(setTitle());
+		container.add(setText('confidenceTitle', 0.125));
+
+
+		reportUI.confidenceTableData.push({question: '', time: '', confidence: '', rezult: ''});
+	    container.add(setConfidenceTableHeader('confidenceTableData', 0));
+
+	    for(let i = 1; i < reportUI.confidencePerPage; i++){
+	        reportUI.confidenceTableData.push({question: '', time: '', confidence: '', rezult: ''});
+	        container.add(setConfidenceTableRow('confidenceTableData', i));
+	    }
+	    container.add(setBackNextBtns("prevReportConfidenceTableBtn", "nextReportConfidenceTableBtn"));
 
 		popupGroup.position.set(0.0, 3.78, -3.5);
 		popupGroup.add(container);
@@ -61077,6 +61122,150 @@
 	    textContent.add(reportUI[field][i].secondText);
 
 		reportUI[field][i].img.visible = false;
+	    return container;
+	}
+
+	function setConfidenceTableRow(field, i){
+	    const container = new ThreeMeshUI.Block({
+			width: params.width,
+			justifyContent: 'start',
+			alignContent: 'left',
+			contentDirection: 'row',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+	        padding: 0.1
+		});
+		const questionBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 2.0,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			padding: 0.1
+		});
+		const timeBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 1.0,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			padding: 0.1
+		});
+		const confidenceBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 1.0,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			padding: 0.1
+		});
+	    reportUI[field][i].rezult = new ThreeMeshUI.Block({
+			height: 0.2,
+			width: 0.2
+		});
+		container.add(questionBlock, timeBlock, confidenceBlock, reportUI[field][i].rezult);
+
+	    reportUI[field][i].question = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    questionBlock.add(reportUI[field][i].question);
+		reportUI[field][i].time = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    timeBlock.add(reportUI[field][i].time);
+		reportUI[field][i].confidence = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    confidenceBlock.add(reportUI[field][i].confidence);
+	    
+		reportUI[field][i].rezult.visible = false;
+	    return container;
+	}
+
+	function setConfidenceTableHeader(field, i){
+	    const container = new ThreeMeshUI.Block({
+			width: params.width,
+			justifyContent: 'start',
+			alignContent: 'left',
+			contentDirection: 'row',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: new Color(0xbfc9de),
+	        padding: 0.1
+		});
+		const questionBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 2.0,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: new Color(0xbfc9de),
+			padding: 0.1,
+		});
+		const timeBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.8,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: new Color(0xbfc9de),
+			padding: 0.1
+		});
+		const confidenceBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 1.2,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: new Color(0xbfc9de),
+			padding: 0.1
+		});
+		const rezultBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.8,
+			alignContent: 'left',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: new Color(0xbfc9de),
+			padding: 0.1
+		});
+		container.add(questionBlock, timeBlock, confidenceBlock, rezultBlock);
+
+	    reportUI[field][i].question = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    questionBlock.add(reportUI[field][i].question);
+		reportUI[field][i].time = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    timeBlock.add(reportUI[field][i].time);
+		reportUI[field][i].confidence = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    confidenceBlock.add(reportUI[field][i].confidence);
+		reportUI[field][i].rezult = new ThreeMeshUI.Text({
+			content: "",
+			fontColor: params.darkColor,
+		  	fontSize: params.textFontSize,
+		});
+	    rezultBlock.add(reportUI[field][i].rezult);
+	    
 	    return container;
 	}
 
@@ -61285,6 +61474,7 @@
 			createTrueFalseQuizzWindow(scene);
 			createReportFirstWindow(scene);
 			createReportFirstTableWindow(scene);
+			createReportConfidenceTableWindow(scene);
 			//tooltips
 			objectsParams.interactiveObjectList.forEach((item) => {
 				createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -61548,6 +61738,16 @@
 							}
 						}
 					}
+					if (stepSimType === 'report-confidence-table'){
+						if (intersect.object.name == "MeshUI-Frame"){
+							if (intersect.object.parent.children[1]?.name === 'nextReportConfidenceTableBtn'){
+								isNext = true;
+							}						
+							if (intersect.object.parent.children[1]?.name === 'prevReportConfidenceTableBtn'){
+								isPrev = true;
+							}
+						}
+					}
 				}
 			});
 			if (isNext){
@@ -61702,11 +61902,12 @@
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 		scene.getObjectByName('ReportFirstWindow').visible = false;
 		scene.getObjectByName('ReportFirstTableWindow').visible = false;
+		scene.getObjectByName('ReportConfidenceTableWindow').visible = false;
+
 		changeAllInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
 
 		stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
-		console.log(PPE_DATA.vrSim.sim[simulationStep].type, simulationStep);
 		
 		if (PPE_DATA.vrSim.sim[simulationStep].type.includes('intro')){
 			//intro container
@@ -61969,6 +62170,46 @@
 						reportUI.secondWinTableData[i].img.set({ backgroundTexture: texture });
 						reportUI.secondWinTableData[i].img.visible = true;
 					});
+				}
+			}
+		}
+		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-confidence-table'){
+			scene.getObjectByName('ReportConfidenceTableWindow').visible = true;
+			var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#DonningandDoffingPPE_ConfidenceTable tr');
+			reportUI.confidenceTitle.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('DonningandDoffingPPE_ConfidenceLevel').textContent});
+			
+			const headerArr = table[0].querySelectorAll('th');
+			reportUI.confidenceTableData[0].question.set({content: headerArr[0].textContent});
+			reportUI.confidenceTableData[0].time.set({content: headerArr[1].textContent});
+			reportUI.confidenceTableData[0].confidence.set({content: headerArr[2].textContent});
+			reportUI.confidenceTableData[0].rezult.set({content: headerArr[3].textContent});
+
+			const 	from = PPE_DATA.vrSim.sim[simulationStep].from,
+					to = PPE_DATA.vrSim.sim[simulationStep].to;
+			for(let i = 1; i < reportUI.confidencePerPage; i++){
+				reportUI.confidenceTableData[i].rezult.visible = false;
+				reportUI.confidenceTableData[i].question.set({content: ''});
+				reportUI.confidenceTableData[i].time.set({content: ''});
+				reportUI.confidenceTableData[i].confidence.set({content: ''});
+
+				if (i + from < to ){
+					const index = i + from - 1;
+					if (index >= table.length) return;
+
+					const cellsArr = table[index].querySelectorAll('td');
+					reportUI.confidenceTableData[i].question.set({content: fixTextFotMeshUI(cellsArr[0].textContent)});
+					reportUI.confidenceTableData[i].time.set({content: fixTextFotMeshUI(cellsArr[1].textContent)});
+					reportUI.confidenceTableData[i].confidence.set({content: fixTextFotMeshUI(cellsArr[2].textContent)});
+					
+					const loader = new TextureLoader();  
+					const src = cellsArr[3].querySelector('img')?.getAttribute('src');
+					if (src){
+						const prefix = src.includes('incorrect') ? 'in' : '';
+						loader.load(`./assets/img/${prefix}correct.png`, function (texture) {
+							reportUI.confidenceTableData[i].rezult.set({ backgroundTexture: texture });
+							reportUI.confidenceTableData[i].rezult.visible = true;
+						});
+					}
 				}
 			}
 		}
