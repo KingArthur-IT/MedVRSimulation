@@ -60922,7 +60922,8 @@
 	const reportUI = {
 	    introText: '',
 	    correctTitle: '',
-	    firstWinTableData: []
+	    firstWinTableData: [],
+		secondWinTableData: []
 	};
 
 	function createReportFirstWindow(scene){
@@ -60930,7 +60931,6 @@
 		popupGroup.name = 'ReportFirstWindow';
 
 		const container = new ThreeMeshUI.Block({
-			//height: 3.0,
 			width: params.width,
 			fontFamily: params.fontFamily,
 		  	fontTexture: params.fontTexture,
@@ -60938,7 +60938,7 @@
 			backgroundOpacity: 1,
 		}); 
 		const contentBlock = new ThreeMeshUI.Block({
-			height: 3.0,
+			height: 3.2,
 			width: params.width,
 			alignContent: "left",
 			justifyContent: "start",
@@ -60951,11 +60951,48 @@
 	    container.add(setTitle());
 	    container.add(setText('introText', 0.125));
 	    container.add(setText('correctTitle', 0.15));
-	    for(let i = 0; i < 5; i++){
+	    for(let i = 0; i < 6; i++){
 	        reportUI.firstWinTableData.push({img: '', firstText: '', secondText: ''});
-	        container.add(setCorrectTableRow(i));
+	        container.add(setCorrectTableRow('firstWinTableData', i));
 	    }
-	    container.add(setBackNextBtns());
+	    container.add(setBackNextBtns("prevReportFirstBtn", "nextReportFirstBtn", true));
+
+		popupGroup.position.set(0.0, 3.78, -3.5);
+		popupGroup.add(container);
+		popupGroup.visible = false;
+		scene.add(popupGroup);
+	}
+
+	function createReportFirstTableWindow(scene){
+		let popupGroup = new Group();
+		popupGroup.name = 'ReportFirstTableWindow';
+
+		const container = new ThreeMeshUI.Block({
+			//height: 3.0,
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		}); 
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 3.3,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});  
+		container.add(contentBlock);
+
+	    container.add(setTitle());
+
+	    for(let i = 0; i < 8; i++){
+	        reportUI.secondWinTableData.push({img: '', firstText: '', secondText: ''});
+	        container.add(setCorrectTableRow('secondWinTableData', i));
+	    }
+	    container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
 
 		popupGroup.position.set(0.0, 3.78, -3.5);
 		popupGroup.add(container);
@@ -60999,9 +61036,8 @@
 	    return textBlock;
 	}
 
-	function setCorrectTableRow(i){
+	function setCorrectTableRow(field, i){
 	    const container = new ThreeMeshUI.Block({
-			height: 0.5,
 			width: params.width,
 			justifyContent: 'start',
 			alignContent: 'left',
@@ -61011,57 +61047,40 @@
 			backgroundColor: params.lightColor,
 	        padding: 0.1
 		});
-	    reportUI.firstWinTableData[i].img = new ThreeMeshUI.Block({
-			height: 0.3,
-			width: 0.3
+	    reportUI[field][i].img = new ThreeMeshUI.Block({
+			height: 0.2,
+			width: 0.2
 		});
 	    const textContent = new ThreeMeshUI.Block({
-			height: 0.6,
+			height: 0.25,
 			width: 4.5,
 			alignContent: 'left',
-			contentDirection: 'column',
 			fontFamily: params.fontFamily,
 		  	fontTexture: params.fontTexture,
 			backgroundColor: params.lightColor,
-	        padding: 0.05,
+			padding: 0.1
 		});
-	    container.add(reportUI.firstWinTableData[i].img, textContent);
+	    container.add(reportUI[field][i].img, textContent);
 
-	    const first = new ThreeMeshUI.Block({
-			height: 0.15,
-	        width: 4.5,
-			alignContent: "left",
-			justifyContent: "start",
-			padding: 0.1,
-	        backgroundColor: params.lightColor
-		});
-	    reportUI.firstWinTableData[i].firstText = new ThreeMeshUI.Text({
-			content: "title",
+	    reportUI[field][i].firstText = new ThreeMeshUI.Text({
+			content: "",
 			fontColor: params.darkColor,
 		  	fontSize: params.textFontSize,
 		});
-	    first.add(reportUI.firstWinTableData[i].firstText);
+	    textContent.add(reportUI[field][i].firstText);
 	    
-	    const second = new ThreeMeshUI.Block({
-			height: 0.15,
-	        width: 4.0,
-			alignContent: "left",
-			justifyContent: "start",
-			padding: 0.1,
-	        backgroundColor: params.lightColor
-		});
-	    reportUI.firstWinTableData[i].secondText = new ThreeMeshUI.Text({
-			content: "text",
+	    reportUI[field][i].secondText = new ThreeMeshUI.Text({
+			content: "",
 			fontColor: new Color(0x29a8e0),
 		  	fontSize: params.textFontSize,
 		});
-	    second.add(reportUI.firstWinTableData[i].secondText);
+	    textContent.add(reportUI[field][i].secondText);
 
-	    textContent.add(first, second);
+		reportUI[field][i].img.visible = false;
 	    return container;
 	}
 
-	function setBackNextBtns(){
+	function setBackNextBtns(prevBtnName, nextBtnName, isOnlyNext = false){
 	    const selectedAttributes = {
 			backgroundColor: new Color( 0x777777 ),
 			fontColor: new Color( 0x222222 )
@@ -61083,32 +61102,35 @@
 			backgroundOpacity: 1,
 		});
 
-		const prevBtnBlock = new ThreeMeshUI.Block({
-			height: 0.25,
-			width: 0.6,
-			alignContent: "center",
-			justifyContent: "center",
-			backgroundColor: params.darkColor,
-		}); 
-		const PrevText = new ThreeMeshUI.Text({
-			content: "Back",
-			fontColor: params.lightColor,
-		  	fontSize: params.textFontSize,
-		}); 
-		PrevText.name = "prevReportFirstBtn"; 
-		prevBtnBlock.setupState({
-			state: "selected",
-			attributes: selectedAttributes
-		});
-		prevBtnBlock.setupState({
-			state: "normal",
-			attributes: normalAttributes
-		});
-		prevBtnBlock.add(PrevText);
-		hoverObjectsList.push({
-			name: "prevReportFirstBtn",
-			state: 'normal'
-		});
+		if (!isOnlyNext){
+			const prevBtnBlock = new ThreeMeshUI.Block({
+				height: 0.25,
+				width: 0.6,
+				alignContent: "center",
+				justifyContent: "center",
+				backgroundColor: params.darkColor,
+			}); 
+			const PrevText = new ThreeMeshUI.Text({
+				content: "Back",
+				fontColor: params.lightColor,
+				  fontSize: params.textFontSize,
+			}); 
+			PrevText.name = prevBtnName; 
+			prevBtnBlock.setupState({
+				state: "selected",
+				attributes: selectedAttributes
+			});
+			prevBtnBlock.setupState({
+				state: "normal",
+				attributes: normalAttributes
+			});
+			prevBtnBlock.add(PrevText);
+			hoverObjectsList.push({
+				name: prevBtnName,
+				state: 'normal'
+			});
+			btnsContainer.add(prevBtnBlock);
+		}
 
 		const nextBtnBlock = new ThreeMeshUI.Block({
 			height: 0.25,
@@ -61123,7 +61145,7 @@
 			fontColor: params.lightColor,
 		  	fontSize: params.textFontSize,
 		});
-		NextText.name = "nextReportFirstBtn"; 
+		NextText.name = nextBtnName; 
 		nextBtnBlock.setupState({
 			state: "selected",
 			attributes: selectedAttributes
@@ -61134,11 +61156,11 @@
 		});
 		nextBtnBlock.add(NextText);
 		hoverObjectsList.push({
-			name: "nextReportFirstBtn",
+			name: nextBtnName,
 			state: 'normal'
 		});
 		
-		btnsContainer.add(prevBtnBlock, nextBtnBlock);
+		btnsContainer.add(nextBtnBlock);
 		return btnsContainer;
 	}
 
@@ -61262,6 +61284,7 @@
 			createConfidenceWindow(scene);
 			createTrueFalseQuizzWindow(scene);
 			createReportFirstWindow(scene);
+			createReportFirstTableWindow(scene);
 			//tooltips
 			objectsParams.interactiveObjectList.forEach((item) => {
 				createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -61346,11 +61369,12 @@
 
 			//find intersects
 	        const intersections = this.raycaster.intersectObjects(scene.children, true);
-			console.log(intersections);
+			//console.log(intersections)
 			const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
 			const isTFQuizzVisible = scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible;
 			const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
 			const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
+			let isNext = false, isPrev = false;
 			intersections.forEach(intersect => {
 				if (intersect != undefined && intersect.object.type == 'Mesh') { 
 					if (stepSimType.includes('intro')){
@@ -61492,7 +61516,7 @@
 					}
 					if (stepSimType === 'sim-end'){
 						if (intersect.object.name == "MeshUI-Frame")
-							if(intersect.object.parent.children[1].name === 'successOk'){
+							if(intersect.object.parent.children[1]?.name === 'successOk'){
 								simulationStep = 0;
 								showCurrentSimulationStep();
 								objectsParams.interactiveObjectList.forEach((obj) => {
@@ -61504,17 +61528,37 @@
 							}
 						
 					}
-					/*
-					//close popup
-					if (intersect.object.name == 'Close'){
-						showCloseWindow(false);
+					if (stepSimType === 'report-first-table'){
+						if (intersect.object.name == "MeshUI-Frame"){
+							if (intersect.object.parent.children[1]?.name === 'nextReportFirstTableBtn'){
+								isNext = true;
+							}						
+							if (intersect.object.parent.children[1]?.name === 'prevReportFirstTableBtn'){
+								isPrev = true;
+							}
+						}
 					}
-					if (intersect.object.name == 'Ok'){
-						restartSimulation();
+					if (stepSimType === 'report-first'){
+						if (intersect.object.name == "MeshUI-Frame"){
+							if (intersect.object.parent.children[1]?.name === 'nextReportFirstBtn'){
+								isNext = true;
+							}						
+							if (intersect.object.parent.children[1]?.name === 'prevReportFirstBtn'){
+								isPrev = true;
+							}
+						}
 					}
-					*/
 				}
 			});
+			if (isNext){
+				simulationStep++;
+				showCurrentSimulationStep();
+			}
+			if (isPrev){
+				simulationStep--;
+				showCurrentSimulationStep();
+			}
+
 	      };
 		  //------- endClick -------------
 	      const endListener = () => {
@@ -61657,10 +61701,12 @@
 		scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 		scene.getObjectByName('ReportFirstWindow').visible = false;
+		scene.getObjectByName('ReportFirstTableWindow').visible = false;
 		changeAllInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
 
 		stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
+		console.log(PPE_DATA.vrSim.sim[simulationStep].type, simulationStep);
 		
 		if (PPE_DATA.vrSim.sim[simulationStep].type.includes('intro')){
 			//intro container
@@ -61821,7 +61867,7 @@
 				});
 				//wins
 				const pos = new Vector3(-2.0, 2.16, -2.0);
-				const rotY = 0.2;
+				const rotY = 0.5;
 				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
 					scene.getObjectByName(el).position.copy(pos);
 					scene.getObjectByName(el).rotation.y = rotY;
@@ -61877,27 +61923,59 @@
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
-		if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
-			document.getElementById('reportFrame').style.display = 'block'; 
-			document.getElementById('closeFrame').style.display = 'block';
-			simulationStep++;
-			showCurrentSimulationStep();
-		}
+		// if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
+		// 	document.getElementById('reportFrame').style.display = 'block'; 
+		// 	document.getElementById('closeFrame').style.display = 'block';
+		// 	simulationStep++;
+		// 	showCurrentSimulationStep();
+		// }
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first'){
 			scene.getObjectByName('ReportFirstWindow').visible = true;
 			reportUI.introText.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('simreportheader').textContent});
 			reportUI.correctTitle.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('reportsimname').textContent});
 			
 			var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
-			for(let i = 0; i < 5; i++){
+			for(let i = 0; i < 6; i++){
 				reportUI.firstWinTableData[i].firstText.set({content: table[i].getElementsByClassName('questionreporttext')[0].textContent});
 				reportUI.firstWinTableData[i].secondText.set({content: table[i].getElementsByClassName('answerreporttext')[0].textContent});
 				const loader = new TextureLoader();  
-				loader.load(table[i].querySelector('img').getAttribute('src'), function (texture) {
+				const src = table[i].querySelector('img').getAttribute('src');
+				const prefix = src.includes('incorrect') ? 'in' : '';
+				loader.load(`./assets/img/${prefix}correct.png`, function (texture) {
 					reportUI.firstWinTableData[i].img.set({ backgroundTexture: texture });
+					reportUI.firstWinTableData[i].img.visible = true;
 				});
 			}
 		}
+		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first-table'){
+			scene.getObjectByName('ReportFirstTableWindow').visible = true;
+			var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
+			for(let i = 0; i < 8; i++){
+				reportUI.secondWinTableData[i].img.visible = false;
+				reportUI.secondWinTableData[i].firstText.set({content: ''});
+				reportUI.secondWinTableData[i].secondText.set({content: ''});
+
+				const 	from = PPE_DATA.vrSim.sim[simulationStep].from,
+					 	to = PPE_DATA.vrSim.sim[simulationStep].to;
+				if (i + from < to ){
+					const index = i + from - 1;
+					if (index >= table.length) return;
+					reportUI.secondWinTableData[i].firstText.set({content: fixTextFotMeshUI(table[index].getElementsByClassName('questionreporttext')[0].textContent)});
+					reportUI.secondWinTableData[i].secondText.set({content: fixTextFotMeshUI(table[index].getElementsByClassName('answerreporttext')[0].textContent)});
+					const loader = new TextureLoader();  
+					const src = table[index].querySelector('img').getAttribute('src');
+					const prefix = src.includes('incorrect') ? 'in' : '';
+					loader.load(`./assets/img/${prefix}correct.png`, function (texture) {
+						reportUI.secondWinTableData[i].img.set({ backgroundTexture: texture });
+						reportUI.secondWinTableData[i].img.visible = true;
+					});
+				}
+			}
+		}
+	}
+
+	function fixTextFotMeshUI(text){
+		return text.replaceAll('>', '');
 	}
 
 	const app = new App();

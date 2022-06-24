@@ -10,10 +10,6 @@
 			},
 			{
 				"id": 1,
-				"type": "report-first"
-			},
-			{
-				"id": 2,
 				"type": "intro-text",
 				"title": "Introduction",
 				"content": "The following learning experience is intended for hospital healthcare workers involved in the assessment and care of individuals with suspected or confirmed COVID-19. This guidance is specific to COVID-19 and based on current CDC guidelines and Infection Prevention best practices. Your organization may have additional recommendations or protocols beyond that which is required by the CDC. \n As you move through this interactive module, please keep in mind: \n Personal Protective Equipment (PPE) is just one control in protecting workers from workplace hazards. \n Only clinical staff who are trained and competent in the use of this PPE should be allowed to enter the patients room. \n Healthcare workers must be familiar with local and institutional operational guidelines for the safe care of patients with suspected or confirmed COVID-19. \n Hospitals need to identify areas to safely don and doff PPE. \n When possible, the donning and doffing process should be supervised by a trained observer. A Trained Observer is a member of the staff who is also trained and competent in the use of the PPE whose sole responsibility is to guide health care providers as they don (put on) and doff (take off) personal protective equipment, or PPE.",
@@ -559,7 +555,7 @@
 				"btnText1": "Perform hand hygiene",
 				"btnText2": "Don new pair of clean gloves",
 				"btnText3": "Update patient medical record",
-				"btnText4": "Don new pair of clean gloves",
+				"btnText4": "Leave the room",
 				"highlightedObjectNames": ["Body"],
 				"correctObjectName": "Body",
 				"correctAnswer": "quizz-btn-1"
@@ -573,10 +569,28 @@
 			},
 			{
 				"id": 73,
-				"type": "show-report-frame"
+				"type": "report-first"
 			},
 			{
 				"id": 74,
+				"type": "report-first-table",
+				"from": 7,
+				"to": 15
+			},
+			{
+				"id": 75,
+				"type": "report-first-table",
+				"from": 15,
+				"to": 23
+			},
+			{
+				"id": 76,
+				"type": "report-first-table",
+				"from": 23,
+				"to": 27
+			},
+			{
+				"id": 77,
 				"type": "tf-quizz",
 				"question": "The following items are important elements of PPE: Gown, Gloves, Eye Protection, N 96 Respiration Mask",
 				"btnText1": "True",
@@ -584,7 +598,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 75,
+				"id": 78,
 				"type": "tf-quizz",
 				"question": "PPE is to be removed at the appropriate disposal site in the patients care area, prior to exiting the patients care area",
 				"btnText1": "True",
@@ -592,7 +606,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 76,
+				"id": 79,
 				"type": "tf-quizz",
 				"question": "Proper hand hygiene protocol is just as important to follow when removing or doffing PPE, as when donning PPE",
 				"btnText1": "True",
@@ -600,7 +614,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 77,
+				"id": 80,
 				"type": "tf-quizz",
 				"question": "A properly donned gown should cover the torso completely and be securely fastened",
 				"btnText1": "True",
@@ -608,7 +622,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 78,
+				"id": 81,
 				"type": "tf-quizz",
 				"question": "When putting on the N 95 Mask, be sure to crimp the nose piece and perforn a fit and leak test",
 				"btnText1": "True",
@@ -616,7 +630,7 @@
 				"correctAnswer": "tf-quizz-btn-1"
 			},
 			{
-				"id": 79,
+				"id": 82,
 				"type": "sim-end",
 				"title": "info",
 				"content": "Congratulations, you have completed the VR PPE Demo. Click OK to restart."

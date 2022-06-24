@@ -15,7 +15,8 @@ const params = {
 const reportUI = {
     introText: '',
     correctTitle: '',
-    firstWinTableData: []
+    firstWinTableData: [],
+	secondWinTableData: []
 }
 
 function createReportFirstWindow(scene){
@@ -23,7 +24,6 @@ function createReportFirstWindow(scene){
 	popupGroup.name = 'ReportFirstWindow';
 
 	const container = new ThreeMeshUI.Block({
-		//height: 3.0,
 		width: params.width,
 		fontFamily: params.fontFamily,
 	  	fontTexture: params.fontTexture,
@@ -31,7 +31,7 @@ function createReportFirstWindow(scene){
 		backgroundOpacity: 1,
 	}); 
 	const contentBlock = new ThreeMeshUI.Block({
-		height: 3.0,
+		height: 3.2,
 		width: params.width,
 		alignContent: "left",
 		justifyContent: "start",
@@ -44,11 +44,48 @@ function createReportFirstWindow(scene){
     container.add(setTitle());
     container.add(setText('introText', 0.125));
     container.add(setText('correctTitle', 0.15));
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < 6; i++){
         reportUI.firstWinTableData.push({img: '', firstText: '', secondText: ''});
-        container.add(setCorrectTableRow(i))
+        container.add(setCorrectTableRow('firstWinTableData', i))
     }
-    container.add(setBackNextBtns())
+    container.add(setBackNextBtns("prevReportFirstBtn", "nextReportFirstBtn", true))
+
+	popupGroup.position.set(0.0, 3.78, -3.5);
+	popupGroup.add(container);
+	popupGroup.visible = false;
+	scene.add(popupGroup);
+}
+
+function createReportFirstTableWindow(scene){
+	let popupGroup = new THREE.Group();
+	popupGroup.name = 'ReportFirstTableWindow';
+
+	const container = new ThreeMeshUI.Block({
+		//height: 3.0,
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	}); 
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 3.3,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});  
+	container.add(contentBlock);
+
+    container.add(setTitle());
+
+    for(let i = 0; i < 8; i++){
+        reportUI.secondWinTableData.push({img: '', firstText: '', secondText: ''});
+        container.add(setCorrectTableRow('secondWinTableData', i))
+    }
+    container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
 
 	popupGroup.position.set(0.0, 3.78, -3.5);
 	popupGroup.add(container);
@@ -92,9 +129,8 @@ function setText(field, fontSize){
     return textBlock;
 }
 
-function setCorrectTableRow(i){
+function setCorrectTableRow(field, i){
     const container = new ThreeMeshUI.Block({
-		height: 0.5,
 		width: params.width,
 		justifyContent: 'start',
 		alignContent: 'left',
@@ -104,57 +140,40 @@ function setCorrectTableRow(i){
 		backgroundColor: params.lightColor,
         padding: 0.1
 	});
-    reportUI.firstWinTableData[i].img = new ThreeMeshUI.Block({
-		height: 0.3,
-		width: 0.3
+    reportUI[field][i].img = new ThreeMeshUI.Block({
+		height: 0.2,
+		width: 0.2
 	});
     const textContent = new ThreeMeshUI.Block({
-		height: 0.6,
+		height: 0.25,
 		width: 4.5,
 		alignContent: 'left',
-		contentDirection: 'column',
 		fontFamily: params.fontFamily,
 	  	fontTexture: params.fontTexture,
 		backgroundColor: params.lightColor,
-        padding: 0.05,
+		padding: 0.1
 	});
-    container.add(reportUI.firstWinTableData[i].img, textContent);
+    container.add(reportUI[field][i].img, textContent);
 
-    const first = new ThreeMeshUI.Block({
-		height: 0.15,
-        width: 4.5,
-		alignContent: "left",
-		justifyContent: "start",
-		padding: 0.1,
-        backgroundColor: params.lightColor
-	});
-    reportUI.firstWinTableData[i].firstText = new ThreeMeshUI.Text({
-		content: "title",
+    reportUI[field][i].firstText = new ThreeMeshUI.Text({
+		content: "",
 		fontColor: params.darkColor,
 	  	fontSize: params.textFontSize,
 	});
-    first.add(reportUI.firstWinTableData[i].firstText);
+    textContent.add(reportUI[field][i].firstText);
     
-    const second = new ThreeMeshUI.Block({
-		height: 0.15,
-        width: 4.0,
-		alignContent: "left",
-		justifyContent: "start",
-		padding: 0.1,
-        backgroundColor: params.lightColor
-	});
-    reportUI.firstWinTableData[i].secondText = new ThreeMeshUI.Text({
-		content: "text",
+    reportUI[field][i].secondText = new ThreeMeshUI.Text({
+		content: "",
 		fontColor: new THREE.Color(0x29a8e0),
 	  	fontSize: params.textFontSize,
 	});
-    second.add(reportUI.firstWinTableData[i].secondText);
+    textContent.add(reportUI[field][i].secondText);
 
-    textContent.add(first, second);
+	reportUI[field][i].img.visible = false;
     return container;
 }
 
-function setBackNextBtns(){
+function setBackNextBtns(prevBtnName, nextBtnName, isOnlyNext = false){
     const selectedAttributes = {
 		backgroundColor: new THREE.Color( 0x777777 ),
 		fontColor: new THREE.Color( 0x222222 )
@@ -176,32 +195,35 @@ function setBackNextBtns(){
 		backgroundOpacity: 1,
 	});
 
-	const prevBtnBlock = new ThreeMeshUI.Block({
-		height: 0.25,
-		width: 0.6,
-		alignContent: "center",
-		justifyContent: "center",
-		backgroundColor: params.darkColor,
-	}); 
-	const PrevText = new ThreeMeshUI.Text({
-		content: "Back",
-		fontColor: params.lightColor,
-	  	fontSize: params.textFontSize,
-	}); 
-	PrevText.name = "prevReportFirstBtn"; 
-	prevBtnBlock.setupState({
-		state: "selected",
-		attributes: selectedAttributes
-	});
-	prevBtnBlock.setupState({
-		state: "normal",
-		attributes: normalAttributes
-	});
-	prevBtnBlock.add(PrevText);
-	hoverObjectsList.push({
-		name: "prevReportFirstBtn",
-		state: 'normal'
-	})
+	if (!isOnlyNext){
+		const prevBtnBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.6,
+			alignContent: "center",
+			justifyContent: "center",
+			backgroundColor: params.darkColor,
+		}); 
+		const PrevText = new ThreeMeshUI.Text({
+			content: "Back",
+			fontColor: params.lightColor,
+			  fontSize: params.textFontSize,
+		}); 
+		PrevText.name = prevBtnName; 
+		prevBtnBlock.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		prevBtnBlock.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
+		prevBtnBlock.add(PrevText);
+		hoverObjectsList.push({
+			name: prevBtnName,
+			state: 'normal'
+		});
+		btnsContainer.add(prevBtnBlock);
+	}
 
 	const nextBtnBlock = new ThreeMeshUI.Block({
 		height: 0.25,
@@ -216,7 +238,7 @@ function setBackNextBtns(){
 		fontColor: params.lightColor,
 	  	fontSize: params.textFontSize,
 	});
-	NextText.name = "nextReportFirstBtn"; 
+	NextText.name = nextBtnName; 
 	nextBtnBlock.setupState({
 		state: "selected",
 		attributes: selectedAttributes
@@ -227,12 +249,12 @@ function setBackNextBtns(){
 	});
 	nextBtnBlock.add(NextText);
 	hoverObjectsList.push({
-		name: "nextReportFirstBtn",
+		name: nextBtnName,
 		state: 'normal'
 	})
 	
-	btnsContainer.add(prevBtnBlock, nextBtnBlock);
+	btnsContainer.add(nextBtnBlock);
 	return btnsContainer;
 }
 
-export { createReportFirstWindow, reportUI }
+export { createReportFirstWindow, reportUI, createReportFirstTableWindow }

@@ -14,7 +14,7 @@ import { hoverObjectsList,
 		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
 	} from './modules/windowsUI.js'
 import { addPolutionDecals, removeDecalsFromScene } from './modules/decals'
-import { createReportFirstWindow, reportUI } from './modules/reportUI.js'
+import { createReportFirstWindow, reportUI, createReportFirstTableWindow } from './modules/reportUI.js'
 
 let camera, scene, renderer;
 
@@ -136,6 +136,7 @@ class App {
 		createConfidenceWindow(scene);
 		createTrueFalseQuizzWindow(scene);
 		createReportFirstWindow(scene);
+		createReportFirstTableWindow(scene);
 		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -220,11 +221,12 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 
 		//find intersects
         const intersections = this.raycaster.intersectObjects(scene.children, true);
-		console.log(intersections)
+		//console.log(intersections)
 		const isQuizzVisible = scene.getObjectByName(QuizzObjects.QuizzContainerName).visible;
 		const isTFQuizzVisible = scene.getObjectByName(TFQuizzObjects.QuizzContainerName).visible;
 		const isConfidenceVisible = scene.getObjectByName('ConfidenceWindow').visible;
 		const isCorrectPopupVisible = scene.getObjectByName(correctIncorrectObjects.containerName).visible;
+		let isNext = false, isPrev = false;
 		intersections.forEach(intersect => {
 			if (intersect != undefined && intersect.object.type == 'Mesh') { 
 				if (stepSimType.includes('intro')){
@@ -366,7 +368,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 				}
 				if (stepSimType === 'sim-end'){
 					if (intersect.object.name == "MeshUI-Frame")
-						if(intersect.object.parent.children[1].name === 'successOk'){
+						if(intersect.object.parent.children[1]?.name === 'successOk'){
 							simulationStep = 0;
 							showCurrentSimulationStep();
 							objectsParams.interactiveObjectList.forEach((obj) => {
@@ -378,17 +380,37 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 						}
 					
 				}
-				/*
-				//close popup
-				if (intersect.object.name == 'Close'){
-					showCloseWindow(false);
+				if (stepSimType === 'report-first-table'){
+					if (intersect.object.name == "MeshUI-Frame"){
+						if (intersect.object.parent.children[1]?.name === 'nextReportFirstTableBtn'){
+							isNext = true;
+						}						
+						if (intersect.object.parent.children[1]?.name === 'prevReportFirstTableBtn'){
+							isPrev = true;
+						}
+					}
 				}
-				if (intersect.object.name == 'Ok'){
-					restartSimulation();
+				if (stepSimType === 'report-first'){
+					if (intersect.object.name == "MeshUI-Frame"){
+						if (intersect.object.parent.children[1]?.name === 'nextReportFirstBtn'){
+							isNext = true;
+						}						
+						if (intersect.object.parent.children[1]?.name === 'prevReportFirstBtn'){
+							isPrev = true;
+						}
+					}
 				}
-				*/
 			}
 		});
+		if (isNext){
+			simulationStep++;
+			showCurrentSimulationStep();
+		}
+		if (isPrev){
+			simulationStep--;
+			showCurrentSimulationStep();
+		}
+
       };
 	  //------- endClick -------------
       const endListener = () => {
@@ -531,10 +553,12 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 	scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 	scene.getObjectByName('ReportFirstWindow').visible = false;
+	scene.getObjectByName('ReportFirstTableWindow').visible = false;
 	changeAllInfoPopupsVisibility(false);
 	document.getElementById('video').pause();
 
 	stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
+	console.log(PPE_DATA.vrSim.sim[simulationStep].type, simulationStep)
 	
 	if (PPE_DATA.vrSim.sim[simulationStep].type.includes('intro')){
 		//intro container
@@ -695,7 +719,7 @@ function showCurrentSimulationStep(){
 			})
 			//wins
 			const pos = new THREE.Vector3(-2.0, 2.16, -2.0);
-			const rotY = 0.2;
+			const rotY = 0.5;
 			['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
 				scene.getObjectByName(el).position.copy(pos);
 				scene.getObjectByName(el).rotation.y = rotY;
@@ -751,27 +775,59 @@ function showCurrentSimulationStep(){
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
-	if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
-		document.getElementById('reportFrame').style.display = 'block'; 
-		document.getElementById('closeFrame').style.display = 'block';
-		simulationStep++;
-		showCurrentSimulationStep();
-	}
+	// if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
+	// 	document.getElementById('reportFrame').style.display = 'block'; 
+	// 	document.getElementById('closeFrame').style.display = 'block';
+	// 	simulationStep++;
+	// 	showCurrentSimulationStep();
+	// }
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first'){
 		scene.getObjectByName('ReportFirstWindow').visible = true;
 		reportUI.introText.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('simreportheader').textContent});
 		reportUI.correctTitle.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('reportsimname').textContent});
 		
 		var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
-		for(let i = 0; i < 5; i++){
+		for(let i = 0; i < 6; i++){
 			reportUI.firstWinTableData[i].firstText.set({content: table[i].getElementsByClassName('questionreporttext')[0].textContent});
 			reportUI.firstWinTableData[i].secondText.set({content: table[i].getElementsByClassName('answerreporttext')[0].textContent});
 			const loader = new THREE.TextureLoader();  
-			loader.load(table[i].querySelector('img').getAttribute('src'), function (texture) {
+			const src = table[i].querySelector('img').getAttribute('src');
+			const prefix = src.includes('incorrect') ? 'in' : '';
+			loader.load(`./assets/img/${prefix}correct.png`, function (texture) {
 				reportUI.firstWinTableData[i].img.set({ backgroundTexture: texture });
+				reportUI.firstWinTableData[i].img.visible = true;
 			});
 		}
 	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first-table'){
+		scene.getObjectByName('ReportFirstTableWindow').visible = true;
+		var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
+		for(let i = 0; i < 8; i++){
+			reportUI.secondWinTableData[i].img.visible = false;
+			reportUI.secondWinTableData[i].firstText.set({content: ''});
+			reportUI.secondWinTableData[i].secondText.set({content: ''});
+
+			const 	from = PPE_DATA.vrSim.sim[simulationStep].from,
+				 	to = PPE_DATA.vrSim.sim[simulationStep].to;
+			if (i + from < to ){
+				const index = i + from - 1;
+				if (index >= table.length) return;
+				reportUI.secondWinTableData[i].firstText.set({content: fixTextFotMeshUI(table[index].getElementsByClassName('questionreporttext')[0].textContent)});
+				reportUI.secondWinTableData[i].secondText.set({content: fixTextFotMeshUI(table[index].getElementsByClassName('answerreporttext')[0].textContent)});
+				const loader = new THREE.TextureLoader();  
+				const src = table[index].querySelector('img').getAttribute('src');
+				const prefix = src.includes('incorrect') ? 'in' : '';
+				loader.load(`./assets/img/${prefix}correct.png`, function (texture) {
+					reportUI.secondWinTableData[i].img.set({ backgroundTexture: texture });
+					reportUI.secondWinTableData[i].img.visible = true;
+				});
+			}
+		}
+	}
+}
+
+function fixTextFotMeshUI(text){
+	return text.replaceAll('>', '');
 }
 
 export default App;
