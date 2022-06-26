@@ -14,7 +14,7 @@ import { hoverObjectsList,
 		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
 	} from './modules/windowsUI.js'
 import { addPolutionDecals, removeDecalsFromScene } from './modules/decals'
-import { createReportFirstWindow, reportUI, createReportFirstTableWindow, createReportConfidenceTableWindow } from './modules/reportUI.js'
+import { createReportFirstWindow, reportUI, createReportFirstTableWindow, createReportConfidenceTableWindow, createReportDiagramWindow } from './modules/reportUI.js'
 
 let camera, scene, renderer;
 
@@ -138,6 +138,7 @@ class App {
 		createReportFirstWindow(scene);
 		createReportFirstTableWindow(scene);
 		createReportConfidenceTableWindow(scene);
+		createReportDiagramWindow(scene);
 		//tooltips
 		objectsParams.interactiveObjectList.forEach((item) => {
 			createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -411,6 +412,16 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 						}
 					}
 				}
+				if (stepSimType === 'report-diagram'){
+					if (intersect.object.name == "MeshUI-Frame"){
+						if (intersect.object.parent.children[1]?.name === 'nextReportDiagramBtn'){
+							isNext = true;
+						}						
+						if (intersect.object.parent.children[1]?.name === 'prevReportDiagramBtn'){
+							isPrev = true;
+						}
+					}
+				}
 			}
 		});
 		if (isNext){
@@ -566,6 +577,7 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName('ReportFirstWindow').visible = false;
 	scene.getObjectByName('ReportFirstTableWindow').visible = false;
 	scene.getObjectByName('ReportConfidenceTableWindow').visible = false;
+	scene.getObjectByName('ReportDiagramWindow').visible = false;
 
 	changeAllInfoPopupsVisibility(false);
 	document.getElementById('video').pause();
@@ -875,6 +887,9 @@ function showCurrentSimulationStep(){
 				}
 			}
 		}
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-diagram'){
+		scene.getObjectByName('ReportDiagramWindow').visible = true;
 	}
 }
 

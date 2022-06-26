@@ -60929,6 +60929,8 @@
 		confidencePerPage: 7
 	};
 
+	const winsPosition = new Vector3(0.0, 3.78, -4.0);
+
 	function createReportFirstWindow(scene){
 		let popupGroup = new Group();
 		popupGroup.name = 'ReportFirstWindow';
@@ -60960,7 +60962,7 @@
 	    }
 	    container.add(setBackNextBtns("prevReportFirstBtn", "nextReportFirstBtn", true));
 
-		popupGroup.position.set(0.0, 3.78, -3.5);
+		popupGroup.position.copy(winsPosition);
 		popupGroup.add(container);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
@@ -60997,7 +60999,7 @@
 	    }
 	    container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
 
-		popupGroup.position.set(0.0, 3.78, -3.5);
+		popupGroup.position.copy(winsPosition);
 		popupGroup.add(container);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
@@ -61039,7 +61041,57 @@
 	    }
 	    container.add(setBackNextBtns("prevReportConfidenceTableBtn", "nextReportConfidenceTableBtn"));
 
-		popupGroup.position.set(0.0, 3.78, -3.5);
+		popupGroup.position.copy(winsPosition);
+		popupGroup.add(container);
+		popupGroup.visible = false;
+		scene.add(popupGroup);
+	}
+
+	function createReportDiagramWindow(scene){
+		let popupGroup = new Group();
+		popupGroup.name = 'ReportDiagramWindow';
+
+		const container = new ThreeMeshUI.Block({
+			//height: 4.0,
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+			justifyContent: "start",
+		}); 
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 3.3,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});  
+		container.add(contentBlock);
+
+	    container.add(setTitle());
+		
+		const imgBlock = new ThreeMeshUI.Block({
+			height: 3.6,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+			backgroundSize: "contain"
+		});  
+		container.add(imgBlock);
+		const loader = new TextureLoader();  
+		loader.load('./assets/img/reportDiagram.png', function (texture) {
+			imgBlock.set({ backgroundTexture: texture });
+		});
+
+	    container.add(setBackNextBtns("prevReportDiagramBtn", "nextReportDiagramBtn"));
+
+		popupGroup.position.copy(winsPosition);
 		popupGroup.add(container);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
@@ -61475,6 +61527,7 @@
 			createReportFirstWindow(scene);
 			createReportFirstTableWindow(scene);
 			createReportConfidenceTableWindow(scene);
+			createReportDiagramWindow(scene);
 			//tooltips
 			objectsParams.interactiveObjectList.forEach((item) => {
 				createInfoPopup(scene, item.objName, item.popupPosition, item.tooltipText, item.tooltopXScale);
@@ -61748,6 +61801,16 @@
 							}
 						}
 					}
+					if (stepSimType === 'report-diagram'){
+						if (intersect.object.name == "MeshUI-Frame"){
+							if (intersect.object.parent.children[1]?.name === 'nextReportDiagramBtn'){
+								isNext = true;
+							}						
+							if (intersect.object.parent.children[1]?.name === 'prevReportDiagramBtn'){
+								isPrev = true;
+							}
+						}
+					}
 				}
 			});
 			if (isNext){
@@ -61903,6 +61966,7 @@
 		scene.getObjectByName('ReportFirstWindow').visible = false;
 		scene.getObjectByName('ReportFirstTableWindow').visible = false;
 		scene.getObjectByName('ReportConfidenceTableWindow').visible = false;
+		scene.getObjectByName('ReportDiagramWindow').visible = false;
 
 		changeAllInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
@@ -62212,6 +62276,9 @@
 					}
 				}
 			}
+		}
+		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-diagram'){
+			scene.getObjectByName('ReportDiagramWindow').visible = true;
 		}
 	}
 

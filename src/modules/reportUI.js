@@ -22,6 +22,8 @@ const reportUI = {
 	confidencePerPage: 7
 }
 
+const winsPosition = new THREE.Vector3(0.0, 3.78, -4.0);
+
 function createReportFirstWindow(scene){
 	let popupGroup = new THREE.Group();
 	popupGroup.name = 'ReportFirstWindow';
@@ -53,7 +55,7 @@ function createReportFirstWindow(scene){
     }
     container.add(setBackNextBtns("prevReportFirstBtn", "nextReportFirstBtn", true))
 
-	popupGroup.position.set(0.0, 3.78, -3.5);
+	popupGroup.position.copy(winsPosition);
 	popupGroup.add(container);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
@@ -90,7 +92,7 @@ function createReportFirstTableWindow(scene){
     }
     container.add(setBackNextBtns("prevReportFirstTableBtn", "nextReportFirstTableBtn"));
 
-	popupGroup.position.set(0.0, 3.78, -3.5);
+	popupGroup.position.copy(winsPosition);
 	popupGroup.add(container);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
@@ -132,7 +134,57 @@ function createReportConfidenceTableWindow(scene){
     }
     container.add(setBackNextBtns("prevReportConfidenceTableBtn", "nextReportConfidenceTableBtn"));
 
-	popupGroup.position.set(0.0, 3.78, -3.5);
+	popupGroup.position.copy(winsPosition);
+	popupGroup.add(container);
+	popupGroup.visible = false;
+	scene.add(popupGroup);
+}
+
+function createReportDiagramWindow(scene){
+	let popupGroup = new THREE.Group();
+	popupGroup.name = 'ReportDiagramWindow';
+
+	const container = new ThreeMeshUI.Block({
+		//height: 4.0,
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+		justifyContent: "start",
+	}); 
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 3.3,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});  
+	container.add(contentBlock);
+
+    container.add(setTitle());
+	
+	const imgBlock = new ThreeMeshUI.Block({
+		height: 3.6,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+		backgroundSize: "contain"
+	});  
+	container.add(imgBlock);
+	const loader = new THREE.TextureLoader();  
+	loader.load('./assets/img/reportDiagram.png', function (texture) {
+		imgBlock.set({ backgroundTexture: texture });
+	});
+
+    container.add(setBackNextBtns("prevReportDiagramBtn", "nextReportDiagramBtn"));
+
+	popupGroup.position.copy(winsPosition);
 	popupGroup.add(container);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
@@ -446,4 +498,4 @@ function setBackNextBtns(prevBtnName, nextBtnName, isOnlyNext = false){
 	return btnsContainer;
 }
 
-export { createReportFirstWindow, reportUI, createReportFirstTableWindow, createReportConfidenceTableWindow }
+export { createReportFirstWindow, reportUI, createReportFirstTableWindow, createReportConfidenceTableWindow, createReportDiagramWindow }
