@@ -59990,7 +59990,8 @@
 			width: 1.5,
 			alignContent: "center",
 			justifyContent: "start",
-			padding: 0.1
+			padding: 0.1,
+			backgroundSize: "contain"
 		});
 		container.add(infoObjectsMediumTextImg.imgContainerObjName);
 
