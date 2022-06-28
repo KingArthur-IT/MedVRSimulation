@@ -52052,13 +52052,13 @@
 			objName:            		'Body',
 			tooltipText:				'Click the nurse to interact',
 			tooltopXScale:				2.5,
-			position:           		new Vector3(-2.4, -1.5, -0.8),
+			position:           		new Vector3(-2.4, -1.5, -0.3),
 			rotation:           		new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 			scale: 	            		new Vector3(0.065, 0.065, 0.065),
 			collisionGeometry: 			'Box',
 			collisionPosition:  		new Vector3(0.72, 0.34, -5.0),
 			collisionSize:      		new Vector3(1.1, 3.6, 1.0),
-			popupPosition:           	new Vector3(0.68, 2.3, -4.0),
+			popupPosition:           	new Vector3(0.68, 2.3, -3.5),
 
 			secondRoomPosition: 		new Vector3(-5.0, -1.5, 3.0),
 			secondRoomRotation: 		new Vector3(0.0, 0.75, 0.0),
@@ -59546,7 +59546,7 @@
 		contentBlock.add(btnBlock);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.6, -3.5);
+		popupGroup.position.set(0.0, 2.6, -3.0);
 		popupGroup.visible = false;
 
 		scene.add(popupGroup); 
@@ -60098,7 +60098,7 @@
 		contentBlock.add(correctIncorrectObjects.contentTextObj);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.6, -3.5);
+		popupGroup.position.set(0.0, 2.6, -3.0);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -60192,7 +60192,7 @@
 		});
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.16, -3.5);
+		popupGroup.position.set(0.0, 2.16, -3.0);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
 	}
@@ -60303,7 +60303,7 @@
 		});
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.16, -3.5);
+		popupGroup.position.set(0.0, 2.16, -3.0);
 		popupGroup.visible = false;
 		scene.add(popupGroup);
 	}
@@ -60316,6 +60316,14 @@
 			width: 0.6,
 			textFontSize: 0.1,
 		}; 
+		const selectedAttributes = {
+			backgroundColor: new Color( 0xe4e73d ),
+			fontColor: new Color( 0x222222 )
+		};
+		const normalAttributes = {
+			backgroundColor: params.darkColor,
+			fontColor: params.lightColor
+		};
 		
 		let popupGroup = new Group();
 		popupGroup.name = 'Popup' + name;
@@ -60345,6 +60353,16 @@
 		  	fontSize: params.textFontSize,
 		});
 		contentBlock.add(text);
+		contentBlock.name = 'Popup' + name + 'Block';
+
+		contentBlock.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		contentBlock.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
 
 		popupGroup.add(container);
 		popupGroup.position.copy(position);
@@ -60519,7 +60537,7 @@
 		container.add(btnContainer);
 
 		popupGroup.add(container);
-		popupGroup.position.set(0.0, 2.0, -3.5);
+		popupGroup.position.set(0.0, 2.5, -3.0);
 		popupGroup.visible = false;
 		
 		scene.add(popupGroup);
@@ -61472,8 +61490,6 @@
 				});
 		}
 		init() {
-			var table = document.getElementById('reportFrame').contentWindow.document.querySelectorAll('#main_table tr');
-			console.log(table[0].getElementsByClassName('questionreporttext')[0].textContent);
 			//Room
 			addObjectToScene(scene, objectsParams.room.fileName, objectsParams.room.objName, objectsParams.room.position, objectsParams.room.scale, objectsParams.room.rotation);	
 			//body
@@ -61728,7 +61744,7 @@
 						});
 						if (intersect.object.name === putOnObjects.correctObjectName + 'Collider' || isInteractiveObjClicked){
 							stepSimType = 'confidencePutOn';
-							selectedPutOnObjects = intersect.object.name;
+							selectedPutOnObjects = intersect.object.name.replace('Collider', '');
 							scene.getObjectByName('ConfidenceWindow').visible = true;
 						}
 					}
@@ -61736,7 +61752,7 @@
 						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 								scene.getObjectByName('ConfidenceWindow').visible = false;
-								if (selectedPutOnObjects === putOnObjects.correctObjectName + 'Collider'){
+								if (selectedPutOnObjects === putOnObjects.correctObjectName){
 									if ( putOnObjects.correctObjectName !== 'GlovesPatientRoom')
 										scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
 									else scene.getObjectByName('BodyGloves').visible = true;
@@ -61855,6 +61871,12 @@
 	    update(scene) {
 	      this.reset();
 
+		  //set state = normal
+		  scene.getObjectByName('PopupBodyBlock').setState('normal');
+		  objectsParams.interactiveObjectList.forEach(el => {
+			if (el.objName !== selectedPutOnObjects)
+				scene.getObjectByName('Popup' + el.objName + 'Block').setState('normal');
+		  });
 		  hoverObjectsList.forEach(el => {
 			const wasSelected = selectedQuizzBtns.some((i) => { return i === el.name});
 			if (el.state === 'selected' && !wasSelected){
@@ -61885,6 +61907,10 @@
 							}
 						}
 					});
+					if (intersect.object.name.includes('Collider')){
+						const objName = intersect.object.name.replace('Collider', '');
+						scene.getObjectByName('Popup' + objName + 'Block').setState('selected');
+					}
 				}
 			});
 	      }

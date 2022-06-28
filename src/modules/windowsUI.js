@@ -141,7 +141,7 @@ function createSuccessPopup(scene){
 	contentBlock.add(btnBlock);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.6, -3.5);
+	popupGroup.position.set(0.0, 2.6, -3.0);
 	popupGroup.visible = false;
 
 	scene.add(popupGroup); 
@@ -693,7 +693,7 @@ function createCorrectIncorrectPopup(scene){
 	contentBlock.add(correctIncorrectObjects.contentTextObj);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.6, -3.5);
+	popupGroup.position.set(0.0, 2.6, -3.0);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
@@ -787,7 +787,7 @@ function createQuizzWindow(scene){
 	})
 
 	popupGroup.add(container);
-	popupGroup.position.set(0.0, 2.16, -3.5);
+	popupGroup.position.set(0.0, 2.16, -3.0);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
 }
@@ -898,7 +898,7 @@ function createTrueFalseQuizzWindow(scene){
 	})
 
 	popupGroup.add(container);
-	popupGroup.position.set(0.0, 2.16, -3.5);
+	popupGroup.position.set(0.0, 2.16, -3.0);
 	popupGroup.visible = false;
 	scene.add(popupGroup);
 }
@@ -911,6 +911,14 @@ function createInfoPopup(scene, name, position, tooltipText, xScale = 1.0){
 		width: 0.6,
 		textFontSize: 0.1,
 	}; 
+	const selectedAttributes = {
+		backgroundColor: new THREE.Color( 0xe4e73d ),
+		fontColor: new THREE.Color( 0x222222 )
+	};
+	const normalAttributes = {
+		backgroundColor: params.darkColor,
+		fontColor: params.lightColor
+	};
 	
 	let popupGroup = new THREE.Group();
 	popupGroup.name = 'Popup' + name;
@@ -940,6 +948,16 @@ function createInfoPopup(scene, name, position, tooltipText, xScale = 1.0){
 	  	fontSize: params.textFontSize,
 	});
 	contentBlock.add(text);
+	contentBlock.name = 'Popup' + name + 'Block';
+
+	contentBlock.setupState({
+		state: "selected",
+		attributes: selectedAttributes
+	});
+	contentBlock.setupState({
+		state: "normal",
+		attributes: normalAttributes
+	});
 
 	popupGroup.add(container)
 	popupGroup.position.copy(position);
@@ -1114,7 +1132,7 @@ function createConfidenceWindow(scene){
 	container.add(btnContainer);
 
 	popupGroup.add(container)
-	popupGroup.position.set(0.0, 2.0, -3.5);
+	popupGroup.position.set(0.0, 2.5, -3.0);
 	popupGroup.visible = false;
 	
 	scene.add(popupGroup);
