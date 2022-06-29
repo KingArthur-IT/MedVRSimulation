@@ -120,7 +120,7 @@
 			},
 			{
 				"id": 15,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nGather PPE for COVID-19 Enhanced Respiratory Precautuins (N95 mask, isolation gown, gloves, face shield).",
 				"img": "./assets/img/PPE.jpg"
@@ -166,7 +166,7 @@
 			},
 			{
 				"id": 20,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nUse hand sanitizer and allow to dry fully (20 seconds) OR wash with soap and water.",
 				"img": "./assets/img/sanitize.jpg"
@@ -193,7 +193,7 @@
 			},
 			{
 				"id": 24,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPut on N95 mask and perform a fit check.",
 				"img": "./assets/img/MaskPutOn.jpg"
@@ -220,7 +220,7 @@
 			},
 			{
 				"id": 28,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPut on gloves ensuring gown cuffs are covered",
 				"img": "./assets/img/GlovesPutOn.jpg"
@@ -295,7 +295,7 @@
 			},
 			{
 				"id": 38,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer. Use purple wipes IF you note any gross cantamination and allow to dry for 2 minutes.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
@@ -348,7 +348,7 @@
 			},
 			{
 				"id": 45,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
@@ -426,7 +426,7 @@
 			},
 			{
 				"id": 55,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
@@ -473,7 +473,7 @@
 			},
 			{
 				"id": 61,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
@@ -515,7 +515,7 @@
 			},
 			{
 				"id": 66,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"
@@ -562,7 +562,7 @@
 			},
 			{
 				"id": 72,
-				"type": "info-md-text-img",
+				"type": "info-md-text-lg-img",
 				"title": "Info",
 				"content": "Correct\nPerform hand hygiene with ETOH-based hand sanitizer.",
 				"img": "./assets/img/ETOHSanitizer.jpg"

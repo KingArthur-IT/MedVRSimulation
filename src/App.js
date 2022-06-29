@@ -9,8 +9,8 @@ import { objectsParams } from './modules/sceneObjects.js'
 import { addInteractiveObject, addObjectToScene } from './modules/addObjects.js'
 import { hoverObjectsList,
 		IntroObjects, QuizzObjects, TFQuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
-		infoObjectsSmall, successObjects,
-		createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
+		infoObjectsSmall, successObjects, infoObjectsMediumTextLargeImg,
+		createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg, createInfoMediumTextLargeImg,
 		createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow, createTrueFalseQuizzWindow 
 	} from './modules/windowsUI.js'
 import { addPolutionDecals, removeDecalsFromScene } from './modules/decals'
@@ -131,6 +131,7 @@ class App {
 		createInfoSmall(scene);
 		createInfoMediumText(scene);
 		createInfoMediumTextImg(scene);
+		createInfoMediumTextLargeImg(scene);
 		createConfidenceWindow(scene);
 		createTrueFalseQuizzWindow(scene);
 		createReportFirstWindow(scene);
@@ -246,6 +247,7 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 						let objName = intersect.object.parent.children[1]?.name;
 						if (
 							(objName === 'okBtnInfoMediumTextImg' && stepSimType === 'info-md-text-img') ||
+							(objName === 'okBtnInfoMediumTextLargeImg' && stepSimType === 'info-md-text-lg-img') ||
 							(objName === 'okBtnInfoMediumText' && stepSimType === 'info-md-text') ||
 							(objName === 'okBtnInfoSmall' && stepSimType === 'info-sm')
 						){
@@ -580,6 +582,7 @@ function showCurrentSimulationStep(){
 	scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 	scene.getObjectByName(successObjects.containerName).visible = false;
 	scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
+	scene.getObjectByName(infoObjectsMediumTextLargeImg.containerName).visible = false;
 	scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 	scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 	scene.getObjectByName('ReportFirstWindow').visible = false;
@@ -639,6 +642,20 @@ function showCurrentSimulationStep(){
 		loader.load(PPE_DATA.vrSim.sim[simulationStep].img, function (texture) {
 			//texture.minFilter = THREE.LinearFilter;
 			infoObjectsMediumTextImg.imgContainerObjName.set({ backgroundTexture: texture });
+		});
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'info-md-text-lg-img'){
+		//intro container
+		scene.getObjectByName(infoObjectsMediumTextLargeImg.containerName).visible = true;
+		//title
+		infoObjectsMediumTextLargeImg.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
+		//content text
+		infoObjectsMediumTextLargeImg.contentTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].content});
+		//img
+		const loader = new THREE.TextureLoader();  
+		loader.load(PPE_DATA.vrSim.sim[simulationStep].img, function (texture) {
+			//texture.minFilter = THREE.LinearFilter;
+			infoObjectsMediumTextLargeImg.imgContainerObjName.set({ backgroundTexture: texture });
 		});
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'info-md-text'){
@@ -752,7 +769,7 @@ function showCurrentSimulationStep(){
 			//wins
 			const pos = new THREE.Vector3(-2.0, 2.16, -2.0);
 			const rotY = 0.5;
-			['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+			['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg', 'infoGroupMediumTextLargeImg'].forEach((el) => {
 				scene.getObjectByName(el).position.copy(pos);
 				scene.getObjectByName(el).rotation.y = rotY;
 			})
@@ -784,7 +801,7 @@ function showCurrentSimulationStep(){
 			//wins
 			const pos = new THREE.Vector3(0.0, 2.16, -3.4);
 			const rotY = 0.0;
-			['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+			['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg', 'infoGroupMediumTextLargeImg'].forEach((el) => {
 				scene.getObjectByName(el).position.copy(pos);
 				scene.getObjectByName(el).rotation.y = rotY;
 			})

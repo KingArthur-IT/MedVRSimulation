@@ -39,6 +39,12 @@ let infoObjectsMediumTextImg = {
 	"contentTextObj": null,
 	"imgContainerObjName": "imageInfoMd",
 };
+let infoObjectsMediumTextLargeImg = {
+	"containerName": "infoGroupMediumTextLargeImg",
+	"titleTextObj": null,
+	"contentTextObj": null,
+	"imgContainerObjName": "imageInfoLg",
+};
 let infoObjectsSmall = {
 	"containerName": "infoGroupSmall",
 	"titleTextObj": null,
@@ -639,6 +645,125 @@ function createInfoMediumTextImg(scene){
 	
 	scene.add(popupGroup);
 }
+function createInfoMediumTextLargeImg(scene){
+	const params = {
+		fontFamily: "./assets/Roboto-msdf.json",
+	  	fontTexture: "./assets/Roboto-msdf.png",
+		darkColor: new THREE.Color(0x3e3e3e),
+		lightColor: new THREE.Color(0xe2e2e2),
+		width: 5.0,
+		titleFontSize: 0.125,
+		textFontSize: 0.1,
+	}; 
+	const selectedAttributes = {
+		backgroundColor: new THREE.Color( 0x777777 ),
+		fontColor: new THREE.Color( 0x222222 )
+	};
+	const normalAttributes = {
+		backgroundColor: params.darkColor,
+		fontColor: params.lightColor
+	};
+	
+	let popupGroup = new THREE.Group();
+	popupGroup.name = infoObjectsMediumTextLargeImg.containerName;
+
+	const container = new ThreeMeshUI.Block({
+		width: params.width,
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});
+	const titleBlock = new ThreeMeshUI.Block({
+		height: 0.28,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.darkColor,
+	});  
+	const contentBlock = new ThreeMeshUI.Block({
+		height: 0.75,
+		width: params.width,
+		alignContent: "left",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});  
+	container.add(titleBlock, contentBlock);
+	infoObjectsMediumTextLargeImg.titleTextObj = new ThreeMeshUI.Text({
+		content: "Info",
+		fontColor: params.lightColor,
+	  	fontSize: params.titleFontSize,
+	});
+	titleBlock.add(infoObjectsMediumTextLargeImg.titleTextObj);
+	infoObjectsMediumTextLargeImg.contentTextObj = new ThreeMeshUI.Text({
+		content: "Info",
+		fontColor: params.darkColor,
+	  	fontSize: params.titleFontSize,
+	});
+	contentBlock.add(infoObjectsMediumTextLargeImg.contentTextObj);
+
+	infoObjectsMediumTextLargeImg.imgContainerObjName = new ThreeMeshUI.Block({
+		height: 2.25,
+		width: 2.25,
+		alignContent: "center",
+		justifyContent: "start",
+		padding: 0.1,
+		backgroundSize: "contain"
+	});
+	container.add(infoObjectsMediumTextLargeImg.imgContainerObjName);
+
+	//btns
+	const btnContainer = new ThreeMeshUI.Block({
+		height: 0.4,
+		width: params.width,
+		justifyContent: 'center',
+		alignContent: 'center',
+		contentDirection: 'row',
+		fontFamily: params.fontFamily,
+	  	fontTexture: params.fontTexture,
+		backgroundColor: params.lightColor,
+		backgroundOpacity: 1,
+	});
+
+	const btnBlock = new ThreeMeshUI.Block({
+		height: 0.25,
+		width: 0.6,
+		alignContent: "center",
+		justifyContent: "center",
+		backgroundColor: params.darkColor,
+	}); 
+	const btnText = new ThreeMeshUI.Text({
+		content: "OK",
+		fontColor: params.lightColor,
+	  	fontSize: params.textFontSize,
+	}); 
+	btnText.name = "okBtnInfoMediumTextLargeImg"; 
+	btnBlock.setupState({
+		state: "selected",
+		attributes: selectedAttributes
+	});
+	btnBlock.setupState({
+		state: "normal",
+		attributes: normalAttributes
+	});
+	btnBlock.add(btnText);
+	btnContainer.add(btnBlock);
+	hoverObjectsList.push({
+		name: "okBtnInfoMediumTextLargeImg",
+		state: 'normal'
+	})
+
+	container.add(btnContainer);
+
+	popupGroup.add(container)
+	popupGroup.position.set(0.0, 2.0, -3.5);
+	popupGroup.visible = false;
+	
+	scene.add(popupGroup);
+}
 
 function createCorrectIncorrectPopup(scene){
 	const params = {
@@ -1141,8 +1266,8 @@ function createConfidenceWindow(scene){
 export {
     hoverObjectsList,
     IntroObjects, QuizzObjects, TFQuizzObjects, correctIncorrectObjects, infoObjectsMediumText, infoObjectsMediumTextImg,
-    infoObjectsSmall, successObjects,
+    infoObjectsSmall, successObjects, infoObjectsMediumTextLargeImg,
     createSuccessPopup, createIntroPopup, createInfoSmall, createInfoMediumText, createInfoMediumTextImg,
     createCorrectIncorrectPopup, createQuizzWindow, createInfoPopup, createConfidenceWindow,
-	createTrueFalseQuizzWindow
+	createTrueFalseQuizzWindow, createInfoMediumTextLargeImg
 }

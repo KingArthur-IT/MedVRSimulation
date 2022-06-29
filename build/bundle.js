@@ -52052,7 +52052,7 @@
 			objName:            		'Body',
 			tooltipText:				'Click the nurse to interact',
 			tooltopXScale:				2.5,
-			position:           		new Vector3(-2.4, -1.5, -0.3),
+			position:           		new Vector3(-2.4, -1.5, -0.8),
 			rotation:           		new Vector3(Math.PI * 0.0, Math.PI * 0.0, Math.PI * 0.0),		
 			scale: 	            		new Vector3(0.065, 0.065, 0.065),
 			collisionGeometry: 			'Box',
@@ -59444,6 +59444,12 @@
 		"contentTextObj": null,
 		"imgContainerObjName": "imageInfoMd",
 	};
+	let infoObjectsMediumTextLargeImg = {
+		"containerName": "infoGroupMediumTextLargeImg",
+		"titleTextObj": null,
+		"contentTextObj": null,
+		"imgContainerObjName": "imageInfoLg",
+	};
 	let infoObjectsSmall = {
 		"containerName": "infoGroupSmall",
 		"titleTextObj": null,
@@ -60033,6 +60039,125 @@
 		btnContainer.add(btnBlock);
 		hoverObjectsList.push({
 			name: "okBtnInfoMediumTextImg",
+			state: 'normal'
+		});
+
+		container.add(btnContainer);
+
+		popupGroup.add(container);
+		popupGroup.position.set(0.0, 2.0, -3.5);
+		popupGroup.visible = false;
+		
+		scene.add(popupGroup);
+	}
+	function createInfoMediumTextLargeImg(scene){
+		const params = {
+			fontFamily: "./assets/Roboto-msdf.json",
+		  	fontTexture: "./assets/Roboto-msdf.png",
+			darkColor: new Color(0x3e3e3e),
+			lightColor: new Color(0xe2e2e2),
+			width: 5.0,
+			titleFontSize: 0.125,
+			textFontSize: 0.1,
+		}; 
+		const selectedAttributes = {
+			backgroundColor: new Color( 0x777777 ),
+			fontColor: new Color( 0x222222 )
+		};
+		const normalAttributes = {
+			backgroundColor: params.darkColor,
+			fontColor: params.lightColor
+		};
+		
+		let popupGroup = new Group();
+		popupGroup.name = infoObjectsMediumTextLargeImg.containerName;
+
+		const container = new ThreeMeshUI.Block({
+			width: params.width,
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});
+		const titleBlock = new ThreeMeshUI.Block({
+			height: 0.28,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.darkColor,
+		});  
+		const contentBlock = new ThreeMeshUI.Block({
+			height: 0.75,
+			width: params.width,
+			alignContent: "left",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});  
+		container.add(titleBlock, contentBlock);
+		infoObjectsMediumTextLargeImg.titleTextObj = new ThreeMeshUI.Text({
+			content: "Info",
+			fontColor: params.lightColor,
+		  	fontSize: params.titleFontSize,
+		});
+		titleBlock.add(infoObjectsMediumTextLargeImg.titleTextObj);
+		infoObjectsMediumTextLargeImg.contentTextObj = new ThreeMeshUI.Text({
+			content: "Info",
+			fontColor: params.darkColor,
+		  	fontSize: params.titleFontSize,
+		});
+		contentBlock.add(infoObjectsMediumTextLargeImg.contentTextObj);
+
+		infoObjectsMediumTextLargeImg.imgContainerObjName = new ThreeMeshUI.Block({
+			height: 2.25,
+			width: 2.25,
+			alignContent: "center",
+			justifyContent: "start",
+			padding: 0.1,
+			backgroundSize: "contain"
+		});
+		container.add(infoObjectsMediumTextLargeImg.imgContainerObjName);
+
+		//btns
+		const btnContainer = new ThreeMeshUI.Block({
+			height: 0.4,
+			width: params.width,
+			justifyContent: 'center',
+			alignContent: 'center',
+			contentDirection: 'row',
+			fontFamily: params.fontFamily,
+		  	fontTexture: params.fontTexture,
+			backgroundColor: params.lightColor,
+			backgroundOpacity: 1,
+		});
+
+		const btnBlock = new ThreeMeshUI.Block({
+			height: 0.25,
+			width: 0.6,
+			alignContent: "center",
+			justifyContent: "center",
+			backgroundColor: params.darkColor,
+		}); 
+		const btnText = new ThreeMeshUI.Text({
+			content: "OK",
+			fontColor: params.lightColor,
+		  	fontSize: params.textFontSize,
+		}); 
+		btnText.name = "okBtnInfoMediumTextLargeImg"; 
+		btnBlock.setupState({
+			state: "selected",
+			attributes: selectedAttributes
+		});
+		btnBlock.setupState({
+			state: "normal",
+			attributes: normalAttributes
+		});
+		btnBlock.add(btnText);
+		btnContainer.add(btnBlock);
+		hoverObjectsList.push({
+			name: "okBtnInfoMediumTextLargeImg",
 			state: 'normal'
 		});
 
@@ -61539,6 +61664,7 @@
 			createInfoSmall(scene);
 			createInfoMediumText(scene);
 			createInfoMediumTextImg(scene);
+			createInfoMediumTextLargeImg(scene);
 			createConfidenceWindow(scene);
 			createTrueFalseQuizzWindow(scene);
 			createReportFirstWindow(scene);
@@ -61654,6 +61780,7 @@
 							let objName = intersect.object.parent.children[1]?.name;
 							if (
 								(objName === 'okBtnInfoMediumTextImg' && stepSimType === 'info-md-text-img') ||
+								(objName === 'okBtnInfoMediumTextLargeImg' && stepSimType === 'info-md-text-lg-img') ||
 								(objName === 'okBtnInfoMediumText' && stepSimType === 'info-md-text') ||
 								(objName === 'okBtnInfoSmall' && stepSimType === 'info-sm')
 							){
@@ -61988,6 +62115,7 @@
 		scene.getObjectByName(correctIncorrectObjects.containerName).visible = false;
 		scene.getObjectByName(successObjects.containerName).visible = false;
 		scene.getObjectByName(infoObjectsMediumTextImg.containerName).visible = false;
+		scene.getObjectByName(infoObjectsMediumTextLargeImg.containerName).visible = false;
 		scene.getObjectByName(infoObjectsMediumText.containerName).visible = false;
 		scene.getObjectByName(infoObjectsSmall.containerName).visible = false;
 		scene.getObjectByName('ReportFirstWindow').visible = false;
@@ -62047,6 +62175,20 @@
 			loader.load(PPE_DATA.vrSim.sim[simulationStep].img, function (texture) {
 				//texture.minFilter = THREE.LinearFilter;
 				infoObjectsMediumTextImg.imgContainerObjName.set({ backgroundTexture: texture });
+			});
+		}
+		if (PPE_DATA.vrSim.sim[simulationStep].type === 'info-md-text-lg-img'){
+			//intro container
+			scene.getObjectByName(infoObjectsMediumTextLargeImg.containerName).visible = true;
+			//title
+			infoObjectsMediumTextLargeImg.titleTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].title});
+			//content text
+			infoObjectsMediumTextLargeImg.contentTextObj.set({content: PPE_DATA.vrSim.sim[simulationStep].content});
+			//img
+			const loader = new TextureLoader();  
+			loader.load(PPE_DATA.vrSim.sim[simulationStep].img, function (texture) {
+				//texture.minFilter = THREE.LinearFilter;
+				infoObjectsMediumTextLargeImg.imgContainerObjName.set({ backgroundTexture: texture });
 			});
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'info-md-text'){
@@ -62160,7 +62302,7 @@
 				//wins
 				const pos = new Vector3(-2.0, 2.16, -2.0);
 				const rotY = 0.5;
-				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg', 'infoGroupMediumTextLargeImg'].forEach((el) => {
 					scene.getObjectByName(el).position.copy(pos);
 					scene.getObjectByName(el).rotation.y = rotY;
 				});
@@ -62192,7 +62334,7 @@
 				//wins
 				const pos = new Vector3(0.0, 2.16, -3.4);
 				const rotY = 0.0;
-				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg'].forEach((el) => {
+				['infoGroupSmall', 'quizz-window', 'correctGroup', 'ConfidenceWindow', 'infoGroupMediumTextImg', 'infoGroupMediumTextLargeImg'].forEach((el) => {
 					scene.getObjectByName(el).position.copy(pos);
 					scene.getObjectByName(el).rotation.y = rotY;
 				});
