@@ -52000,6 +52000,221 @@
 		}
 	}
 
+	function vr_xapi_SaveAssessment(ThisAssessmentName, UserScore, TotalScore, ConfidenceLevel) {
+		let local_activity_id = base_activity_id + "/eTrainetcCOVID19EnhancedRespiratoryPrecautionsPPEChecklist/DonningandDoffingPPE";
+
+	    let date = new Date();
+
+	    let extensions = {"http://etrainetc.com/extension/base-activity": base_activity_id};
+		
+	    if (ConfidenceLevel != null){
+	        extensions["http://etrainetc.com/extension/ConfidenceScore"] = (ConfidenceLevel/100.0);
+	    }
+
+	    extensions["http://etrainetc.com/extension/Type"] = "action";
+
+	    extensions["http://etrainetc.com/extension/SimPlatform"] = "VR";
+
+
+	    let statement = {
+	        id: TinCan.Utils.getUUID(),
+	        timestamp: date.toISOString(),
+	        actor: actorobj,
+	        verb: {
+	            id: "http://adlnet.gov/expapi/verbs/completed",
+	            display: {
+	                "en-US": "Completed"
+	            }
+	        },
+	        object: {
+	            id: local_activity_id, //NEED SOMETHING HERE FOR THE ACTUAL FULL ID
+	            definition: {
+	                description: {
+	                    "en-US": "Assessment - " + ThisAssessmentName
+	                },
+	                type: "http://etrainetc.com/activities/assessment",
+	                name: {
+	                    "en-US": "Assessment - " + ThisAssessmentName
+	                }
+	            }
+	        },
+	        result: {
+	            score: {
+	                scaled: UserScore/TotalScore,
+	                raw: UserScore,
+	                min: 0,
+	                max: TotalScore,
+	            },
+	            success: false,
+	            completion: false
+	        },
+	        context: {
+	            "registration": registration,
+
+	            "parent":
+	                [
+	                    {
+	                        id: local_activity_id
+	                    }
+	                ],
+	            "extensions":extensions
+	        }
+	    };
+
+	    statement = new TinCan.Statement(statement);
+
+	    try {
+	            xAPI_LRS.saveStatement(
+	                statement,
+	                {
+	                    callback: function (err, xhr) {
+	                        //alert("Done saving");
+
+	                        if (err !== null) {
+	                            if (xhr !== null) {
+	                                console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
+	                                // TODO: do something with error, didn't save statement
+
+	                                return;
+	                            }
+
+	                            console.log("Failed to save statement: " + err);
+	                            // TODO: do something with error, didn't save statement
+	                            return;
+	                        }
+
+	                        /*
+	                        if (xhr !== null) {
+	                            console.log("Statement saved, wtih repsonse:" + xhr.responseText);
+	                        }
+	                        else {
+	                            console.log("Sucessfully save the statement");
+	                        }
+	                        */
+
+	                        console.log("Data was submitted successfully");
+	                        // TOOO: do something with success (possibly ignore)
+
+	                        //For SCORMCloud we will use the username as the email address, for others we need to use
+	                        //the returned value from SimCore
+	                    }
+	                }
+	            );
+	        }
+	        catch (ex) {
+	            console.log("Failed to setup LRS object: " + ex);
+	        }
+	}
+
+	function vr_xapi_SaveCompletion(FinalScore, TotalPoints, Outcome, ConfidenceScore, TimeTaken){
+	    let success = false;
+	    let response = false;
+	    let verb = "http://adlnet.gov/expapi/verbs/failed";
+
+	    let display_verb = "Failed";
+
+	    if (Outcome == "Pass")
+	    {
+	        success = true;
+	        response = true;
+	        verb  = "http://adlnet.gov/expapi/verbs/passed";
+	        display_verb = "Passed";
+	    }
+
+
+	    //We need to convert the score value from a string to a
+	    let date = new Date();
+
+	    let extensions = {};
+
+	    if (ConfidenceScore != 0)
+	    {
+	        extensions["http://etrainetc.com/extension/ConfidenceScore"] = ConfidenceScore;
+	    }
+
+	    extensions["http://etrainetc.com/extension/SimPlatform"] = "VR";
+	    extensions["http://etrainetc.com/extension/OverallPassingScore"] = 0.7;
+	    extensions["http://etrainetc.com/extension/TimeTaken"] = TimeTaken;
+
+	    let statement = {
+	        id: TinCan.Utils.getUUID(),
+	        timestamp: date.toISOString(),
+	        actor: actorobj,
+	        verb: {
+	            id: verb,
+	            display: {
+	                "en-US": display_verb
+	            }
+	        },
+	        object: {
+	            id: base_activity_id , //NEED SOMETHING HERE FOR THE ACTUAL FULL ID
+	            definition: {
+	                description: {
+	                    "en-US": "Final Score" //NEED THE QUESTION TEXT HERE
+	                },
+	                type: "http://adlnet.gov/expapi/activities/course",
+	                name: {
+	                    "en-US": "Final Score"
+	                }
+	            }
+	        },
+	        result: {
+	            score: {
+	                scaled: FinalScore,
+	                raw: FinalScore,
+	                min: 0,
+	                max: TotalPoints,
+	            },
+	            success: success,
+	            completion: response,
+	            response: ""
+
+	        },
+	        context: {
+	            "registration": registration,
+
+	            "extensions":extensions,
+	            "parent":
+	                [
+	                    {
+	                        id: base_activity_id
+	                    }
+	                ]
+	        }
+	    };
+		
+	    statement = new TinCan.Statement(statement);
+	    
+	    try {
+				xAPI_LRS.saveStatement(
+					statement,
+					{
+						callback: function (err, xhr) {
+							//alert("Done saving");
+
+							if (err !== null) {
+								if (xhr !== null) {
+									console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
+									// TODO: do something with error, didn't save statement
+
+									return;
+								}
+
+								console.log("Failed to save statement: " + err);
+								// TODO: do something with error, didn't save statement
+								return;
+							}
+						}
+					}
+				);
+	        }
+	        catch (ex) {
+	            console.log("Failed to setup LRS object: " + ex);
+	        }
+
+
+	}
+
 	class BoxLineGeometry extends BufferGeometry {
 
 		constructor( width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1 ) {
@@ -61693,7 +61908,10 @@
 				  }
 				}
 			  ]
-		}
+		},
+		correctAnswersCount: 0,
+		summConfidenceLevel: 0,
+		startTime: 0
 	};
 
 	class App {
@@ -61728,6 +61946,7 @@
 			console.log({name: username, mbox: userEmail});
 			vr_xapi_initialize_LRS();
 			vr_xapi_sendprofiledata({}, {name: username, mbox: userEmail});
+			lrsData.startTime = new Date();
 
 			await fetch('./build/ppe.json', {
 				method: 'GET',
@@ -61950,10 +62169,12 @@
 									if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
 										lrsData.quizzData.confidenceLevel = 1.0;
 									else lrsData.quizzData.confidenceLevel = 0.5;
+									lrsData.summConfidenceLevel += lrsData.quizzData.confidenceLevel;
 									if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 										lrsData.quizzData.answerText = 'Correct';
 										lrsData.quizzData.isCorrect = true;
 										lrsData.quizzData.scoreValue = 1;
+										lrsData.correctAnswersCount ++;
 									}
 									else {
 										lrsData.quizzData.answerText = 'Incorrect';
@@ -62028,10 +62249,12 @@
 									if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
 										lrsData.quizzData.confidenceLevel = 1.0;
 									else lrsData.quizzData.confidenceLevel = 0.5;
+									lrsData.summConfidenceLevel += lrsData.quizzData.confidenceLevel;
 									if (selectedPutOnObjects === putOnObjects.correctObjectName){
 										lrsData.quizzData.answerText = 'Correct';
 										lrsData.quizzData.isCorrect = true;
 										lrsData.quizzData.scoreValue = 1;
+										lrsData.correctAnswersCount ++;
 									}
 									else {
 										lrsData.quizzData.answerText = 'Incorrect';
@@ -62615,6 +62838,20 @@
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-diagram'){
 			scene.getObjectByName('ReportDiagramWindow').visible = true;
+		}
+		if (PPE_DATA.vrSim.sim[simulationStep].type === 'save-final-to-lrs'){
+			//lrs
+			const averageConfidanceLevel = Math.round(100.0 * lrsData.summConfidenceLevel / (lrsData.quizzData.questionID - 1));
+			vr_xapi_SaveAssessment('Donning and Doffing PPE', 1 * lrsData.correctAnswersCount, lrsData.quizzData.questionID - 1, averageConfidanceLevel);
+			
+			const finalScore = 1.0 * lrsData.correctAnswersCount / (lrsData.quizzData.questionID - 1);
+			const rezult = finalScore > 0.7 ? 'Passed' : 'Failed';
+			const totalTime = (new Date() - lrsData.startTime).toString();
+			setTimeout(() => {
+				vr_xapi_SaveCompletion( 1.0 * finalScore, 1.0 * (lrsData.quizzData.questionID - 1), rezult, averageConfidanceLevel / 100., totalTime);
+			}, 2000);
+			simulationStep++;
+			showCurrentSimulationStep();
 		}
 	}
 

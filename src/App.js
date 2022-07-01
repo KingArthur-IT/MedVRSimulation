@@ -60,7 +60,10 @@ let lrsData = {
 			  }
 			}
 		  ]
-	}
+	},
+	correctAnswersCount: 0,
+	summConfidenceLevel: 0,
+	startTime: 0
 }
 
 class App {
@@ -95,6 +98,7 @@ class App {
 		console.log({name: username, mbox: userEmail})
 		vr_xapi_initialize_LRS();
 		vr_xapi_sendprofiledata({}, {name: username, mbox: userEmail});
+		lrsData.startTime = new Date();
 
 		await fetch('./build/ppe.json', {
 			method: 'GET',
@@ -317,10 +321,12 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 								if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
 									lrsData.quizzData.confidenceLevel = 1.0;
 								else lrsData.quizzData.confidenceLevel = 0.5;
+								lrsData.summConfidenceLevel += lrsData.quizzData.confidenceLevel;
 								if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 									lrsData.quizzData.answerText = 'Correct';
 									lrsData.quizzData.isCorrect = true;
 									lrsData.quizzData.scoreValue = 1;
+									lrsData.correctAnswersCount ++;
 								}
 								else {
 									lrsData.quizzData.answerText = 'Incorrect';
@@ -397,10 +403,12 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 								if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
 									lrsData.quizzData.confidenceLevel = 1.0;
 								else lrsData.quizzData.confidenceLevel = 0.5;
+								lrsData.summConfidenceLevel += lrsData.quizzData.confidenceLevel;
 								if (selectedPutOnObjects === putOnObjects.correctObjectName){
 									lrsData.quizzData.answerText = 'Correct';
 									lrsData.quizzData.isCorrect = true;
 									lrsData.quizzData.scoreValue = 1;
+									lrsData.correctAnswersCount ++;
 								}
 								else {
 									lrsData.quizzData.answerText = 'Incorrect';
@@ -986,6 +994,20 @@ function showCurrentSimulationStep(){
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-diagram'){
 		scene.getObjectByName('ReportDiagramWindow').visible = true;
+	}
+	if (PPE_DATA.vrSim.sim[simulationStep].type === 'save-final-to-lrs'){
+		//lrs
+		const averageConfidanceLevel = Math.round(100.0 * lrsData.summConfidenceLevel / (lrsData.quizzData.questionID - 1));
+		vr_xapi_SaveAssessment('Donning and Doffing PPE', 1 * lrsData.correctAnswersCount, lrsData.quizzData.questionID - 1, averageConfidanceLevel);
+		
+		const finalScore = 1.0 * lrsData.correctAnswersCount / (lrsData.quizzData.questionID - 1);
+		const rezult = finalScore > 0.7 ? 'Passed' : 'Failed';
+		const totalTime = (new Date() - lrsData.startTime).toString();
+		setTimeout(() => {
+			vr_xapi_SaveCompletion( 1.0 * finalScore, 1.0 * (lrsData.quizzData.questionID - 1), rezult, averageConfidanceLevel / 100., totalTime);
+		}, 2000);
+		simulationStep++;
+		showCurrentSimulationStep();
 	}
 }
 
