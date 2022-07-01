@@ -61889,7 +61889,7 @@
 									showCurrentSimulationStep();
 								} else
 									putOnObjects.interactiveObject.forEach((element) => {
-										if (selectedPutOnObjects === element  + 'Collider'){
+										if (selectedPutOnObjects === element){
 											correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 											scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
 											setTimeout(() => {
