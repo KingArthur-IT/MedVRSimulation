@@ -62508,10 +62508,8 @@
 		scene.getObjectByName('ReportFirstTableWindow').visible = false;
 		scene.getObjectByName('ReportConfidenceTableWindow').visible = false;
 		scene.getObjectByName('ReportDiagramWindow').visible = false;
-
 		changeAllInfoPopupsVisibility(false);
 		document.getElementById('video').pause();
-
 		stepSimType = PPE_DATA.vrSim.sim[simulationStep].type;
 		
 		if (PPE_DATA.vrSim.sim[simulationStep].type.includes('intro')){
