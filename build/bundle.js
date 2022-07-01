@@ -51787,7 +51787,13 @@
 
 	let xAPI_LRS = {};
 	let lrs_initialized = false;
-	TinCan.Utils.getUUID();
+	let registration = TinCan.Utils.getUUID();
+	let base_activity_id = 'http://www.etrainetc.com/CaseTools/eTrainetc/g6KpChW8XcPETtG37I8REGHpMN33/dj5Jz14BGkN20L4OdKG6/test';
+
+	let actorobj = {
+		name: 'Andrew Tolstov',
+		mbox: 'mailto:andrew.tolstov@etrainetc.com'
+	};
 
 	function vr_xapi_initialize_LRS(){
 		
@@ -51898,6 +51904,100 @@
 	    );
 
 
+	}
+	function vr_xapi_SaveAction(UserConfidence, QuestionID, QuestionText, score_value, isCorrect, AnswerText, AnswerChoices){
+	    //Lets set up the possible extensions
+		
+		let extensions = {"http://etrainetc.com/extension/base-activity": base_activity_id };
+		let local_activity_id = base_activity_id + "/eTrainetcCOVID19EnhancedRespiratoryPrecautionsPPEChecklist/DonningandDoffingPPE";
+
+	    if (UserConfidence != null)
+	    {
+	        extensions["http://etrainetc.com/extension/UserConfidence"] = UserConfidence;
+	    }
+	    
+		extensions["http://etrainetc.com/extension/ActionType"] = "Answered";
+
+	    extensions["http://etrainetc.com/extension/QuestionType"] = "Action";
+	    extensions["http://etrainetc.com/extension/SimPlatform"] = "VR";
+
+	    let statement = {
+	        id: TinCan.Utils.getUUID(),
+	        timestamp: new Date().toISOString(),
+	        actor: actorobj,
+	        verb: {
+	            id: "http://adlnet.gov/expapi/verbs/answered",
+	            display:{
+	                "en-US": "Answered"
+	            }
+	        },
+	        object: {
+	            id: local_activity_id + "/Action_"+ QuestionID,
+	            definition: {
+	                description:{
+	                    "en-US": QuestionText,
+	                },
+	                type: "http://adlnet.gov/expapi/activities/cmi.interaction",
+	                interactionType: "choice",
+	                choices: AnswerChoices
+	            }
+	        },
+	        result: {
+	            score: {
+	                scaled: score_value,
+	                raw: score_value,
+	                min: 0,
+	                max: 1,
+	            },
+	            success: isCorrect,
+	            response: AnswerText
+
+	        },
+	        context: {
+	            "registration": registration,
+	            "parent":
+	                [
+	                    {
+	                        id: local_activity_id
+	                    }
+	                ],
+	            "extensions":extensions
+	        }
+	    };
+		
+		statement = new TinCan.Statement(statement);
+
+	    //Now we try to send the statement
+	    
+		try {
+
+			xAPI_LRS.saveStatement(
+				statement,
+				{
+					callback: function (err, xhr) {
+						//alert("Done saving");
+
+						if (err !== null) {
+							if (xhr !== null) {
+								console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
+								// TODO: do something with error, didn't save statement
+
+								username = "";
+								return;
+							}
+
+							console.log("Failed to save statement: " + err);
+							// TODO: do something with error, didn't save statement
+							return;
+						}
+
+					}
+				}
+			);
+		}
+		catch (ex) {
+			console.log("Failed to setup LRS object: " + ex);
+		}
 	}
 
 	class BoxLineGeometry extends BufferGeometry {
@@ -61570,6 +61670,32 @@
 	let simulationStep = -1;
 	let stepSimType = "";
 
+	let lrsData = {
+		wasSended: false,
+		quizzData: {
+			confidenceLevel: 0,
+			questionID: 1,
+			questionText: '',
+			scoreValue: 0, 
+			isCorrect: false,
+			answerText: '',
+			answerChoices: [
+				{
+				  "id": "1",
+				  "description": {
+					"en-US": "Incorrect"
+				  }
+				},
+				{
+				  "id": "2",
+				  "description": {
+					"en-US": "Correct"
+				  }
+				}
+			  ]
+		}
+	};
+
 	class App {
 		async start(){
 			//scene
@@ -61818,13 +61944,31 @@
 					if (stepSimType === 'confidenceQuizz'){
 						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
-								//const btnName = intersect.object.parent.children[1].name;
 								scene.getObjectByName('ConfidenceWindow').visible = false;
+								//lrs
+								if (!lrsData.wasSended){
+									if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
+										lrsData.quizzData.confidenceLevel = 1.0;
+									else lrsData.quizzData.confidenceLevel = 0.5;
+									if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
+										lrsData.quizzData.answerText = 'Correct';
+										lrsData.quizzData.isCorrect = true;
+										lrsData.quizzData.scoreValue = 1;
+									}
+									else {
+										lrsData.quizzData.answerText = 'Incorrect';
+										lrsData.quizzData.isCorrect = false;
+										lrsData.quizzData.scoreValue = 0;
+									}								vr_xapi_SaveAction(lrsData.quizzData.confidenceLevel, lrsData.quizzData.questionID, lrsData.quizzData.questionText + '?', lrsData.quizzData.scoreValue, lrsData.quizzData.isCorrect, lrsData.quizzData.answerText, lrsData.quizzData.answerChoices);
+									lrsData.wasSended = true;
+									lrsData.quizzData.questionID ++;
+								}							
 								if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 									simulationStep++;
 									selectedQuizzBtns = [];
 									quizzSelectedBtnName = '';
 									showCurrentSimulationStep();
+									lrsData.wasSended = false;
 								}
 								else {
 									selectedQuizzBtns.push(quizzSelectedBtnName);
@@ -61879,6 +62023,24 @@
 						if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 							if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 								scene.getObjectByName('ConfidenceWindow').visible = false;
+								//lrs
+								if (!lrsData.wasSended){
+									if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
+										lrsData.quizzData.confidenceLevel = 1.0;
+									else lrsData.quizzData.confidenceLevel = 0.5;
+									if (selectedPutOnObjects === putOnObjects.correctObjectName){
+										lrsData.quizzData.answerText = 'Correct';
+										lrsData.quizzData.isCorrect = true;
+										lrsData.quizzData.scoreValue = 1;
+									}
+									else {
+										lrsData.quizzData.answerText = 'Incorrect';
+										lrsData.quizzData.isCorrect = false;
+										lrsData.quizzData.scoreValue = 0;
+									}								vr_xapi_SaveAction(lrsData.quizzData.confidenceLevel, lrsData.quizzData.questionID, lrsData.quizzData.questionText + '?', lrsData.quizzData.scoreValue, lrsData.quizzData.isCorrect, lrsData.quizzData.answerText, lrsData.quizzData.answerChoices);
+									lrsData.wasSended = true;
+									lrsData.quizzData.questionID ++;
+								}
 								if (selectedPutOnObjects === putOnObjects.correctObjectName){
 									if ( putOnObjects.correctObjectName !== 'GlovesPatientRoom')
 										scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
@@ -61887,9 +62049,10 @@
 										scene.getObjectByName(putOnObjects.correctObjectName).visible = false;
 									simulationStep++;
 									showCurrentSimulationStep();
+									lrsData.wasSended = false;
 								} else
 									putOnObjects.interactiveObject.forEach((element) => {
-										if (selectedPutOnObjects === element  + 'Collider'){
+										if (selectedPutOnObjects === element){
 											correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 											scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
 											setTimeout(() => {
@@ -62221,6 +62384,15 @@
 			//correct`s
 			QuizzObjects.correctHighlightedObjName = PPE_DATA.vrSim.sim[simulationStep].correctObjectName;
 			QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
+			//lrs
+			if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(1))
+				lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText1;
+			if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(2))
+				lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText2;
+			if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(3))
+				lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText3;
+			if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(4))
+				lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText4;
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'tf-quizz'){
 			//question
@@ -62238,6 +62410,7 @@
 				scene.getObjectByName('Popup' + element).visible = true;
 			});
 			putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
+			lrsData.quizzData.questionText = 'Put on ' + putOnObjects.correctObjectName + '?';
 			putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 		}
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'sim-end'){
@@ -62357,12 +62530,6 @@
 			simulationStep++;
 			showCurrentSimulationStep();
 		}
-		// if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
-		// 	document.getElementById('reportFrame').style.display = 'block'; 
-		// 	document.getElementById('closeFrame').style.display = 'block';
-		// 	simulationStep++;
-		// 	showCurrentSimulationStep();
-		// }
 		if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first'){
 			scene.getObjectByName('ReportFirstWindow').visible = true;
 			reportUI.introText.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('simreportheader').textContent});

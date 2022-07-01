@@ -37,6 +37,32 @@ let quizzSelectedBtnName = '';
 let simulationStep = -1;
 let stepSimType = "";
 
+let lrsData = {
+	wasSended: false,
+	quizzData: {
+		confidenceLevel: 0,
+		questionID: 1,
+		questionText: '',
+		scoreValue: 0, 
+		isCorrect: false,
+		answerText: '',
+		answerChoices: [
+			{
+			  "id": "1",
+			  "description": {
+				"en-US": "Incorrect"
+			  }
+			},
+			{
+			  "id": "2",
+			  "description": {
+				"en-US": "Correct"
+			  }
+			}
+		  ]
+	}
+}
+
 class App {
 	async start(){
 		//scene
@@ -285,13 +311,33 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 				if (stepSimType === 'confidenceQuizz'){
 					if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
-							//const btnName = intersect.object.parent.children[1].name;
 							scene.getObjectByName('ConfidenceWindow').visible = false;
+							//lrs
+							if (!lrsData.wasSended){
+								if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
+									lrsData.quizzData.confidenceLevel = 1.0;
+								else lrsData.quizzData.confidenceLevel = 0.5;
+								if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
+									lrsData.quizzData.answerText = 'Correct';
+									lrsData.quizzData.isCorrect = true;
+									lrsData.quizzData.scoreValue = 1;
+								}
+								else {
+									lrsData.quizzData.answerText = 'Incorrect';
+									lrsData.quizzData.isCorrect = false;
+									lrsData.quizzData.scoreValue = 0;
+								};
+								vr_xapi_SaveAction(lrsData.quizzData.confidenceLevel, lrsData.quizzData.questionID, lrsData.quizzData.questionText + '?', lrsData.quizzData.scoreValue, lrsData.quizzData.isCorrect, lrsData.quizzData.answerText, lrsData.quizzData.answerChoices);
+								lrsData.wasSended = true;
+								lrsData.quizzData.questionID ++;
+							};
+							
 							if (quizzSelectedBtnName === QuizzObjects.correctQuizzBtnName){
 								simulationStep++;
 								selectedQuizzBtns = [];
 								quizzSelectedBtnName = '';
 								showCurrentSimulationStep();
+								lrsData.wasSended = false;
 							}
 							else {
 								selectedQuizzBtns.push(quizzSelectedBtnName);
@@ -346,6 +392,26 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 					if (intersect.object.name == "MeshUI-Frame" && isConfidenceVisible)
 						if (intersect.object.parent.children[1]?.name.includes('ConfidenceBtn')){
 							scene.getObjectByName('ConfidenceWindow').visible = false;
+							//lrs
+							if (!lrsData.wasSended){
+								if (intersect.object.parent.children[1]?.name === 'HighConfidenceBtn')
+									lrsData.quizzData.confidenceLevel = 1.0;
+								else lrsData.quizzData.confidenceLevel = 0.5;
+								if (selectedPutOnObjects === putOnObjects.correctObjectName){
+									lrsData.quizzData.answerText = 'Correct';
+									lrsData.quizzData.isCorrect = true;
+									lrsData.quizzData.scoreValue = 1;
+								}
+								else {
+									lrsData.quizzData.answerText = 'Incorrect';
+									lrsData.quizzData.isCorrect = false;
+									lrsData.quizzData.scoreValue = 0;
+								};
+								vr_xapi_SaveAction(lrsData.quizzData.confidenceLevel, lrsData.quizzData.questionID, lrsData.quizzData.questionText + '?', lrsData.quizzData.scoreValue, lrsData.quizzData.isCorrect, lrsData.quizzData.answerText, lrsData.quizzData.answerChoices);
+								lrsData.wasSended = true;
+								lrsData.quizzData.questionID ++;
+							};
+
 							if (selectedPutOnObjects === putOnObjects.correctObjectName){
 								if ( putOnObjects.correctObjectName !== 'GlovesPatientRoom')
 									scene.getObjectByName('Body' + putOnObjects.correctObjectName).visible = true;
@@ -354,9 +420,10 @@ class ControllerPickHelper extends THREE.EventDispatcher {
 									scene.getObjectByName(putOnObjects.correctObjectName).visible = false;
 								simulationStep++;
 								showCurrentSimulationStep();
+								lrsData.wasSended = false;
 							} else
 								putOnObjects.interactiveObject.forEach((element) => {
-									if (selectedPutOnObjects === element  + 'Collider'){
+									if (selectedPutOnObjects === element){
 										correctIncorrectObjects.contentTextObj.set({content: 'Incorrect.\nPlease try again.'});
 										scene.getObjectByName(correctIncorrectObjects.containerName).visible = true;
 										setTimeout(() => {
@@ -688,6 +755,15 @@ function showCurrentSimulationStep(){
 		//correct`s
 		QuizzObjects.correctHighlightedObjName = PPE_DATA.vrSim.sim[simulationStep].correctObjectName;
 		QuizzObjects.correctQuizzBtnName = PPE_DATA.vrSim.sim[simulationStep].correctAnswer;
+		//lrs
+		if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(1))
+			lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText1;
+		if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(2))
+			lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText2;
+		if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(3))
+			lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText3;
+		if (PPE_DATA.vrSim.sim[simulationStep].correctAnswer.includes(4))
+			lrsData.quizzData.questionText = PPE_DATA.vrSim.sim[simulationStep].btnText4;
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'tf-quizz'){
 		//question
@@ -705,6 +781,7 @@ function showCurrentSimulationStep(){
 			scene.getObjectByName('Popup' + element).visible = true;
 		})
 		putOnObjects.correctObjectName = PPE_DATA.vrSim.sim[simulationStep].correctOnjectName;
+		lrsData.quizzData.questionText = 'Put on ' + putOnObjects.correctObjectName + '?';
 		putOnObjects.interactiveObject = PPE_DATA.vrSim.sim[simulationStep].interactiveObjectsName;
 	}
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'sim-end'){
@@ -824,12 +901,6 @@ function showCurrentSimulationStep(){
 		simulationStep++;
 		showCurrentSimulationStep();
 	}
-	// if (PPE_DATA.vrSim.sim[simulationStep].type === 'show-report-frame'){
-	// 	document.getElementById('reportFrame').style.display = 'block'; 
-	// 	document.getElementById('closeFrame').style.display = 'block';
-	// 	simulationStep++;
-	// 	showCurrentSimulationStep();
-	// }
 	if (PPE_DATA.vrSim.sim[simulationStep].type === 'report-first'){
 		scene.getObjectByName('ReportFirstWindow').visible = true;
 		reportUI.introText.set({content: document.getElementById('reportFrame').contentWindow.document.getElementById('simreportheader').textContent});
